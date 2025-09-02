@@ -11,13 +11,7 @@ Here you will find:
 
 ## Projects Available
 1. Milk Overflow Alarm  
-   [📥 Download PDF](pdfs/milk-overflow-alarm.pdf)
-
-2. Remote AC Bulb  
-   [📥 Download PDF](pdfs/remote-ac-bulb.pdf)
-
-## About
-This website is created and maintained by **Tilak Raj (TRP Electronics)**.  
+   [📥 Download PDF](pdfs/milk-overflow-alarm.pdf)  
 I share my electronics knowledge, projects, and notes here for free.
 
 ---
