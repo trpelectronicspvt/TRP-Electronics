@@ -30,9 +30,41 @@ body {
   padding: 60px 20px;
   background: linear-gradient(to right, #0044cc, #007bff);
   color: white;
+  position: relative;
 }
+
+/* 🔔 Scrolling Text Inside Hero Section */
+.hero .scroll-text {
+  position: absolute;
+  top: 10px;  /* Hero box ke upar side */
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.hero .scroll-text p {
+  display: inline-block;
+  padding-left: 100%;
+  font-weight: bold;
+  animation: scroll-left 12s linear infinite;
+  color: #ffcc00;
+  font-size: 18px;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 .hero h1 {
   font-size: 2.5em;
+  margin-top: 40px; /* taaki scroll text se overlap na ho */
 }
 .hero .btn {
   display: inline-block;
