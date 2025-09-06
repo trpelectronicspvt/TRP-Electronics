@@ -142,6 +142,28 @@ body {
   border-radius: 8px;
 }
 
+.project-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  margin: 15px auto;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+  max-width: 800px;
+}
+
+.project-card img {
+  width: 120px;       /* image chhoti hogi */
+  height: auto;
+  border-radius: 10px;
+  margin-left: 20px;  /* text se thoda gap */
+}
+
+.project-card div {
+  flex: 1;  /* text left me raha karega */
+}
 
 
 /* Footer */
