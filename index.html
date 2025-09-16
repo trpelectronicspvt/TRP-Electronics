@@ -5,87 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TRP Electronics</title>
   <link rel="stylesheet" href="style.css">
-<style>
-    /* Scrolling text style */
-    .scroll-text {
-      width: 100%;
-      overflow: hidden;
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
-      padding: 10px 0;
-      white-space: nowrap;
-      box-shadow: 0 0px 0px rgba(0,0,0,0.0);
-      margin-bottom: 5px;
-    }
-
-    .scroll-text p {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scroll-left 12s linear infinite;
-    }
-
-    @keyframes scroll-left {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
-    }
-  </style>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2EMEGQQ84K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-2EMEGQQ84K');
-</script>
 </head>
 <body>
-  <!-- Navigation -->
-  <header class="navbar">
-    <img src="hdlogo.png" alt="TRP Logo" class="logo">
+  <!-- Header / Navbar -->
+  <header>
+    <div class="logo">TRP Electronics</div>
     <nav>
-      <a href="index.html">🏠 Home</a>
-      <a href="projects.html">📂 Projects</a>
-      <a href="contact.html">📩 Contact</a>
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
     </nav>
   </header>
 
   <!-- Hero Section -->
   <section class="hero">
-    <!-- 🔔 Scrolling text inside hero -->
-  <div class="scroll-text">
-    <p>🔔 All services are working fine 🔧</p>
-  </div>
-    <h1>Welcome to TRP Electronics</h1>
-    <p>Learn & Download Electronics Projects, Free PDFs and DIY Circuits</p>
-    <a href="projects.html" class="btn">🚀 Explore Projects</a>
+    <div class="hero-text">
+      <h1>Welcome to TRP Electronics</h1>
+      <p>Learn • Build • Innovate — Free DIY Circuits & Project PDFs</p>
+      <a href="projects.html" class="btn">Explore Projects</a>
+    </div>
   </section>
 
   <!-- Featured Projects -->
-  <section class="projects">
-    <h2>⭐ Featured Projects</h2>
-    <div class="cards">
-      <div class="card">
+  <section class="projects-preview">
+    <h2>Featured Projects</h2>
+    <div class="project-grid">
+      <div class="project-card">
+        <img src="images/milk-alarm.jpg" alt="Milk Overflow Alarm">
         <h3>Milk Overflow Alarm</h3>
-        <p>Simple project using BC547, LED and Buzzer.</p>
-        <a href="projects.html#project1" class="btn">📥 Download PDF</a>
+        <p>A simple circuit to alert when milk starts overflowing.</p>
+        <a href="pdfs/milk-alarm.pdf" class="btn">Download PDF</a>
       </div>
-      <div class="card">
+
+      <div class="project-card">
+        <img src="images/gas-detector.jpg" alt="Gas Leakage Detector">
         <h3>Gas Leakage Detector</h3>
-        <p>Safety project using MQ-2 sensor for home protection.</p>
-        <a href="projects.html#project2" class="btn">📥 Download PDF</a>
+        <p>Detect LPG/Gas leakage with a simple sensor-based circuit.</p>
+        <a href="pdfs/gas-detector.pdf" class="btn">Download PDF</a>
       </div>
-      <div class="card">
-        <h3>Home Automation Without Any Micro-controller</h3>
-        <p>Amazing Circuit With The Help Of IC4017 & IC555.</p>
-        <a href="projects.html#project3" class="btn">📥 Download PDF</a>
+
+      <div class="project-card">
+        <img src="images/home-automation.jpg" alt="Home Automation">
+        <h3>Home Automation</h3>
+        <p>Control your home appliances without a microcontroller.</p>
+        <a href="pdfs/home-automation.pdf" class="btn">Download PDF</a>
       </div>
     </div>
+  </section>
+
+  <!-- About Us -->
+  <section class="about">
+    <h2>About Us</h2>
+    <p>
+      <strong>TRP Electronics</strong> ek platform hai jahan hum simple aur advanced 
+      electronics projects share karte hain. Hamara focus students, hobbyists aur beginners ko 
+      practical knowledge dena hai, jisse wo easily DIY circuits aur projects seekh saken. 
+      Yaha aapko free project PDFs, circuit diagrams aur step-by-step guidance milta hai.
+    </p>
+    <p>
+      <strong>Mission:</strong> Hamari mission hai ki electronics ko sab ke liye simple, 
+      affordable aur easy-to-learn banaya jaye. Hum chahte hain ki students aur makers apne 
+      ideas ko reality me badal saken aur naye innovations la saken.
+    </p>
+    <p>
+      <strong>Vision:</strong> TRP Electronics ko ek trusted electronics learning hub banana 
+      jahan har koi free me knowledge le kar apna future bana sake.
+    </p>
   </section>
 
   <!-- Footer -->
