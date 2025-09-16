@@ -3,152 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Projects - TRP Electronics</title>
+  <title>Projects - TRP Electronics</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f7fa;
-      color: #333;
-    }
-    header {
-      background: #003399;
-      color: white;
-      padding: 15px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-    nav {
-      margin-top: 10px;
-    }
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .container {
-      width: 90%;
-      max-width: 1000px;
-      margin: 30px auto;
-    }
-    .project-card {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease-in-out;
-    }
-    .project-card:hover {
-      transform: scale(1.02);
-    }
-    .project-card h2 {
-      color: #003399;
-      margin-top: 0;
-    }
-    .project-card p {
-      line-height: 1.6;
-    }
-    .download-btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 15px;
-      background: #003399;
-      color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    .download-btn:hover {
-      background: #002080;
-    }
-    footer {
-      background: #003399;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 30px;
-    }
-  </style>
 </head>
 <body>
+  <!-- Header / Navbar -->
   <header>
-    <h1>📂 Free Projects</h1>
+    <div class="logo">TRP Electronics</div>
     <nav>
-      <a href="index.html">🏠 Home</a>
-      <a href="projects.html">📂 Projects</a>
-      <a href="contact.html">📩 Contact</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="projects.html" class="active">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
     </nav>
   </header>
 
-  <div class="container">
-  <!-- Milk Overflow Alarm -->
-  <div class="project-card">
-  <div>
-    <h2>Milk Overflow Alarm</h2>
-    <p>This project uses <b>BC547 transistor, buzzer, and LED</b> to give an alarm when milk is about to overflow.</p>
-    <a href="pdfs/milk-overflow-alarm.pdf" class="download-btn"><i class="fas fa-file-pdf"></i> Download PDF</a>
-  </div>
-  <img src="Data Files/Milk.png" alt="Milk Overflow Alarm">
-</div>
-
-
-  <!-- Gas Leakage Detector -->
-  <div class="project-card">
-    <div>
-    <h2>Gas Leakage Detector</h2>
-        <p>Safety project using <b>MQ-2 sensor</b> for home protection.</p>
-        <a href="pdfs/Gas Leakage Detector.pdf" class="download-btn"><i class="fas fa-file-pdf"></i> Download PDF</a>
+  <!-- Projects Section -->
+  <section class="all-projects">
+    <h2>All Projects</h2>
+    <div class="project-grid">
+      
+      <div class="project-card">
+        <img src="images/milk-alarm.jpg" alt="Milk Overflow Alarm">
+        <h3>Milk Overflow Alarm</h3>
+        <p>A simple circuit to alert when milk starts overflowing.</p>
+        <a href="pdfs/milk-alarm.pdf" class="btn">Download PDF</a>
       </div>
-        <img src="Data Files/Gas.png" alt="Gas Leakage Detector">
-  </div>
 
-  <!-- Simple Projects -->
-  <div class="project-card">
-    <div>
-    <h2>Simple Projects You Can Make At Home</h2>
-        <p>This PDF contains <b>easy electronics projects</b> that can be made at home using simple components.</p>
-        <a href="pdfs/Simple%20Projects,%20You%20Can%20Make%20At%20Home.pdf" class="download-btn"><i class="fas fa-file-pdf"></i> Download PDF</a>
+      <div class="project-card">
+        <img src="images/gas-detector.jpg" alt="Gas Leakage Detector">
+        <h3>Gas Leakage Detector</h3>
+        <p>Detect LPG/Gas leakage with a simple sensor-based circuit.</p>
+        <a href="pdfs/gas-detector.pdf" class="btn">Download PDF</a>
+      </div>
+
+      <div class="project-card">
+        <img src="images/home-automation.jpg" alt="Home Automation">
+        <h3>Home Automation</h3>
+        <p>Control your home appliances without a microcontroller.</p>
+        <a href="pdfs/home-automation.pdf" class="btn">Download PDF</a>
+      </div>
+
+      <div class="project-card">
+        <img src="images/traffic-light.jpg" alt="Traffic Light with Counter">
+        <h3>Traffic Light with Counter</h3>
+        <p>Traffic light system using Arduino with OLED countdown display.</p>
+        <a href="pdfs/traffic-light.pdf" class="btn">Download PDF</a>
+      </div>
+
+      <div class="project-card">
+        <img src="images/water-level.jpg" alt="Water Level Indicator">
+        <h3>Water Level Indicator</h3>
+        <p>LED based water level indicator using BC547 transistors.</p>
+        <a href="pdfs/water-level.pdf" class="btn">Download PDF</a>
+      </div>
+
+      <div class="project-card">
+        <img src="images/remote-bulb.jpg" alt="Remote Control Bulb">
+        <h3>Remote Control Bulb</h3>
+        <p>IR remote-controlled bulb circuit using CD4013 and TRIAC.</p>
+        <a href="pdfs/remote-bulb.pdf" class="btn">Download PDF</a>
+      </div>
+
     </div>
-        <img src="Data Files/Simple.png" alt="Simple Projects">
-      </div>
-    
-  <!-- Home Automation -->
-  <div class="project-card">
-    <div>
-    <h2>Home Automation Without Any Micro-controller</h2>
-    <p>Amazing Circuit With The Help Of <b>IC4017 & IC555</b>.</p>
-        <a href="Data Files/Home Automation.pdf" class="download-btn"><i class="fas fa-file-pdf"></i> Download PDF</a>
-      </div>
-        <img src="Data Files/Smart Home.png" alt="Home Automation">
-      </div>
-    
-     <!-- Arduino Projects -->
-  <div class="project-card">
-    <div>
-    <h2>Arduino Projects For Beginners</h2>
-    <p>Basics To Advance <b>Arduino Explained</b> In Very simple Wording.</p>
-        <a href="Data Files/Arduino Book.pdf" class="download-btn"><i class="fas fa-file-pdf"></i> Download PDF</a>
-      </div>
-        <img src="Data Files/Arduino.png" alt="Arduino Projects">
-      </div>
+  </section>
 
-  <!-- Coming Soon -->
-  <div class="project-card">
-    <h2>Coming Soon...</h2>
-    <p>Stay tuned for more electronics projects. We will keep adding new circuits and guides.</p>
-  </div>
-</div>
-
-
+  <!-- Footer -->
   <footer>
     <p>© 2025 TRP Electronics | Made with ❤️</p>
   </footer>
