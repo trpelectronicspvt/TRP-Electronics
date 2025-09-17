@@ -93,7 +93,7 @@ header nav ul li a.active {
 /* ===== Featured Projects (Home Page) ===== */
 .projects {
   padding: 50px 20px;
-  text-align: center;
+  text-align: left;
 }
 .cards {
   display: flex;
