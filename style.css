@@ -93,11 +93,11 @@ header nav ul li a.active {
 /* ===== Featured Projects (Home Page) ===== */
 .projects {
   padding: 50px 20px;
-  text-align: left;
+  text-align: center;
 }
 .cards {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   flex-wrap: wrap;
   gap: 20px;
 }
@@ -127,7 +127,7 @@ header nav ul li a.active {
 /* ===== All Projects Page ===== */
 .all-projects {
   padding: 50px 20px;
-  text-align: center;
+  text-align: left;
 }
 .project-grid {
   display: grid;
