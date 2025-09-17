@@ -157,6 +157,17 @@ header nav ul li a.active {
   color: #0044cc;
 }
 
+/* Search Box */
+#searchBox {
+  width: 80%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 20px auto;
+  display: block;
+  border: 2px solid #007BFF;
+  border-radius: 8px;
+  font-size: 16px;
+}
 /* ===== Contact Page ===== */
 .contact {
   padding: 50px 20px;
