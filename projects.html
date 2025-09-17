@@ -23,7 +23,11 @@
   <!-- Projects Section -->
   <section class="all-projects">
     <h2>All Projects</h2>
-    <div class="project-grid">
+
+    <!-- 🔍 Search Box -->
+    <input type="text" id="searchBox" placeholder="Search Project or PDF...">
+
+    <div class="project-grid" id="projectList">
       
       <div class="project-card">
         <img src="Data Files/Milk.png" alt="Milk Overflow Alarm">
@@ -42,7 +46,7 @@
       <div class="project-card">
         <img src="Data Files/Smart Home.png" alt="Home Automation">
         <h3>Home Automation</h3>
-        <p>Control your home appliances without a microcontroller.</p>
+        <p>Control your home appliances without any microcontroller.</p>
         <a href="Data Files/Home Automation.pdf" class="btn">Download PDF</a>
       </div>
 
@@ -61,14 +65,14 @@
       </div>
 
       <div class="project-card">
-        <img src="Data Files/Arduino.png" alt="Remote Control Bulb">
+        <img src="Data Files/Arduino.png" alt="Arduino Projects For Beginners">
         <h3>Arduino Projects For Beginners</h3>
         <p>Basics to advance arduino explained in very easy wording.</p>
         <a href="Data Files/Arduino Book.pdf" class="btn">Download PDF</a>
       </div>
 
       <div class="project-card">
-        <img src="Data Files/Simple.png" alt="Remote Control Bulb">
+        <img src="Data Files/Simple.png" alt="Simple Projects">
         <h3>Simple Projects You Can Make At Home</h3>
         <p>Easy electronics projects for beginners.</p>
         <a href="pdfs/Simple Projects, You Can Make At Home.pdf" class="btn">Download PDF</a>
@@ -80,5 +84,24 @@
   <footer>
     <p>© 2025 TRP Electronics | Made with ❤️</p>
   </footer>
+
+  <!-- 🔎 Search Script -->
+  <script>
+    document.getElementById("searchBox").addEventListener("keyup", function() {
+      let input = this.value.toLowerCase();
+      let cards = document.querySelectorAll(".project-card");
+
+      cards.forEach(card => {
+        let title = card.querySelector("h3").innerText.toLowerCase();
+        let desc = card.querySelector("p").innerText.toLowerCase();
+
+        if (title.includes(input) || desc.includes(input)) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
