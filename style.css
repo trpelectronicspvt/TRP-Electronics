@@ -97,7 +97,7 @@ header nav ul li a.active {
 }
 .cards {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
 }
@@ -127,7 +127,7 @@ header nav ul li a.active {
 /* ===== All Projects Page ===== */
 .all-projects {
   padding: 50px 20px;
-  text-align: left;
+  text-align: center;
 }
 .project-grid {
   display: grid;
