@@ -89,6 +89,11 @@ header nav ul li a.active {
   margin-bottom: 15px;
 }
 
+.section-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 /* ===== Featured Projects (Home Page) ===== */
 .projects {
   padding: 50px 20px;
