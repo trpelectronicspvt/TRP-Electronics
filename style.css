@@ -99,13 +99,14 @@ header nav ul li a.active {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 15px;
+  margin-top: 20px;
 }
 .card {
   background: white;
-  padding: 20px;
-  border-radius: 12px;
-  width: 250px;
+  padding: 15px;
+  border-radius: 10px;
+  width: 200px;
   box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s;
 }
@@ -123,7 +124,12 @@ header nav ul li a.active {
 .card .btn:hover {
   background: #002a80;
 }
-
+.card img {
+  width: 100%;
+  max-height: 140px; /* image chhoti ho jayegi */
+  object-fit: cover;
+  border-radius: 8px;
+} 
 /* ===== All Projects Page ===== */
 .all-projects {
   padding: 50px 20px;
@@ -160,7 +166,7 @@ header nav ul li a.active {
 /* Search Box */
 #searchBox {
   width: 80%;
-  max-width: 400px;
+  max-width: 200px;
   padding: 10px;
   margin: 20px auto;
   display: block;
