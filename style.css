@@ -223,6 +223,57 @@ header nav ul li a.active {
   font-weight: bold;
 }
 
+.app-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin: 20px 0;
+}
+
+.app-img {
+  width: 120px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.app-info {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.app-info h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.app-info p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.download-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background: #28a745;  /* Green */
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+.download-btn:hover {
+  background: #218838;
+  transform: translateY(-2px);
+}
+
+
 /* ===== Footer ===== */
 footer {
   background: #0044cc;
