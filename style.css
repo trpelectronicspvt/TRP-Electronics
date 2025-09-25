@@ -318,7 +318,22 @@ header nav ul li a.active {
   }
 }
 
+.apps-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 20px;
+  scroll-behavior: smooth;
+}
 
+.apps-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.apps-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
 /* ===== Footer ===== */
 footer {
   background: #0044cc;
