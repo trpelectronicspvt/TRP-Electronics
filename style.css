@@ -236,6 +236,14 @@ header nav ul li a.active {
   font-weight: bold;
 }
 
+.eapps {
+  text-align: center;
+  padding: 60px 20px;   /* upar se space milega */
+  margin-top: 40px;     /* header ke neeche gap */
+  display: flex;
+  justify-content: center;
+}
+
 .app-card {
   display: flex;
   align-items: center;
@@ -244,7 +252,9 @@ header nav ul li a.active {
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  margin: 20px 0;
+  max-width: 700px;   /* ek fixed width taaki center me aaye */
+  width: 100%;
+  margin: auto;
 }
 
 .app-img {
