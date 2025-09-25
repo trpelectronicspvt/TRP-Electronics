@@ -93,6 +93,19 @@ header nav ul li a.active {
   text-align: center;
   margin-bottom: 20px;
 }
+.about-section {
+  font-size: 14px;   /* yahan chhota kar diya */
+  line-height: 1.6;  /* readability ke liye */
+  color: #333;
+}
+.about-section h2 {
+  font-size: 20px;   /* "About Us" heading thoda bada */
+  margin-bottom: 15px;
+}
+.about-section b {
+  font-size: 15px;   /* Mission / Vision bold text */
+}
+
 
 /* ===== Featured Projects (Home Page) ===== */
 .projects {
