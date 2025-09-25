@@ -183,6 +183,17 @@ header nav ul li a.active {
   color: #0044cc;
 }
 
+.project-card img {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.project-card img.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
 /* Search Box */
 #searchBox {
   width: 80%;
