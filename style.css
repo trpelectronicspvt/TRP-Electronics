@@ -320,6 +320,7 @@ header nav ul li a.active {
 
 .apps-container {
   display: flex;
+  flex-direction: column;
   overflow-x: auto;
   gap: 20px;
   padding: 20px;
