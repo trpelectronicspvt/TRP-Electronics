@@ -236,64 +236,75 @@ header nav ul li a.active {
   font-weight: bold;
 }
 
-.eapps {
-  text-align: center;
-  padding: 60px 20px;   /* upar se space milega */
-  margin-top: 40px;     /* header ke neeche gap */
-  display: flex;
-  justify-content: center;
-}
-
 .app-card {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* Image left, text center, button right */
   background: #fff;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  max-width: 700px;   /* ek fixed width taaki center me aaye */
-  width: 100%;
-  margin: auto;
+  max-width: 850px;   /* bada card center me */
+  width: 90%;         /* responsive */
+  margin: 20px auto;  /* space between cards */
+  gap: 20px;          /* image aur text ke beech gap */
 }
 
 .app-img {
-  width: 120px;
+  width: 100px;
   height: auto;
   border-radius: 8px;
+  object-fit: contain; /* image stretch na ho */
 }
 
 .app-info {
-  flex: 1;
-  margin-left: 20px;
+  flex: 1;   /* text ko expand karne ke liye */
 }
 
 .app-info h2 {
   margin: 0;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
+  color: #333;
 }
 
 .app-info p {
-  margin: 8px 0;
-  font-size: 16px;
+  margin: 6px 0;
+  font-size: 15px;
+  color: #555;
 }
 
 .download-btn {
   display: inline-block;
-  padding: 12px 25px;
+  padding: 10px 20px;
   background: #28a745;  /* Green */
   color: white;
   font-weight: bold;
   text-decoration: none;
   border-radius: 30px;
   transition: 0.3s;
-  font-size: 16px;
+  font-size: 15px;
+  white-space: nowrap;  /* text wrap na ho */
 }
 
 .download-btn:hover {
   background: #218838;
   transform: translateY(-2px);
+}
+
+/* ✅ Mobile friendly */
+@media (max-width: 600px) {
+  .app-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .app-img {
+    width: 80px;
+    margin-bottom: 10px;
+  }
+  .download-btn {
+    margin-top: 10px;
+  }
 }
 
 
