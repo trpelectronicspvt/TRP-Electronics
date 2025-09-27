@@ -366,7 +366,7 @@ body.dark-mode .app-card p {
 /* Button styling */
 #darkModeToggle {
   position: fixed;
-  bottom: 40px;
+  bottom: 80px;
   right: 20px;
   padding: 10px 15px;
   border: none;
