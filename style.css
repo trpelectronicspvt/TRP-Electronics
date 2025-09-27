@@ -335,32 +335,36 @@ header nav ul li a.active {
   background: #888;
   border-radius: 4px;
 }
-/* Default light mode */
-body {
-  background: #ffffff;
-  color: #000000;
-  transition: background 0.3s, color 0.3s;
-}
-
-/* Dark mode */
+/* Dark Mode Styles */
 body.dark-mode {
-  background: #121212;
-  color: #ffffff;
+  background-color: #121212;
+  color: #e0e0e0;
 }
 
-/* Button styling */
-#darkModeToggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  background: #0044cc;
-  color: white;
-  font-weight: bold;
-  z-index: 1000;
+/* Cards in Dark Mode */
+body.dark-mode .project-card,
+body.dark-mode .app-card {
+  background: #1e1e1e;   /* Dark grey background */
+  color: #f5f5f5;        /* White text */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Card heading links */
+body.dark-mode .project-card h3,
+body.dark-mode .app-card h3 {
+  color: #4da6ff;   /* Blue text for headings */
+}
+
+/* Card description */
+body.dark-mode .project-card p,
+body.dark-mode .app-card p {
+  color: #cccccc;   /* Light grey for descriptions */
+}
+
+/* Download button in Dark Mode */
+body.dark-mode .download-btn {
+  background-color: #0044cc;
+  color: #fff;
 }
 /* ===== Footer ===== */
 footer {
