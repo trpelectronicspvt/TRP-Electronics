@@ -79,7 +79,7 @@ header nav ul li a.active {
   padding: 50px 20px;
   text-align: center;
   max-width: 700px;
-  margin: auto;
+  margin: 0 auto;
 }
 .about h2 {
   color: #0044cc;
@@ -334,6 +334,33 @@ header nav ul li a.active {
 .apps-container::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
+}
+/* Default light mode */
+body {
+  background: #ffffff;
+  color: #000000;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Dark mode */
+body.dark-mode {
+  background: #121212;
+  color: #ffffff;
+}
+
+/* Button styling */
+#darkModeToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  background: #0044cc;
+  color: white;
+  font-weight: bold;
+  z-index: 1000;
 }
 /* ===== Footer ===== */
 footer {
