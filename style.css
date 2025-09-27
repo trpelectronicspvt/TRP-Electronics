@@ -352,7 +352,8 @@ body.dark-mode .app-card {
 /* Card heading links */
 body.dark-mode .project-card h3,
 body.dark-mode .app-card h3,
-body.dark-mode .app-info h2{
+body.dark-mode .app-info h2,
+body.dark-mode .contact-info a{
   color: #ffffff;   /* white text for headings */
 }
 
