@@ -352,7 +352,7 @@ body.dark-mode .app-card {
 /* Card heading links */
 body.dark-mode .project-card h3,
 body.dark-mode .app-card h3 {
-  color: #4da6ff;   /* Blue text for headings */
+  color: #ffffff;   /* Blue text for headings */
 }
 
 /* Card description */
