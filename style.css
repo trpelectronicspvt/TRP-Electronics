@@ -194,6 +194,66 @@ header nav ul li a.active {
   transform: scale(1);
 }
 
+/* ===== FEATURED VIDEOS SECTION ===== */
+.featured-videos {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f9f9f9;
+}
+
+.featured-videos h2 {
+  font-size: 2rem;
+  color: #0044cc;
+  margin-bottom: 30px;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  justify-items: center;
+}
+
+.video-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 15px;
+  max-width: 360px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.video-card iframe {
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+}
+
+.video-card h3 {
+  font-size: 1.1rem;
+  color: #222;
+  margin-top: 10px;
+}
+
+/* ===== Dark Mode Support ===== */
+body.dark-mode .featured-videos {
+  background: #1e1e1e;
+}
+
+body.dark-mode .video-card {
+  background: #3a3a3a;
+  color: white;
+}
+
+body.dark-mode .video-card h3 {
+  color: #ffffff;
+}
+
 /* Search Box */
 #searchBox {
   width: 80%;
