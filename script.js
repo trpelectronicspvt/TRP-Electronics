@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("darkModeToggle");
   const body = document.body;
 
-  // Check localStorage for saved mode
+  // 🔹 Check localStorage for saved mode
   if (localStorage.getItem("theme") === "dark") {
     body.classList.add("dark-mode");
     toggleBtn.textContent = "☀ Light Mode";
@@ -20,4 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
- 
+
+// 🔹 Image Loading Effect
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".card img");
+
+  cards.forEach(img => {
+    if (img.complete) {
+      img.parentElement.classList.add("loaded");
+    } else {
+      img.addEventListener("load", () => {
+        img.parentElement.classList.add("loaded");
+      });
+    }
+  });
+});
