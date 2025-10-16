@@ -439,39 +439,25 @@ body.dark-mode .app-card p {
   z-index: 1000;
 }
 
-<style>
-/* Loading (skeleton) effect */
 .card {
   position: relative;
   overflow: hidden;
 }
 
-.card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Skeleton placeholder */
 .card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  z-index: 1;
-  opacity: 1;
-  transition: opacity 0.3s ease;
+  animation: loadingShimmer 1.2s infinite;
 }
 
-/* Hide shimmer once image loads */
 .card.loaded::before {
-  opacity: 0;
-  pointer-events: none;
+  display: none;
 }
 
-@keyframes shimmer {
+@keyframes loadingShimmer {
   0% {
     background-position: -200% 0;
   }
@@ -479,7 +465,6 @@ body.dark-mode .app-card p {
     background-position: 200% 0;
   }
 }
-</style>
 /* ===== Footer ===== */
 footer {
   background: #0044cc;
