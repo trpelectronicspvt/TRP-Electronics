@@ -466,17 +466,23 @@ body.dark-mode .app-card p {
   }
 }
 /* Normal text inherits theme color */
-.logo span {
-  display: inline-block;
-  transition: transform 0.2s ease, color 0.3s ease, text-shadow 0.3s ease;
-  color: inherit; /* dark mode safe */
+#logo {
+  font-size: 3rem;
+  color: white;
+  text-align: center;
+  margin-top: 100px;
 }
 
-/* Glow effect — temporary highlight */
-.logo span.glow {
-  color: var(--logo-glow-color, #ffcc00);
-  text-shadow: 0 0 10px var(--logo-glow-color, #ffcc00),
-               0 0 20px var(--logo-glow-color, #ffaa00);
+#logo span {
+  display: inline-block;
+  transition: transform 0.2s ease, color 0.3s ease, text-shadow 0.3s ease;
+  color: inherit;
+}
+
+/* Glow effect */
+#logo span.glow {
+  color: #ffcc00;
+  text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffaa00;
   transform: scale(1.3);
 }
 
