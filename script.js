@@ -36,37 +36,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-
-// ✅ LOGO ANIMATION + POP SOUND
-document.addEventListener("DOMContentLoaded", () => {
-  const logo = document.getElementById("logo");
-  if (!logo) return; // agar logo missing ho to error avoid
-
-  const text = logo.textContent;
-  logo.textContent = "";
-
-  // Har letter ko span me daalna with delay
-  text.split("").forEach((letter, i) => {
-    const span = document.createElement("span");
-    span.textContent = letter;
-    span.style.display = "inline-block";
-    span.style.animation = popEffect 0.4s ease forwards;
-    span.style.animationDelay = ${i * 0.08}s;
-    logo.appendChild(span);
-  });
-
-  // Sound setup
-  const popSound = new Audio("Data Files/pop.mp3");
-
-  // Hover par effect trigger + sound
-  logo.addEventListener("mouseenter", () => {
-    popSound.currentTime = 0;
-    popSound.play();
-
-    logo.querySelectorAll("span").forEach((span, i) => {
-      span.style.animation = popEffect 0.4s ease forwards;
-      span.style.animationDelay = ${i * 0.05}s;
-    });
-  });
-});
