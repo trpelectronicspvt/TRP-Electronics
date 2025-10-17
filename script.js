@@ -35,3 +35,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const logo = document.getElementById("logo");
+  const text = logo.textContent;
+  logo.textContent = "";
+
+  // Har letter ko alag span me daalna
+  text.split("").forEach((letter, i) => {
+    const span = document.createElement("span");
+    span.textContent = letter;
+    span.style.animationDelay = ${i * 0.08}s;
+    logo.appendChild(span);
+  });
+
+  // Sound effect setup
+  const popSound = new Audio("Data Files/pop.mp3"); // <- yahan apni pop sound file ka path do
+
+  // Hover par sound play
+  logo.addEventListener("mouseenter", () => {
+    popSound.currentTime = 0;
+    popSound.play();
+  });
+});
