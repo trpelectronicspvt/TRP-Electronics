@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ✅ LOGO ANIMATION + POP SOUND
+  // ✅ LOGO ANIMATION + POP SOUND + GLOW
   const logo = document.getElementById("logo");
   if (logo) {
     const text = logo.textContent;
@@ -54,14 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Sound setup
     const popSound = new Audio("Data Files/pop.mp3");
 
-    // Hover par effect trigger + sound
+    // Hover par effect trigger + sound + glow
     logo.addEventListener("mouseenter", () => {
       popSound.currentTime = 0;
       popSound.play();
 
       logo.querySelectorAll("span").forEach((span, i) => {
-        span.style.animation = `popEffect 0.4s ease forwards`;
-        span.style.animationDelay = `${i * 0.05}s`;
+        setTimeout(() => {
+          span.classList.add("glow");
+          setTimeout(() => span.classList.remove("glow"), 400);
+        }, i * 50);
       });
     });
   }
