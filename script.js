@@ -1,11 +1,13 @@
-// ✅ DARK MODE TOGGLE
 document.addEventListener("DOMContentLoaded", () => {
+  // ✅ DARK MODE TOGGLE
   const toggleBtn = document.getElementById("darkModeToggle");
   const body = document.body;
 
   if (localStorage.getItem("theme") === "dark") {
     body.classList.add("dark-mode");
     toggleBtn.textContent = "☀ Light Mode";
+  } else {
+    toggleBtn.textContent = "🌙 Dark Mode";
   }
 
   toggleBtn.addEventListener("click", () => {
@@ -19,11 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
       toggleBtn.textContent = "🌙 Dark Mode";
     }
   });
-});
 
-
-// ✅ IMAGE LOADING EFFECT
-document.addEventListener("DOMContentLoaded", () => {
+  // ✅ IMAGE LOADING EFFECT
   const cards = document.querySelectorAll(".card img");
 
   cards.forEach(img => {
@@ -35,4 +34,35 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+  // ✅ LOGO ANIMATION + POP SOUND
+  const logo = document.getElementById("logo");
+  if (logo) {
+    const text = logo.textContent;
+    logo.textContent = "";
+
+    // Har letter ko span me daalna with delay
+    text.split("").forEach((letter, i) => {
+      const span = document.createElement("span");
+      span.textContent = letter;
+      span.style.display = "inline-block";
+      span.style.animation = `popEffect 0.4s ease forwards`;
+      span.style.animationDelay = `${i * 0.08}s`;
+      logo.appendChild(span);
+    });
+
+    // Sound setup
+    const popSound = new Audio("Data Files/pop.mp3");
+
+    // Hover par effect trigger + sound
+    logo.addEventListener("mouseenter", () => {
+      popSound.currentTime = 0;
+      popSound.play();
+
+      logo.querySelectorAll("span").forEach((span, i) => {
+        span.style.animation = `popEffect 0.4s ease forwards`;
+        span.style.animationDelay = `${i * 0.05}s`;
+      });
+    });
+  }
 });
