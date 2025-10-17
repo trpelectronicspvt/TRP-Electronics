@@ -467,7 +467,7 @@ body.dark-mode .app-card p {
 }
 /* Normal text inherits theme color */
 #logo {
-  font-size: 3rem;
+  font-size: 1.8rem;
   color: white;
   text-align: center;
   margin-top: 0px;
