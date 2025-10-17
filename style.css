@@ -480,21 +480,6 @@ body.dark-mode .app-card p {
   transform: scale(1.3);
 }
 
-/* Pop animation */
-@keyframes popEffect {
-  0% {
-    transform: scale(1);
-    color: inherit;
-  }
-  50% {
-    transform: scale(1.3);
-    color: var(--logo-glow-color, #ffcc00);
-  }
-  100% {
-    transform: scale(1);
-    color: inherit;
-  }
-}
 
 /* ===== Footer ===== */
 footer {
