@@ -467,15 +467,12 @@ body.dark-mode .app-card p {
 }
 /* Normal text inherits theme color */
 #logo {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
+  font-family: ui-rounded;
   color: white;
-  text-align: center;
-  margin-top: 0px;
-  display: flex;
   justify-content: space-between;
   align-items: center;
   line-height: 1;
-  flex-shrink: 0;
 }
 
 #logo span {
