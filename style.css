@@ -66,6 +66,9 @@ header nav ul li a.active {
   background: linear-gradient(to bottom, #003bff , #007bff , #ffff);
   color: white;
 }
+body.dark-mode .hero {
+    background: linear-gradient(to bottom, #003bff 0%, #0033 80%, #121212 100%);
+}
 .hero h1 {
   font-size: 2.8em;
 }
