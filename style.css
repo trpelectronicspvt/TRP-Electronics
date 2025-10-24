@@ -63,7 +63,7 @@ header nav ul li a.active {
 .hero {
   text-align: center;
   padding: 80px 20px;
-  background: linear-gradient(to bottom, #005bff , #004bff , #ffff);
+  background: linear-gradient(to bottom, #003bff , #007bff , #ffff);
   color: white;
 }
 .hero h1 {
