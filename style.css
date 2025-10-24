@@ -475,6 +475,7 @@ body.dark-mode .app-card p {
   justify-content: space-between;
   align-items: center;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 #logo span {
