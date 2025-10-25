@@ -245,11 +245,11 @@ body.dark-mode .hero {
 
 /* ===== Dark Mode Support ===== */
 body.dark-mode .featured-videos {
-  background: #1e1e1e;
+  background: #121212;
 }
 
 body.dark-mode .video-card {
-  background: #3a3a3a;
+  background: #1e1e1e;
   color: white;
 }
 
