@@ -66,3 +66,52 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+const cart = [];
+const deliveryCharge = 30; // Auto add delivery
+const cartList = document.getElementById("cart-list");
+const totalEl = document.getElementById("total");
+const cartSection = document.getElementById("cart-section");
+
+document.querySelectorAll(".add-cart").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const name = btn.dataset.name;
+    const price = parseFloat(btn.dataset.price);
+    cart.push({ name, price });
+    updateCart();
+  });
+});
+
+function updateCart() {
+  cartSection.classList.remove("hidden");
+  cartList.innerHTML = "";
+  let subtotal = 0;
+  cart.forEach(item => {
+    subtotal += item.price;
+    const li = document.createElement("li");
+    li.textContent = `${item.name} - ₹${item.price}`;
+    cartList.appendChild(li);
+  });
+  const total = subtotal + deliveryCharge;
+  totalEl.textContent = `Subtotal: ₹${subtotal} + Delivery ₹${deliveryCharge} = Total ₹${total}`;
+}
+
+document.getElementById("orderNow").addEventListener("click", () => {
+  const name = document.getElementById("name").value;
+  const address = document.getElementById("address").value;
+  const pincode = document.getElementById("pincode").value;
+  const phone = document.getElementById("phone").value;
+
+  if (!name || !address || !pincode || !phone) {
+    alert("Please fill all details!");
+    return;
+  }
+
+  const orderText = cart.map(item => `• ${item.name} - ₹${item.price}`).join("%0A");
+  const total = cart.reduce((sum, item) => sum + item.price, 0) + deliveryCharge;
+
+  const msg = `🧾 *New Order*%0A--------------------%0A${orderText}%0A--------------------%0A*Delivery:* ₹${deliveryCharge}%0A*Total:* ₹${total}%0A%0A👤 *Name:* ${name}%0A🏠 *Address:* ${address}%0A📮 *Pincode:* ${pincode}%0A📞 *Phone:* ${phone}`;
+
+  const whatsappURL = `https://wa.me/919115603213?text=${msg}`;
+  window.open(whatsappURL, "_blank");
+});
+
