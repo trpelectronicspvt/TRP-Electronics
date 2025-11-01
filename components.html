@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Components - TRP Electronics</title>
+  <!-- Main style (same for all pages) -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- Components page specific style -->
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body class="components-page">
+  <header>
+    <div class="logo">TRP Electronics</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="components.html" class="active">Components</a></li>
+        <li><a href="eapps.html">E-Apps</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="store">
+    <h2 class="section-title">Electronic Components Store</h2>
+
+    <div id="product-grid" class="product-grid">
+      <div class="product-card">
+        <img src="images/resistor.png" alt="Resistor" />
+        <h3>Resistor 220Ω</h3>
+        <p>₹5</p>
+        <button class="add-cart" data-name="Resistor 220Ω" data-price="5">Add to Cart ❤️</button>
+      </div>
+
+      <div class="product-card">
+        <img src="images/ic555.png" alt="IC 555" />
+        <h3>IC 555 Timer</h3>
+        <p>₹25</p>
+        <button class="add-cart" data-name="IC 555 Timer" data-price="25">Add to Cart ❤️</button>
+      </div>
+
+      <div class="product-card">
+        <img src="images/ldr.png" alt="LDR Sensor" />
+        <h3>LDR Sensor</h3>
+        <p>₹10</p>
+        <button class="add-cart" data-name="LDR Sensor" data-price="10">Add to Cart ❤️</button>
+      </div>
+    </div>
+
+    <div id="cart-section" class="cart-section hidden">
+      <h3>Your Cart</h3>
+      <ul id="cart-list"></ul>
+      <p id="total"></p>
+
+      <form id="order-form">
+        <h3>Delivery Details</h3>
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="text" id="address" placeholder="Full Address" required />
+        <input type="text" id="pincode" placeholder="Pincode" required />
+        <input type="tel" id="phone" placeholder="Phone Number" required />
+        <button type="button" id="orderNow">Order Now (WhatsApp)</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 TRP Electronics | Made with ❤️</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
