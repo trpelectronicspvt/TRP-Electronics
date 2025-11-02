@@ -30,6 +30,26 @@
   padding: 40px 20px;
   text-align: center;
 }
+/* 🔍 Search Box Styling - Same as Projects Page */
+.search-box {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.search-box input {
+  width: 300px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 2px solid #007bff;
+  border-radius: 6px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.search-box input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+}
 
 .product-grid {
   display: grid;
