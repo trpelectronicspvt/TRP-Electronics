@@ -121,6 +121,13 @@
   font-weight: bold;
   cursor: pointer;
 }
+.notice-line {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #0044cc;
+}
+
 
 #orderNow:hover {
   background: #218838;
