@@ -140,14 +140,14 @@ function updateCart() {
     });
   });
 
-  // Remove item
-  document.querySelectorAll(".remove-btn").forEach(btn => {
-    btn.addEventListener("click", e => {
-      const i = e.target.dataset.index;
-      cart.splice(i, 1);
-      updateCart();
-    });
-  });
+// ✅ Remove item (event delegation)
+cartList.addEventListener("click", e => {
+  if (e.target.classList.contains("remove-btn")) {
+    const i = e.target.dataset.index;
+    cart.splice(i, 1);
+    updateCart();
+  }
+});
 }
 
 // ✅ Order via WhatsApp
