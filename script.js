@@ -145,6 +145,9 @@ function updateCart() {
     });
   });
 
+    // ✅ Step 2: Save cart in localStorage every time it updates
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
 // ✅ Remove item (event delegation)
 cartList.addEventListener("click", e => {
   if (e.target.classList.contains("remove-btn")) {
@@ -153,10 +156,6 @@ cartList.addEventListener("click", e => {
     updateCart();
   }
 });
-    // ✅ Step 2: Save cart in localStorage every time it updates
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
-
 // ✅ Order via WhatsApp
 document.getElementById("orderNow").addEventListener("click", () => {
   const name = document.getElementById("name").value;
@@ -188,7 +187,7 @@ updateCart();
 
 // 🔍 Component Search Functionality
 const searchInput = document.getElementById("componentSearch");
-const componentCards = document.querySelectorAll(".component-card");
+const componentCards = document.querySelectorAll(".product-card");
 
 if (searchInput) { // Only runs on Components page
   searchInput.addEventListener("keyup", () => {
