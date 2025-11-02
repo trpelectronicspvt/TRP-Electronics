@@ -185,3 +185,21 @@ cart = [];
 localStorage.removeItem("cart");
 updateCart();
 });
+
+// 🔍 Component Search Functionality
+const searchInput = document.getElementById("componentSearch");
+const componentCards = document.querySelectorAll(".component-card");
+
+if (searchInput) { // Only runs on Components page
+  searchInput.addEventListener("keyup", () => {
+    const query = searchInput.value.toLowerCase();
+    componentCards.forEach(card => {
+      const name = card.querySelector("h3").textContent.toLowerCase();
+      if (name.includes(query)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+}
