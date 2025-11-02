@@ -66,13 +66,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-const cart = [];
+// ✅ Step 1: Restore cart from localStorage if available
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 const deliveryCharge = 30;
 const freeDeliveryLimit = 500;
 const cartList = document.getElementById("cart-list");
 const totalEl = document.getElementById("total");
 const cartSection = document.getElementById("cart-section");
 const noticeEl = document.getElementById("freeNotice");
+
+// Agar cart me pehle se items hain to turant update dikhao
+if (cart.length > 0) updateCart();
+
 
 // 🔍 search filter
 document.getElementById("searchBar").addEventListener("input", e => {
@@ -148,6 +153,8 @@ cartList.addEventListener("click", e => {
     updateCart();
   }
 });
+    // ✅ Step 2: Save cart in localStorage every time it updates
+  localStorage.setItem("cart", JSON.stringify(cart));
 }
 
 // ✅ Order via WhatsApp
@@ -173,4 +180,8 @@ document.getElementById("orderNow").addEventListener("click", () => {
 
   const whatsappURL = `https://wa.me/919115603213?text=${msg}`;
   window.open(whatsappURL, "_blank");
+  // ✅ Step 3: Clear cart after successful order
+cart = [];
+localStorage.removeItem("cart");
+updateCart();
 });
