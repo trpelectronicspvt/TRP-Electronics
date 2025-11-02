@@ -80,7 +80,7 @@ if (cart.length > 0) updateCart();
 
 
 // 🔍 search filter
-document.getElementById("searchBar").addEventListener("input", e => {
+document.getElementById("componentSearch").addEventListener("input", e => {
   const query = e.target.value.toLowerCase();
   document.querySelectorAll(".product-card").forEach(card => {
     const name = card.querySelector("h3").textContent.toLowerCase();
