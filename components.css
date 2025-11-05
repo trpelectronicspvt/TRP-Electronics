@@ -250,6 +250,27 @@ body.dark-mode .remove-btn {
   background: #e63946;
 }
 
+/* 🌙 Product image dark mode enhancement */
+body.dark-mode .product-card img {
+  background: radial-gradient(circle, #333 20%, #111 100%);
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+  filter: brightness(0.9) contrast(1.1);
+}
+
+/* 🔍 Dark mode search box */
+body.dark-mode .search-box input {
+  background-color: #222;  /* Soft black look */
+  color: #fff;             /* White text */
+  border-color: #555;      /* Subtle border */
+}
+
+body.dark-mode .search-box input::placeholder {
+  color: #bbb;             /* Light grey placeholder text */
+}
+
+
 /* 📱 Responsive Design */
 @media (max-width: 768px) {
   .product-grid {
