@@ -226,10 +226,10 @@ body.dark-mode .product-card p {
   color: #fff;
 }
 
-body.dark-mode .section-title h2 {
+body.dark-mode .cart-section h3,
+body.dark-mode .cart-section p {
   color: #fff;
 }
-
 body.dark-mode .notice-line p {
   color: #fff;
 }
