@@ -40,32 +40,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const text = logo.textContent;
     logo.textContent = "";
 
-    // Har letter ko span me daalna (without auto animation)
     text.split("").forEach(letter => {
       const span = document.createElement("span");
       span.textContent = letter;
       logo.appendChild(span);
     });
 
-    // Sound setup
     const popSound = new Audio("Data Files/pop.mp3");
 
-    // Hover par effect trigger + sound
     logo.addEventListener("mouseenter", () => {
       popSound.currentTime = 0;
       popSound.play();
-
       logo.querySelectorAll("span").forEach((span, i) => {
         setTimeout(() => {
           span.classList.add("glow");
-          setTimeout(() => {
-            span.classList.remove("glow");
-          }, 400);
+          setTimeout(() => span.classList.remove("glow"), 400);
         }, i * 60);
       });
     });
   }
 });
+
 // ✅ Step 1: Restore cart from localStorage if available
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 const deliveryCharge = 30;
@@ -74,10 +69,10 @@ const cartList = document.getElementById("cart-list");
 const totalEl = document.getElementById("total");
 const cartSection = document.getElementById("cart-section");
 const noticeEl = document.getElementById("freeNotice");
+const orderBtn = document.getElementById("orderNow");
 
 // Agar cart me pehle se items hain to turant update dikhao
 if (cart.length > 0) updateCart();
-
 
 // 🔍 search filter
 document.getElementById("componentSearch").addEventListener("input", e => {
@@ -96,11 +91,8 @@ document.querySelectorAll(".add-cart").forEach(btn => {
     const name = btn.dataset.name;
     const price = parseFloat(btn.dataset.price);
     const existing = cart.find(item => item.name === name);
-    if (existing) {
-      existing.qty++;
-    } else {
-      cart.push({ name, price, qty: 1 });
-    }
+    if (existing) existing.qty++;
+    else cart.push({ name, price, qty: 1 });
     updateCart();
   });
 });
@@ -136,7 +128,7 @@ function updateCart() {
   const total = subtotal + finalDelivery;
   totalEl.textContent = `Subtotal: ₹${subtotal} + Delivery ₹${finalDelivery} = Total ₹${total}`;
 
-  // Quantity change
+  // ✅ Quantity change
   document.querySelectorAll(".qty-input").forEach(input => {
     input.addEventListener("change", e => {
       const i = e.target.dataset.index;
@@ -145,19 +137,45 @@ function updateCart() {
     });
   });
 
-    // ✅ Step 2: Save cart in localStorage every time it updates
+  // ✅ Remove item
+  cartList.addEventListener("click", e => {
+    if (e.target.classList.contains("remove-btn")) {
+      const i = e.target.dataset.index;
+      cart.splice(i, 1);
+      updateCart();
+    }
+  });
+
+  // ✅ Step 2: Save cart in localStorage every time it updates
   localStorage.setItem("cart", JSON.stringify(cart));
-}
-// ✅ Remove item (event delegation)
-cartList.addEventListener("click", e => {
-  if (e.target.classList.contains("remove-btn")) {
-    const i = e.target.dataset.index;
-    cart.splice(i, 1);
-    updateCart();
+
+  // ✅ Disable Order button if cart is empty or subtotal < 1
+  if (!orderBtn) return;
+  if (cart.length === 0 || subtotal < 1) {
+    orderBtn.disabled = true;
+    orderBtn.style.background = "#888";
+    orderBtn.style.cursor = "not-allowed";
+    totalEl.textContent = "Your cart is empty. Add items to proceed.";
+  } else {
+    orderBtn.disabled = false;
+    orderBtn.style.background = "#28a745";
+    orderBtn.style.cursor = "pointer";
   }
-});
+}
+
 // ✅ Order via WhatsApp
 document.getElementById("orderNow").addEventListener("click", () => {
+  if (cart.length === 0) {
+    alert("Your cart is empty! Please add at least one product before ordering.");
+    return;
+  }
+
+  const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+  if (subtotal < 1) {
+    alert("Subtotal is ₹0. Please add some products to continue!");
+    return;
+  }
+
   const name = document.getElementById("name").value;
   const address = document.getElementById("address").value;
   const pincode = document.getElementById("pincode").value;
@@ -168,7 +186,6 @@ document.getElementById("orderNow").addEventListener("click", () => {
     return;
   }
 
-  const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
   const finalDelivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
   const orderText = cart
     .map(item => `• ${item.name} - ₹${item.price} × ${item.qty}`)
@@ -179,26 +196,23 @@ document.getElementById("orderNow").addEventListener("click", () => {
 
   const whatsappURL = `https://wa.me/919115603213?text=${msg}`;
   window.open(whatsappURL, "_blank");
+
   // ✅ Step 3: Clear cart after successful order
-cart = [];
-localStorage.removeItem("cart");
-updateCart();
+  cart = [];
+  localStorage.removeItem("cart");
+  updateCart();
 });
 
 // 🔍 Component Search Functionality
 const searchInput = document.getElementById("componentSearch");
 const componentCards = document.querySelectorAll(".product-card");
 
-if (searchInput) { // Only runs on Components page
+if (searchInput) {
   searchInput.addEventListener("keyup", () => {
     const query = searchInput.value.toLowerCase();
     componentCards.forEach(card => {
       const name = card.querySelector("h3").textContent.toLowerCase();
-      if (name.includes(query)) {
-        card.style.display = "block";
-      } else {
-        card.style.display = "none";
-      }
+      card.style.display = name.includes(query) ? "block" : "none";
     });
   });
 }
