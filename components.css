@@ -208,6 +208,20 @@ body.components-page {
   margin-bottom: 10px;
 }
 
+#orderNow[disabled]::after {
+  content: "Add products to proceed!";
+  position: absolute;
+  background: #333;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  top: -30px;
+  right: 0;
+  white-space: nowrap;
+}
+
+
 /* 🌙 Dark Mode for Components Page */
 body.dark-mode {
   background: #121212;
