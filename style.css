@@ -268,6 +268,14 @@ body.dark-mode .video-card h3 {
   border-radius: 8px;
   font-size: 16px;
 }
+
+/* 🔍 Dark mode search box */
+body.dark-mode .searchbox input {
+  background-color: #222;  /* Soft black look */
+  color: #fff;             /* White text */
+  border-color: #555;      /* Subtle border */
+}
+
 /* ===== Contact Page ===== */
 .contact {
   padding: 50px 20px;
