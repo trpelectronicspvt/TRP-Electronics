@@ -290,68 +290,46 @@ body.dark-mode .search-box input::placeholder {
   }
 }
 
-/* ===== Ribbon-style Free Delivery Notice ===== */
+/* 🎀 Ribbon-style Free Delivery banner */
 .notice-line {
-  display: inline-block;
   position: relative;
-  margin: 18px auto 30px;
-  padding: 12px 48px;
+  display: inline-block;
   background: linear-gradient(90deg, #0b63f6 0%, #0044cc 100%);
   color: #fff;
   font-weight: 700;
   font-size: 18px;
+  padding: 12px 50px;
   border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(3, 37, 112, 0.25);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   text-align: center;
-  letter-spacing: 0.3px;
-  z-index: 2;
-  -webkit-backface-visibility: hidden;
+  margin: 20px auto 40px;
 }
 
-/* gold folded ends */
+/* Golden curved sides */
 .notice-line::before,
 .notice-line::after {
   content: "";
   position: absolute;
   top: 50%;
-  width: 34px;
-  height: 18px;
+  width: 35px;
+  height: 20px;
   background: linear-gradient(90deg, #ffd65a 0%, #e6a400 100%);
-  transform: translateY(-50%) rotate(-12deg);
-  border-radius: 3px;
+  transform: translateY(-50%) skewX(-20deg);
+  border-radius: 4px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-  z-index: -1; /* keep ends behind the ribbon body */
 }
 
-/* left and right placement & slight flip for right side */
-.notice-line::before { left: -16px;  }
-.notice-line::after  { right: -16px; transform: translateY(-50%) rotate(12deg); }
-
-/* small triangular fold near edges (optional subtle notch) */
-.notice-line::before { clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%); }
-.notice-line::after  { clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%); }
-
-/* center the ribbon container (use with parent text-align:center) */
-.store .notice-line { display:inline-block; }
-
-/* make smaller on small screens */
-@media (max-width: 520px) {
-  .notice-line {
-    padding: 10px 20px;
-    font-size: 15px;
-  }
-  .notice-line::before,
-  .notice-line::after {
-    width: 26px;
-    height: 14px;
-    left: -12px;
-    right: -12px;
-  }
+.notice-line::before {
+  left: -20px;
 }
 
-/* Dark mode tweaks */
+.notice-line::after {
+  right: -20px;
+  transform: translateY(-50%) skewX(20deg);
+}
+
+/* Dark mode version */
 body.dark-mode .notice-line {
-  background: linear-gradient(90deg,#1638b8 0%, #0a2ea8 100%);
+  background: linear-gradient(90deg, #1638b8 0%, #0a2ea8 100%);
   box-shadow: 0 6px 18px rgba(0,0,0,0.55);
 }
-
