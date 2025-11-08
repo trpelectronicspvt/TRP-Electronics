@@ -121,7 +121,7 @@ function updateCart() {
     noticeEl.style.color = "green";
   } else {
     const remaining = freeDeliveryLimit - subtotal;
-    noticeEl.textContent = `Add items worth ₹${remaining} more for FREE DELIVERY!`;
+    noticeEl.innerHTML = `Add items worth ₹${remaining} more for <b>FREE DELIVERY!</b>`;
     noticeEl.style.color = "#0044cc";
   }
 
