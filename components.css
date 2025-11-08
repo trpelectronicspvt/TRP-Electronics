@@ -290,43 +290,49 @@ body.dark-mode .search-box input::placeholder {
   }
 }
 
-/* 🎀 Ribbon-style Free Delivery banner */
 .notice-line {
-  position: relative;
   display: inline-block;
-  background: linear-gradient(90deg, #0b63f6 0%, #0044cc 100%);
-  color: #fff;
-  font-weight: 700;
-  font-size: 18px;
-  padding: 12px 50px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  background: linear-gradient(to right, #0044cc, #0066ff);
+  color: white;
+  font-weight: bold;
+  padding: 12px 25px;
+  border-radius: 50px;
   text-align: center;
-  margin: 20px auto 40px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  width: fit-content;
 }
 
-/* Golden curved sides */
+/* golden ends for ribbon */
 .notice-line::before,
 .notice-line::after {
   content: "";
   position: absolute;
   top: 50%;
-  width: 35px;
-  height: 20px;
-  background: linear-gradient(90deg, #ffd65a 0%, #e6a400 100%);
-  transform: translateY(-50%) skewX(-20deg);
-  border-radius: 4px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  width: 25px;
+  height: 12px;
+  background: #ffcc00;
+  border-radius: 2px;
+  transform: translateY(-50%);
 }
 
 .notice-line::before {
-  left: -20px;
+  left: -25px;
 }
 
 .notice-line::after {
-  right: -20px;
-  transform: translateY(-50%) skewX(20deg);
+  right: -25px;
 }
+
+/* ✅ Force background to stay fixed even when JS updates text */
+.notice-line,
+.notice-line * {
+  background-clip: padding-box !important;
+  -webkit-background-clip: padding-box !important;
+}
+
 
 /* Dark mode version */
 body.dark-mode .notice-line {
