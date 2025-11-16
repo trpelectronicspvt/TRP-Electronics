@@ -291,6 +291,9 @@ body.dark-mode .search-box input::placeholder {
 }
 
 .notice-line {
+  color: #fff !important;
+}
+.notice-line {
   display: inline-block;
   background: linear-gradient(to right, #0044cc, #0066ff);
   color: white;
