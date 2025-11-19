@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ✅ Step 1: Restore cart from localStorage if available
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-const deliveryCharge = 30;
-const freeDeliveryLimit = 500;
+const deliveryCharge = 49;
+const freeDeliveryLimit = 999;
 const cartList = document.getElementById("cart-list");
 const totalEl = document.getElementById("total");
 const cartSection = document.getElementById("cart-section");
