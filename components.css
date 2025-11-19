@@ -30,7 +30,7 @@ body.components-page {
   padding: 10px 15px;
   font-size: 16px;
   border: 2px solid #0044cc;
-  border-radius: 8px;
+  border-radius: 25px;
   outline: none;
   transition: 0.3s;
 }
