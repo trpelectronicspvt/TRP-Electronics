@@ -26,7 +26,6 @@ body.components-page {
   padding: 3px 3px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
   gap: 10px;
 }
