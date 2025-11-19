@@ -24,7 +24,9 @@ body.components-page {
   margin: 20px auto;
 }
 
-.search-box input {
+
+/* LEFT SEARCH BAR (same styling as original search box) */
+.second-left input {
   width: 300px;
   max-width: 80%;
   padding: 10px 15px;
@@ -35,7 +37,7 @@ body.components-page {
   transition: 0.3s;
 }
 
-.search-box input:focus {
+.second-left input:focus {
   border-color: #007bff;
   box-shadow: 0 0 5px #007bff;
 }
