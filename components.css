@@ -36,7 +36,7 @@ body.components-page {
 .second-right {
   flex: 1 1 auto;
   display: flex;
-  justify-content: center;
+  
 }
 
 /* Search box */
