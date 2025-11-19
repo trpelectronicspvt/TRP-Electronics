@@ -50,7 +50,7 @@ body.components-page {
 }
 
 /* Category Menu */
-.category-menu {
+.category-menu-new {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
@@ -64,7 +64,7 @@ body.components-page {
 .second-right {
   justify-content: flex-end;
 }
-.cart-box {
+.cart-box-new {
   display: flex;
   align-items: center;
   font-weight: bold;
