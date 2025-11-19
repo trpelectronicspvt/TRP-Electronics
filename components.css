@@ -18,33 +18,10 @@ body.components-page {
   font-weight: bold;
 }
 
-/* 🔍 Search box styling */
-.search-box {
-  text-align: center;
-  margin: 20px auto;
-}
-
-
-/* LEFT SEARCH BAR (same styling as original search box) */
-.second-left input {
-  width: 300px;
-  max-width: 80%;
-  padding: 10px 15px;
-  font-size: 16px;
-  border: 2px solid #0044cc;
-  border-radius: 25px;
-  outline: none;
-  transition: 0.3s;
-}
-
-.second-left input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px #007bff;
-}
 /* --- SECOND NAV BAR --- */
 .second-nav {
   width: 100%;
-  background: #ffffff;
+  background: #fff;
   border-bottom: 1px solid #dcdcdc;
   padding: 10px 15px;
   display: flex;
@@ -54,72 +31,74 @@ body.components-page {
   gap: 10px;
 }
 
-
-/* CENTER CATEGORY MENU */
-.category-menu {
-  list-style: none;
+/* Left / Center / Right blocks */
+.second-left,
+.second-center,
+.second-right {
+  flex: 1 1 auto;
   display: flex;
-  gap: 25px;
-  font-size: 18px;
-  font-weight: 600;
+  justify-content: center;
 }
 
-.category-menu > li {
-  position: relative;
-  cursor: pointer;
+/* Search box */
+.second-left input {
+  width: 100%;
+  max-width: 280px;
+  padding: 10px 12px;
+  border-radius: 25px;
+  border: 2px solid #0044cc;
 }
 
-.category-menu .dropdown {
-  position: absolute;
-  top: 30px;
-  left: 0;
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 10px 0;
-  display: none;
+/* Category Menu */
+.category-menu {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
   list-style: none;
-  width: 160px;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
 }
 
-.category-menu li:hover .dropdown {
-  display: block;
+/* Cart alignment */
+.second-right {
+  justify-content: flex-end;
 }
-
-.dropdown li {
-  padding: 8px 15px;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-/* RIGHT CART */
 .cart-box {
   display: flex;
   align-items: center;
-  position: relative;
-  cursor: pointer;
+  font-weight: bold;
 }
 
-.cart-icon {
-  width: 30px;
+/* --- MOBILE RESPONSIVE FIX --- */
+@media (max-width: 700px) {
+
+  .second-left {
+    order: 1;
+    width: 100%;
+  }
+
+  .second-center {
+    order: 3;
+    width: 100%;
+  }
+
+  .second-right {
+    order: 2;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .second-left input {
+    width: 100%;
+  }
+
+  .category-menu {
+    justify-content: center;
+    font-size: 16px;
+  }
 }
 
-.cart-count {
-  position: absolute;
-  top: -5px;
-  right: -8px;
-  background: red;
-  color: #fff;
-  font-size: 12px;
-  padding: 3px 6px;
-  border-radius: 50%;
-}
-
-.cart-text {
-  margin-left: 8px;
-  color: #003a9a;
-  font-size: 18px;
-  font-weight: 700;
-}
 
 
 /* 🛒 Product grid */
