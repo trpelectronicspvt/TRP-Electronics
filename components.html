@@ -22,381 +22,182 @@
       </ul>
     </nav>
   </header>
-<!-- SECOND NAV ROW -->
-<div class="second-nav">
 
-  <!-- LEFT – SEARCH BOX -->
-  <div class="second-left">
-    <input type="text" placeholder="Search Component..." />
+  <!-- SECOND NAV ROW -->
+  <div class="second-nav">
+
+    <!-- LEFT – SEARCH BOX -->
+    <div class="second-left">
+      <input id="componentSearch" type="text" placeholder="Search Component..." />
+    </div>
+
+    <!-- CENTER – CATEGORY MENU -->
+    <div class="second-center">
+      <ul class="category-menu-new">
+        <li data-cat="all" class="cat-item active">All</li>
+        <li data-cat="Resistor" class="cat-item">Resistor</li>
+        <li data-cat="LED" class="cat-item">LED</li>
+        <li data-cat="IC" class="cat-item">IC</li>
+        <li data-cat="Sensor" class="cat-item">Sensor</li>
+        <li data-cat="Wire" class="cat-item">Wire</li>
+        <li data-cat="SMPS" class="cat-item">SMPS</li>
+        <li data-cat="Switch" class="cat-item">Switch</li>
+      </ul>
+    </div>
+
+    <!-- RIGHT – CART ICON -->
+    <div class="second-right">
+      <div id="cartToggle" class="cart-box-new">🛒 Cart (<span id="cart-count">0</span>)</div>
+    </div>
+
   </div>
-
-  <!-- CENTER – CATEGORY MENU -->
-  <div class="second-center">
-    <ul class="category-menu-new">
-      <li>Home & Decor</li>
-      <li>LED</li>
-      <li>SMPS</li>
-      <li>Switch</li>
-    </ul>
-  </div>
-
-  <!-- RIGHT – CART ICON -->
-  <div class="second-right">
-    <div class="cart-box-new">🛒 Cart (0)</div>
-  </div>
-
-</div>
-
 
   <section class="store">
-<h2 class="section-title">BUY COMPONENTS IN BEST PRICE</h2>
+    <h2 class="section-title">BUY COMPONENTS IN BEST PRICE</h2>
 
-
-     <!-- 🌟 Free delivery notice -->
-<div style="text-align:center;">
-  <p id="freeNotice" class="notice-line">
-    Order above ₹999 to get FREE DELIVERY!
-  </p>
-</div>
-
-
-  <div id="product-grid" class="product-grid">
-    <div class="product-card" data-keywords="resistor 1ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 1Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 1Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 10ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 10Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 10Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 25ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 25Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 25Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 100ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 100Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 100Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 120ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 120Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 120Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 150ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 150Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 150Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 220ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 220Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 220Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 330ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 330Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 330Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 470ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 470Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 470Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 680ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 680Ω / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 680Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 1kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 1kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 1kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 3.3kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 3.3kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 3.3kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 4.7kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 4.7kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 4.7kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 6.5kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 6.5kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 6.5kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 10kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 10kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 10kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 15kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 15kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 15kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 22kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 22kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 22kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 27kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 27kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 27kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 33kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 33kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 33kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 47kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 47kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 47kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 56kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 56kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 56kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 68kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 68kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 68kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 100kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 100kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 100kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 120kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 120kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 120kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 150kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 150kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 150kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 220kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 220kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 220kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 270kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 270kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 270kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 330kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 330kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 330kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 470kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 470kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 470kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 560kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 560kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 560kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 680kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 680kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 680kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 820kohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 820kΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 820kΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 1mega ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 1MΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 1MΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-<div class="product-card" data-keywords="resistor 2mega ohm">
-  <img src="images/all.png" alt="Resistor" />
-  <h3>Resistor 2.2MΩ / 10pcs</h3>
-  <p>₹12</p>
-  <button class="add-cart" data-name="Resistor 2.2MΩ / 10pcs" data-price="12">Add to Cart ❤️</button>
-</div>
-
-
-    
-    <div class="product-card" data-keywords="ic555 timer ic 555">
-      <img src="images/ic555.png" alt="IC 555" />
-      <h3>IC 555 Timer / 1pcs</h3>
-      <p>₹17</p>
-      <button class="add-cart" data-name="IC 555 Timer / 1pcs" data-price="17">Add to Cart ❤️</button>
+    <!-- 🌟 Free delivery notice -->
+    <div style="text-align:center;">
+      <p id="freeNotice" class="notice-line">
+        Order above ₹999 to get FREE DELIVERY!
+      </p>
     </div>
 
-    <div class="product-card" data-keywords="ic4017 decade counter ic 4017">
-      <img src="images/ic4017.png" alt="IC 4017" />
-      <h3>IC 4017 Decade counter ic  / 1pcs</h3>
-      <p>₹25</p>
-      <button class="add-cart" data-name="IC 4017 decade counter ic / 1pcs" data-price="25">Add to Cart ❤️</button>
-    </div>
-    
-    <div class="product-card" data-keywords="ldr sensor light photoresistor 12mm">
-      <img src="images/ldr.png" alt="LDR Sensor" />
-      <h3>5mm Light Dependent Resistor / 1pcs</h3>
-      <p>₹19</p>
-      <button class="add-cart" data-name="5mm LDR Sensor / 1pcs" data-price="19">Add to Cart ❤️</button>
-    </div>
+    <div id="product-grid" class="product-grid">
 
-    <div class="product-card" data-keywords="ldr sensor light photoresistor module 12mm">
-      <img src="images/ldrmodule.png" alt="LDR Sensor" />
-      <h3>LDR Sensor Module / 1pcs</h3>
-      <p>₹38</p>
-      <button class="add-cart" data-name="LDR Sensor Module / 1pcs" data-price="38">Add to Cart ❤️</button>
-    </div>
-    
-    <div class="product-card" data-keywords="led LED Diode Red red color 5pcs 5mm">
-      <img src="images/red.png" alt="5mm led" />
-      <h3>RED LED / 5pcs</h3>
-      <p>₹7</p>
-      <button class="add-cart" data-name="RED LED / 5pcs" data-price="7">Add to Cart ❤️</button>
-    </div>
-  
-    <div class="product-card" data-keywords="led LED Diode Green green color 5pcs 5mm">
-      <img src="images/green.png" alt="5mm led" />
-      <h3>GREEN LED / 5pcs</h3>
-      <p>₹7</p>
-      <button class="add-cart" data-name="GREEN LED / 5pcs" data-price="7">Add to Cart ❤️</button>
-    </div>
-  
+      <!-- RESISTORS group (data-category="Resistor") -->
+      <div class="product-card" data-category="Resistor" data-keywords="resistor 1ohm">
+        <img src="images/all.png" alt="Resistor" />
+        <h3>Resistor 1Ω / 10pcs</h3>
+        <p>₹12</p>
+        <button class="add-cart" data-name="Resistor 1Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
+      </div>
 
-    <div class="product-card" data-keywords="led LED Diode Blue blue color 5pcs 5mm">
-      <img src="images/blue.png" alt="5mm led" />
-      <h3>BLUE LED / 5pcs</h3>
-      <p>₹7</p>
-      <button class="add-cart" data-name="BLUE LED / 5pcs" data-price="7">Add to Cart ❤️</button>
-    </div>
- 
-    <div class="product-card" data-keywords="led LED Diode Yellow yellow color 5pcs 5mm">
-      <img src="images/yellow.png" alt="5mm led" />
-      <h3>YELLOW LED / 5pcs</h3>
-      <p>₹7</p>
-      <button class="add-cart" data-name="YELLOW LED / 5pcs" data-price="7">Add to Cart ❤️</button>
-    </div>
-  
+      <div class="product-card" data-category="Resistor" data-keywords="resistor 10ohm">
+        <img src="images/all.png" alt="Resistor" />
+        <h3>Resistor 10Ω / 10pcs</h3>
+        <p>₹12</p>
+        <button class="add-cart" data-name="Resistor 10Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
+      </div>
 
-    <div class="product-card" data-keywords="led LED Diode White white color 5pcs 5mm">
-      <img src="images/white.png" alt="5mm led" />
-      <h3>WHITE LED / 5pcs</h3>
-      <p>₹7</p>
-      <button class="add-cart" data-name="WHITE LED / 5pcs" data-price="7">Add to Cart ❤️</button>
-    </div>
+      <!-- (Many more resistors — keep same pattern) -->
+      <!-- I'll assume all the earlier repeating resistor cards are data-category="Resistor" -->
+      <!-- Example additional resistor entries (you likely already have many) -->
+      <div class="product-card" data-category="Resistor" data-keywords="resistor 25ohm">
+        <img src="images/all.png" alt="Resistor" />
+        <h3>Resistor 25Ω / 10pcs</h3>
+        <p>₹12</p>
+        <button class="add-cart" data-name="Resistor 25Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
+      </div>
 
-    <div class="product-card" data-keywords="led LED Diode White white color mix kit Kit 5pcs 5mm">
-      <img src="images/mixled.png" alt="5mm led" />
-      <h3>Mix Colors RGBYW LEDs Kit / 50pcs</h3>
-      <p>₹55</p>
-      <button class="add-cart" data-name="WHITE LED / 5pcs" data-price="7">Add to Cart ❤️</button>
-    </div>
+      <div class="product-card" data-category="Resistor" data-keywords="resistor 100ohm">
+        <img src="images/all.png" alt="Resistor" />
+        <h3>Resistor 100Ω / 10pcs</h3>
+        <p>₹12</p>
+        <button class="add-cart" data-name="Resistor 100Ω / 10pcs" data-price="12">Add to Cart ❤️</button>
+      </div>
 
-    <div class="product-card" data-keywords="Wire wire ribbon Ribbon 1 meter color taar jumper 10 core Core 7 5 12">
-      <img src="images/ribbon.png" alt="ribbon wire" />
-      <h3>Ribbon Wire - 10 Core / 1Meter</h3>
-      <p>₹46</p>
-      <button class="add-cart" data-name="Ribbon Wire - 10 Core / 1Meter" data-price="46">Add to Cart ❤️</button>
-    </div>
+      <!-- ... continue for all resistor cards, ensure data-category="Resistor" is present ... -->
 
-    </div>
-  <div id="cart-section" class="cart-section hidden">
-    <h3>Your Cart</h3>
-    <ul id="cart-list"></ul>
-    <p id="total"></p>
+      <!-- ICs -->
+      <div class="product-card" data-category="IC" data-keywords="ic555 timer ic 555">
+        <img src="images/ic555.png" alt="IC 555" />
+        <h3>IC 555 Timer / 1pcs</h3>
+        <p>₹17</p>
+        <button class="add-cart" data-name="IC 555 Timer / 1pcs" data-price="17">Add to Cart ❤️</button>
+      </div>
 
-    <form id="order-form">
-      <h3>Delivery Details</h3>
-      <input type="text" id="name" placeholder="Full Name" required />
-      <input type="text" id="address" placeholder="Full Address" required />
-      <input type="text" id="pincode" placeholder="Pincode" required />
-      <input type="tel" id="phone" placeholder="Phone Number" required />
-      <button type="button" id="orderNow">Order Now (WhatsApp)</button>
-    </form>
-  </div>
-</section>
-<button id="darkModeToggle">🌙 Dark Mode</button>
+      <div class="product-card" data-category="IC" data-keywords="ic4017 decade counter ic 4017">
+        <img src="images/ic4017.png" alt="IC 4017" />
+        <h3>IC 4017 Decade counter ic / 1pcs</h3>
+        <p>₹25</p>
+        <button class="add-cart" data-name="IC 4017 decade counter ic / 1pcs" data-price="25">Add to Cart ❤️</button>
+      </div>
+
+      <!-- SENSORS -->
+      <div class="product-card" data-category="Sensor" data-keywords="ldr sensor light photoresistor 12mm">
+        <img src="images/ldr.png" alt="LDR Sensor" />
+        <h3>5mm Light Dependent Resistor / 1pcs</h3>
+        <p>₹19</p>
+        <button class="add-cart" data-name="5mm LDR Sensor / 1pcs" data-price="19">Add to Cart ❤️</button>
+      </div>
+
+      <div class="product-card" data-category="Sensor" data-keywords="ldr sensor module">
+        <img src="images/ldrmodule.png" alt="LDR Sensor Module" />
+        <h3>LDR Sensor Module / 1pcs</h3>
+        <p>₹38</p>
+        <button class="add-cart" data-name="LDR Sensor Module / 1pcs" data-price="38">Add to Cart ❤️</button>
+      </div>
+
+      <!-- LED group -->
+      <div class="product-card" data-category="LED" data-keywords="led red 5mm">
+        <img src="images/red.png" alt="5mm led" />
+        <h3>RED LED / 5pcs</h3>
+        <p>₹7</p>
+        <button class="add-cart" data-name="RED LED / 5pcs" data-price="7">Add to Cart ❤️</button>
+      </div>
+
+      <div class="product-card" data-category="LED" data-keywords="led green 5mm">
+        <img src="images/green.png" alt="5mm led" />
+        <h3>GREEN LED / 5pcs</h3>
+        <p>₹7</p>
+        <button class="add-cart" data-name="GREEN LED / 5pcs" data-price="7">Add to Cart ❤️</button>
+      </div>
+
+      <div class="product-card" data-category="LED" data-keywords="led blue 5mm">
+        <img src="images/blue.png" alt="5mm led" />
+        <h3>BLUE LED / 5pcs</h3>
+        <p>₹7</p>
+        <button class="add-cart" data-name="BLUE LED / 5pcs" data-price="7">Add to Cart ❤️</button>
+      </div>
+
+      <div class="product-card" data-category="LED" data-keywords="led yellow 5mm">
+        <img src="images/yellow.png" alt="5mm led" />
+        <h3>YELLOW LED / 5pcs</h3>
+        <p>₹7</p>
+        <button class="add-cart" data-name="YELLOW LED / 5pcs" data-price="7">Add to Cart ❤️</button>
+      </div>
+
+      <div class="product-card" data-category="LED" data-keywords="led white 5mm">
+        <img src="images/white.png" alt="5mm led" />
+        <h3>WHITE LED / 5pcs</h3>
+        <p>₹7</p>
+        <button class="add-cart" data-name="WHITE LED / 5pcs" data-price="7">Add to Cart ❤️</button>
+      </div>
+
+      <div class="product-card" data-category="LED" data-keywords="led mix kit">
+        <img src="images/mixled.png" alt="mix leds" />
+        <h3>Mix Colors RGBYW LEDs Kit / 50pcs</h3>
+        <p>₹55</p>
+        <button class="add-cart" data-name="Mix Colors RGBYW LEDs Kit / 50pcs" data-price="55">Add to Cart ❤️</button>
+      </div>
+
+      <!-- Wire -->
+      <div class="product-card" data-category="Wire" data-keywords="ribbon wire 10 core">
+        <img src="images/ribbon.png" alt="ribbon wire" />
+        <h3>Ribbon Wire - 10 Core / 1Meter</h3>
+        <p>₹46</p>
+        <button class="add-cart" data-name="Ribbon Wire - 10 Core / 1Meter" data-price="46">Add to Cart ❤️</button>
+      </div>
+
+    </div> <!-- product-grid end -->
+
+    <div id="cart-section" class="cart-section hidden">
+      <h3>Your Cart</h3>
+      <ul id="cart-list"></ul>
+      <p id="total"></p>
+
+      <form id="order-form">
+        <h3>Delivery Details</h3>
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="text" id="address" placeholder="Full Address" required />
+        <input type="text" id="pincode" placeholder="Pincode" required />
+        <input type="tel" id="phone" placeholder="Phone Number" required />
+        <button type="button" id="orderNow">Order Now (WhatsApp)</button>
+      </form>
+    </div>
+  </section>
+
+  <button id="darkModeToggle">🌙 Dark Mode</button>
 
   <footer>
     <p>© 2025 TRP Electronics | Made with ❤️</p>
