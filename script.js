@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ✅ DARK MODE TOGGLE
+
+  /* ------------------------------------------------
+     DARK MODE
+  ---------------------------------------------------*/
   const toggleBtn = document.getElementById("darkModeToggle");
   const body = document.body;
 
@@ -12,35 +15,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   toggleBtn.addEventListener("click", () => {
     body.classList.toggle("dark-mode");
-
-    if (body.classList.contains("dark-mode")) {
-      localStorage.setItem("theme", "dark");
-      toggleBtn.textContent = "☀ Light Mode";
-    } else {
-      localStorage.setItem("theme", "light");
-      toggleBtn.textContent = "🌙 Dark Mode";
-    }
+    const mode = body.classList.contains("dark-mode") ? "dark" : "light";
+    localStorage.setItem("theme", mode);
+    toggleBtn.textContent = mode === "dark" ? "☀ Light Mode" : "🌙 Dark Mode";
   });
 
-  // ✅ IMAGE LOADING EFFECT
+  /* ------------------------------------------------
+     IMAGE LOADING FADE-IN
+  ---------------------------------------------------*/
   const cards = document.querySelectorAll(".card img");
   cards.forEach(img => {
-    if (img.complete) {
-      img.parentElement.classList.add("loaded");
-    } else {
-      img.addEventListener("load", () => {
-        img.parentElement.classList.add("loaded");
-      });
-    }
+    if (img.complete) img.parentElement.classList.add("loaded");
+    else img.addEventListener("load", () => img.parentElement.classList.add("loaded"));
   });
 
-  // ✅ LOGO ANIMATION + POP SOUND + GLOW (on hover only)
+  /* ------------------------------------------------
+     LOGO HOVER ANIMATION (NO LAYOUT BREAK)
+  ---------------------------------------------------*/
   const logo = document.getElementById("logo");
   if (logo) {
-    const text = logo.textContent;
-    logo.textContent = "";
+    const letters = logo.textContent.split("");
+    logo.innerHTML = "";
 
-    text.split("").forEach(letter => {
+    letters.forEach(letter => {
       const span = document.createElement("span");
       span.textContent = letter;
       logo.appendChild(span);
@@ -54,73 +51,69 @@ document.addEventListener("DOMContentLoaded", () => {
       logo.querySelectorAll("span").forEach((span, i) => {
         setTimeout(() => {
           span.classList.add("glow");
-          setTimeout(() => span.classList.remove("glow"), 400);
-        }, i * 60);
+          setTimeout(() => span.classList.remove("glow"), 350);
+        }, i * 50);
       });
     });
   }
 });
 
-// ✅ Step 1: Restore cart from localStorage if available
+/* ------------------------------------------------
+   CART SYSTEM
+---------------------------------------------------*/
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 const deliveryCharge = 49;
 const freeDeliveryLimit = 999;
+
 const cartList = document.getElementById("cart-list");
 const totalEl = document.getElementById("total");
 const cartSection = document.getElementById("cart-section");
 const noticeEl = document.getElementById("freeNotice");
 const orderBtn = document.getElementById("orderNow");
 
-// Agar cart me pehle se items hain to turant update dikhao
+// Load previous cart
 if (cart.length > 0) updateCart();
 
-// 🔍 search filter
-document.getElementById("componentSearch").addEventListener("input", e => {
-  const query = e.target.value.toLowerCase();
-  document.querySelectorAll(".product-card").forEach(card => {
-    const name = card.querySelector("h3").textContent.toLowerCase();
-    const keywords = card.dataset.keywords.toLowerCase();
-    card.style.display =
-      name.includes(query) || keywords.includes(query) ? "block" : "none";
-  });
-});
-
-// 🛒 Add to cart
+// ADD TO CART
 document.querySelectorAll(".add-cart").forEach(btn => {
   btn.addEventListener("click", () => {
     const name = btn.dataset.name;
     const price = parseFloat(btn.dataset.price);
-    const existing = cart.find(item => item.name === name);
-    if (existing) existing.qty++;
+    const found = cart.find(i => i.name === name);
+
+    if (found) found.qty++;
     else cart.push({ name, price, qty: 1 });
+
     updateCart();
   });
 });
 
+// UPDATE CART UI
 function updateCart() {
-  cartSection.classList.remove("hidden");
+  cartSection?.classList.remove("hidden");
   cartList.innerHTML = "";
   let subtotal = 0;
 
   cart.forEach((item, index) => {
     subtotal += item.price * item.qty;
+
     const li = document.createElement("li");
     li.innerHTML = `
       ${item.name} - ₹${item.price} × 
-      <input type="number" min="1" value="${item.qty}" data-index="${index}" class="qty-input">
-      <button class="remove-btn" data-index="${index}">✖</button>
+      <input type="number" min="1" value="${item.qty}" data-i="${index}" class="qty-input">
+      <button class="remove-btn" data-i="${index}">✖</button>
     `;
     cartList.appendChild(li);
   });
 
-  // 🧮 Delivery Logic
-  let finalDelivery = deliveryCharge;
-  if (subtotal >= freeDeliveryLimit) {
-    finalDelivery = 0;
-    noticeEl.textContent = "🎉 Congratulations! You’ve unlocked FREE DELIVERY.";
+  // Delivery logic
+  let finalDelivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
+  let remaining = freeDeliveryLimit - subtotal;
+
+  if (finalDelivery === 0) {
+    noticeEl.textContent = "🎉 Congratulations! You unlocked FREE DELIVERY!";
     noticeEl.style.color = "green";
   } else {
-    const remaining = freeDeliveryLimit - subtotal;
     noticeEl.innerHTML = `Add items worth ₹${remaining} more for <b>FREE DELIVERY!</b>`;
     noticeEl.style.color = "#0044cc";
   }
@@ -128,91 +121,76 @@ function updateCart() {
   const total = subtotal + finalDelivery;
   totalEl.textContent = `Subtotal: ₹${subtotal} + Delivery ₹${finalDelivery} = Total ₹${total}`;
 
-  // ✅ Quantity change
-  document.querySelectorAll(".qty-input").forEach(input => {
-    input.addEventListener("change", e => {
-      const i = e.target.dataset.index;
+  // Qty listener
+  document.querySelectorAll(".qty-input").forEach(inp => {
+    inp.onchange = e => {
+      const i = e.target.dataset.i;
       cart[i].qty = parseInt(e.target.value);
       updateCart();
-    });
+    };
   });
 
-  // ✅ Remove item
-  cartList.addEventListener("click", e => {
-    if (e.target.classList.contains("remove-btn")) {
-      const i = e.target.dataset.index;
+  // Remove button listener
+  document.querySelectorAll(".remove-btn").forEach(btn => {
+    btn.onclick = e => {
+      const i = e.target.dataset.i;
       cart.splice(i, 1);
       updateCart();
-    }
+    };
   });
 
-  // ✅ Step 2: Save cart in localStorage every time it updates
   localStorage.setItem("cart", JSON.stringify(cart));
 
-  // ✅ Disable Order button if cart is empty or subtotal < 1
   if (!orderBtn) return;
-  if (cart.length === 0 || subtotal < 1) {
+
+  if (cart.length === 0 || subtotal === 0) {
     orderBtn.disabled = true;
-    orderBtn.style.background = "#888";
-    orderBtn.style.cursor = "not-allowed";
-    totalEl.textContent = "Your cart is empty. Add items to proceed.";
+    totalEl.textContent = "Your cart is empty!";
   } else {
     orderBtn.disabled = false;
-    orderBtn.style.background = "#28a745";
-    orderBtn.style.cursor = "pointer";
   }
 }
 
-// ✅ Order via WhatsApp
-document.getElementById("orderNow").addEventListener("click", () => {
-  if (cart.length === 0) {
-    alert("Your cart is empty! Please add at least one product before ordering.");
-    return;
-  }
+/* ------------------------------------------------
+   WHATSAPP ORDER
+---------------------------------------------------*/
+orderBtn?.addEventListener("click", () => {
+  if (cart.length < 1) return alert("Cart empty!");
 
-  const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-  if (subtotal < 1) {
-    alert("Subtotal is ₹0. Please add some products to continue!");
-    return;
-  }
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const finalDelivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
+  const total = subtotal + finalDelivery;
 
   const name = document.getElementById("name").value;
   const address = document.getElementById("address").value;
   const pincode = document.getElementById("pincode").value;
   const phone = document.getElementById("phone").value;
+  if (!name || !address || !pincode || !phone) return alert("Fill all details!");
 
-  if (!name || !address || !pincode || !phone) {
-    alert("Please fill all details!");
-    return;
-  }
-
-  const finalDelivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
   const orderText = cart
-    .map(item => `• ${item.name} - ₹${item.price} × ${item.qty}`)
+    .map(i => `• ${i.name} - ₹${i.price} × ${i.qty}`)
     .join("%0A");
-  const total = subtotal + finalDelivery;
 
-  const msg = `🧾 *New Order*%0A--------------------%0A${orderText}%0A--------------------%0A*Delivery:* ₹${finalDelivery}%0A*Total:* ₹${total}%0A%0A👤 *Name:* ${name}%0A🏠 *Address:* ${address}%0A📮 *Pincode:* ${pincode}%0A📞 *Phone:* ${phone}`;
+  const msg = `🧾 *New Order*%0A--------------------%0A${orderText}%0A--------------------%0A*Delivery:* ₹${finalDelivery}%0A*Total:* ₹${total}%0A%0A👤 ${name}%0A🏠 ${address}%0A📮 ${pincode}%0A📞 ${phone}`;
 
-  const whatsappURL = `https://wa.me/919115603213?text=${msg}`;
-  window.open(whatsappURL, "_blank");
+  window.open(`https://wa.me/919115603213?text=${msg}`, "_blank");
 
-  // ✅ Step 3: Clear cart after successful order
   cart = [];
   localStorage.removeItem("cart");
   updateCart();
 });
 
-// 🔍 Component Search Functionality
+/* ------------------------------------------------
+   CLEAN SINGLE SEARCH FUNCTION
+---------------------------------------------------*/
 const searchInput = document.getElementById("componentSearch");
-const componentCards = document.querySelectorAll(".product-card");
+const productCards = document.querySelectorAll(".product-card");
 
-if (searchInput) {
-  searchInput.addEventListener("keyup", () => {
-    const query = searchInput.value.toLowerCase();
-    componentCards.forEach(card => {
-      const name = card.querySelector("h3").textContent.toLowerCase();
-      card.style.display = name.includes(query) ? "block" : "none";
-    });
+searchInput?.addEventListener("input", () => {
+  const q = searchInput.value.toLowerCase();
+  productCards.forEach(card => {
+    const name = card.querySelector("h3").textContent.toLowerCase();
+    const keywords = (card.dataset.keywords || "").toLowerCase();
+    card.style.display = name.includes(q) || keywords.includes(q) ? "block" : "none";
   });
-}
+});
