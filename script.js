@@ -43,9 +43,16 @@ document.addEventListener("DOMContentLoaded", () => {
       else cart.push({ name, price, qty: 1, img: btn.closest('.product-card')?.querySelector('img')?.src || ''});
       saveCart();
       // open cart page
-      window.location.href = "cart.html";
+    
     });
   });
+
+  const openCartBtn = document.getElementById("openCartBtn");
+if (openCartBtn) {
+  openCartBtn.addEventListener("click", () => {
+    window.location.href = "cart.html";
+  });
+}
 
   /* ---------- components.html: search + category ---------- */
   const searchInput = document.getElementById("componentSearch");
