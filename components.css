@@ -347,3 +347,16 @@ body.dark-mode .notice-line {
   background: linear-gradient(90deg, #1638b8 0%, #0a2ea8 100%);
   box-shadow: 0 6px 18px rgba(0,0,0,0.55);
 }
+
+body.dark-mode header {
+  background: #1e1e1e;
+  border-bottom: 1px solid #333;
+}
+
+body.dark-mode header a {
+  color: #fff !important;
+}
+
+body.dark-mode #logo {
+  color: #fff;
+}
