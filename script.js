@@ -15,6 +15,39 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleBtn.textContent = body.classList.contains("dark-mode") ? "☀ Light Mode" : "🌙 Dark Mode";
   });
 
+  /* ------------------ IMAGE LOAD EFFECT (non-blocking) ------------------ */
+  document.querySelectorAll(".product-card img").forEach(img => {
+    if (img.complete) img.classList.add("loaded");
+    else img.addEventListener("load", () => img.classList.add("loaded"));
+  });
+
+  /* ------------------ LOGO HOVER (non-invasive) ------------------ */
+  const logo = document.getElementById("logo");
+  if (logo) {
+    // keep layout stable: wrap characters in spans but no display change
+    const text = logo.textContent.trim();
+    logo.innerHTML = "";
+    text.split("").forEach(ch => {
+      const s = document.createElement("span");
+      s.textContent = ch;
+      s.style.display = "inline-block";
+      s.style.transition = "transform .25s, text-shadow .25s, color .25s";
+      logo.appendChild(s);
+    });
+
+    const pop = new Audio("Data Files/pop.mp3");
+    logo.addEventListener("mouseenter", () => {
+      pop.currentTime = 0;
+      pop.play().catch(()=>{});
+      logo.querySelectorAll("span").forEach((sp,i) => {
+        setTimeout(()=> {
+          sp.classList.add("glow");
+          setTimeout(()=> sp.classList.remove("glow"), 350);
+        }, i*55);
+      });
+   });
+  }
+
   /* ---------- Shared cart storage ---------- */
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const deliveryCharge = 49;
