@@ -144,7 +144,8 @@ body.components-page {
   gap: 25px;
   padding: 20px;
   width: 90%;
-  margin: auto;
+  max-width: 1200px;
+  margin: 20px auto;
 }
 
 .product-card {
