@@ -1,12 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Components - TRP Electronics</title>
-  <!-- Main style (same for all pages) -->
   <link rel="stylesheet" href="style.css" />
-  <!-- Components page specific style -->
   <link rel="stylesheet" href="components.css" />
 </head>
 <body class="components-page">
@@ -25,13 +23,10 @@
 
   <!-- SECOND NAV ROW -->
   <div class="second-nav">
-
-    <!-- LEFT – SEARCH BOX -->
     <div class="second-left">
       <input id="componentSearch" type="text" placeholder="Search Component..." />
     </div>
 
-    <!-- CENTER – CATEGORY MENU -->
     <div class="second-center">
       <ul class="category-menu-new">
         <li data-cat="all" class="cat-item active">All</li>
@@ -45,27 +40,24 @@
       </ul>
     </div>
 
-    <!-- RIGHT – CART ICON -->
     <div class="second-right">
       <div id="cartToggle" class="cart-box-new">🛒 Cart (<span id="cart-count">0</span>)</div>
     </div>
-
   </div>
 
-  <section class="store">
-    <h2 class="section-title">BUY COMPONENTS IN BEST PRICE</h2>
+  <main>
+    <section class="store">
+      <h2 class="section-title">BUY COMPONENTS IN BEST PRICE</h2>
 
-    <!-- 🌟 Free delivery notice -->
-    <div style="text-align:center;">
-      <p id="freeNotice" class="notice-line">
-        Order above ₹999 to get FREE DELIVERY!
-      </p>
-    </div>
+      <div style="text-align:center;">
+        <p id="freeNotice" class="notice-line">
+          Order above ₹999 to get FREE DELIVERY!
+        </p>
+      </div>
 
-    <div id="product-grid" class="product-grid">
-
-      <!-- RESISTORS group (data-category="Resistor") -->
-      <div class="product-card" data-category="Resistor" data-keywords="resistor 1ohm">
+      <div id="product-grid" class="product-grid">
+        <!-- Example items (keep your full list; ensure data-category & data-keywords) -->
+<div class="product-card" data-category="Resistor" data-keywords="resistor 1ohm">
         <img src="images/all.png" alt="Resistor" />
         <h3>Resistor 1Ω / 10pcs</h3>
         <p>₹12</p>
@@ -389,23 +381,12 @@
         <button class="add-cart" data-name="Ribbon Wire - 10 Core / 1Meter" data-price="46">Add to Cart ❤️</button>
       </div>
 
-    </div> <!-- product-grid end -->
 
-    <div id="cart-section" class="cart-section hidden">
-      <h3>Your Cart</h3>
-      <ul id="cart-list"></ul>
-      <p id="total"></p>
+        <!-- Add your rest of product cards here (copy pattern, ensure data-category present) -->
 
-      <form id="order-form">
-        <h3>Delivery Details</h3>
-        <input type="text" id="name" placeholder="Full Name" required />
-        <input type="text" id="address" placeholder="Full Address" required />
-        <input type="text" id="pincode" placeholder="Pincode" required />
-        <input type="tel" id="phone" placeholder="Phone Number" required />
-        <button type="button" id="orderNow">Order Now (WhatsApp)</button>
-      </form>
-    </div>
-  </section>
+      </div>
+    </section>
+  </main>
 
   <button id="darkModeToggle">🌙 Dark Mode</button>
 
