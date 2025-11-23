@@ -7,6 +7,7 @@ body.cart-page {
   color: #222;
 }
 
+/* HEADER */
 header {
   background: #0044cc;
   color: #fff;
@@ -16,7 +17,7 @@ header {
   align-items: center;
 }
 
-/* main container */
+/* MAIN CONTAINER */
 .cart-main {
   padding: 30px 16px;
 }
@@ -30,7 +31,7 @@ header {
   margin: 0 auto;
 }
 
-/* Left: items */
+/* LEFT: ITEMS */
 .cart-items {
   background: #fff;
   border-radius: 12px;
@@ -64,7 +65,7 @@ header {
 .cart-row h4 { margin: 0 0 6px; color: #0044cc; font-size: 16px; }
 .cart-row p { margin: 0; font-weight: 600; }
 
-/* qty and remove / small controls */
+/* QTY + REMOVE BTN */
 .cart-row .controls {
   display: flex;
   flex-direction: column;
@@ -89,7 +90,7 @@ header {
   cursor: pointer;
 }
 
-/* Address form */
+/* ADDRESS SECTION */
 .address-section {
   margin-top: 18px;
   background: #fff;
@@ -106,7 +107,7 @@ header {
   margin-bottom: 10px;
 }
 
-/* Right: summary */
+/* SUMMARY RIGHT SIDE */
 .order-summary .summary-box {
   position: sticky;
   top: 28px;
@@ -141,30 +142,95 @@ header {
   color: #0044cc;
   border-radius: 12px;
   text-decoration: none;
-  border: 2px solid rgba(0,68,204,0.06);
+  border: 2px solid rgba(0,68,204,0.2);
 }
 
-/* responsive */
+/* RESPONSIVE */
 @media (max-width: 980px) {
-  .cart-container {
-    grid-template-columns: 1fr;
-  }
-  .order-summary .summary-box {
-    position: static;
-  }
+  .cart-container { grid-template-columns: 1fr; }
+  .order-summary .summary-box { position: static; }
 }
-body.dark-mode .cart-section {
-  background: #1b1b1b;
+
+/* ==========================================
+   🌙 FULL DARK MODE (Updated & Fixed)
+   ========================================== */
+
+body.dark-mode.cart-page {
+  background: #121212;
+  color: #eee;
+}
+
+/* HEADER */
+body.dark-mode header {
+  background: #0a1a33;
   color: #fff;
 }
 
-body.dark-mode #order-form input {
+/* LEFT PANEL */
+body.dark-mode .cart-items {
+  background: #1c1c1c;
+  box-shadow: 0 6px 20px rgba(255,255,255,0.05);
+}
+
+body.dark-mode #cart-items-list .cart-row {
+  background: #222;
+  color: #ddd;
+}
+
+body.dark-mode .cart-row img {
+  background: #333;
+  filter: brightness(1.15);
+}
+
+/* TEXT */
+body.dark-mode .cart-row h4 {
+  color: #66a3ff;
+}
+
+/* INPUTS */
+body.dark-mode .qty-input {
+  background: #1c1c1c;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+body.dark-mode .address-section {
+  background: #1b1b1b;
+}
+
+body.dark-mode .address-form input {
   background: #222;
   color: #fff;
   border: 1px solid #444;
 }
 
-body.dark-mode #orderNow {
-  background: #0f7b2d;
+/* REMOVE BTN */
+body.dark-mode .remove-btn {
+  background: #c82333;
 }
 
+/* RIGHT SUMMARY */
+body.dark-mode .order-summary .summary-box {
+  background: #1b1b1b;
+  box-shadow: 0 6px 20px rgba(255,255,255,0.05);
+}
+
+body.dark-mode .order-summary h3 {
+  color: #66a3ff;
+}
+
+body.dark-mode .total-amount {
+  color: #fff;
+}
+
+/* BUTTONS */
+body.dark-mode .primary-btn {
+  background: #0066ff;
+  color: #fff;
+}
+
+body.dark-mode .secondary-btn {
+  background: transparent;
+  color: #66a3ff;
+  border: 2px solid #2a4ea0;
+}
