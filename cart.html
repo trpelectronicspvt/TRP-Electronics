@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cart - TRP Electronics</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="cart.css" />
+</head>
+<body class="cart-page">
+  <header>
+    <div id="logo">TRP Electronics</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="components.html">E-Shop</a></li>
+        <li><a href="eapps.html">E-Apps</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cart-main">
+    <div class="cart-container">
+      <!-- LEFT: cart items list (70%) -->
+      <div class="cart-items">
+        <h2>Your Cart</h2>
+        <div id="cart-items-list">
+          <!-- JS will populate cart items here -->
+        </div>
+
+        <!-- Address form is below cart items (user chose Y) -->
+        <section class="address-section">
+          <h3>Delivery Details</h3>
+          <div class="address-form">
+            <input id="name" type="text" placeholder="Full Name" required />
+            <input id="address" type="text" placeholder="Full Address" required />
+            <input id="pincode" type="text" placeholder="Pincode" required />
+            <input id="phone" type="tel" placeholder="Phone Number" required />
+          </div>
+        </section>
+      </div>
+
+      <!-- RIGHT: order summary (30%) -->
+      <aside class="order-summary">
+        <div class="summary-box">
+          <h3>Order Summary</h3>
+          <p id="summary-subtotal">Subtotal: ₹0</p>
+          <p id="summary-delivery">Delivery: ₹0</p>
+          <hr />
+          <p id="summary-total" class="total-amount">Total: ₹0</p>
+
+          <button id="orderNow" class="primary-btn">Order Now (WhatsApp)</button>
+          <a href="components.html" class="secondary-btn" id="backToShop">← Back to Shop</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 TRP Electronics | Made with ❤️</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
