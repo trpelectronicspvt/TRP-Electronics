@@ -22,7 +22,7 @@ body.components-page {
    SECOND NAV BAR
 -----------------------------------*/
 .second-nav {
-  width: 100%;
+  width: auto;
   background: #ffffff;
   border-bottom: 1px solid #dcdcdc;
   padding: 8px 12px;
