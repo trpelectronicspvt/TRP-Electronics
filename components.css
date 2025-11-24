@@ -376,3 +376,12 @@ body.dark-mode .cart-section {
 
 body.dark-mode #cart-list li {
   background: #222;
+
+  /* ===== Footer ===== */
+footer {
+  background: #0044cc;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 40px;
+}
