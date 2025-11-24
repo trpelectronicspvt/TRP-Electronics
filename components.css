@@ -316,7 +316,7 @@ transform: translateY(-50%); }
 -----------------------------------*/
 
 body.dark-mode.components-page {
-  background: #121212;
+  background: #000;
   color: #ddd;
 }
 
