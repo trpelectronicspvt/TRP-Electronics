@@ -146,6 +146,7 @@ body.components-page {
   width: 90%;
   max-width: 1200px;
   margin: 20px auto;
+  min-height: 300px;  /*bottom down de layi*/
 }
 
 .product-card {
