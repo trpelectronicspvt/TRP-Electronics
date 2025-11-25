@@ -134,10 +134,6 @@ body.components-page {
     justify-content: center;
     font-size: 14px;
   }
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px; /* Optional: thoda gap kam kar do mobile par */
-  }
 }
 
 /* ---------------------------------
@@ -153,7 +149,12 @@ body.components-page {
   margin: 20px auto;
   min-height: 300px;  /*bottom down de layi*/
 }
-
+@media (max-width: 700px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px; /* Optional: thoda gap kam kar do mobile par */
+  }
+}
 .product-card {
   background: #ffffff;
   border-radius: 12px;
