@@ -160,6 +160,7 @@ body.dark-mode .hero {
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  min-height: 300px;
 }
 
 .project-card {
