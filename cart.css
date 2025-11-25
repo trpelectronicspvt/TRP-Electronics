@@ -20,6 +20,7 @@ header {
 /* MAIN CONTAINER */
 .cart-main {
   padding: 30px 16px;
+  min-height: calc(100vh - 200px);
 }
 
 .cart-container {
