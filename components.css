@@ -60,6 +60,7 @@ body.components-page {
   padding: 0;
   margin: 0;
   justify-content: center;
+  outline: none;
 }
 
 .category-menu-new .cat-item {
