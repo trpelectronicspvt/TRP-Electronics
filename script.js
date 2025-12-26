@@ -76,6 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
       else cart.push({ name, price, qty: 1, img: btn.closest('.product-card')?.querySelector('img')?.src || ''});
       saveCart();
       // open cart page
+
+      showCartAlert(name);
     
     });
   });
@@ -86,19 +88,6 @@ if (openCartBtn) {
     window.location.href = "cart.html";
   });
 }
-
-  document.querySelectorAll(".add-cart").forEach(button => {
-  button.addEventListener("click", () => {
-    const name = button.getAttribute("data-name");
-    const price = button.getAttribute("data-price");
-
-    // 👇 yahan tumhara existing add-to-cart logic hoga
-    addToCart(name, price);
-
-    // ✅ success alert
-    showCartAlert(name);
-  });
-});
 
 function showCartAlert(productName) {
   const alertBox = document.getElementById("cart-alert");
