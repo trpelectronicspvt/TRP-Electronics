@@ -148,6 +148,7 @@ body.components-page {
     right: 55px;        /* 3-lines ke bilkul left */
     z-index: 1001;
     background: transparent;
+    color: #fff;
   }
 
 }
