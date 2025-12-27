@@ -512,19 +512,9 @@ body.dark-mode .app-card p {
 /* ===== Mobile Only ===== */
 @media (max-width: 768px) {
 
-  header {
-    position: relative;
-  }
   
   header nav ul {
     display: none !important;   /* desktop menu hide */
-  }
-
-  .cart-icon {
-    position: absolute;
-    right: 50px;
-    top: 50%;
-    transform: translateY(-50%);
   }
   
   .menu-icon {
@@ -532,11 +522,6 @@ body.dark-mode .app-card p {
     font-size: 28px;
     cursor: pointer;
     color: #fff;
-
-     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
   
   }
 
