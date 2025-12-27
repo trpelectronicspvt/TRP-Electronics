@@ -144,7 +144,7 @@ body.components-page {
   /* ✅ Cart ko header ke top-right me fix karo */
   .cart-box-new {
     position: absolute;
-    top: 14px;          /* header ke andar */
+    top: 50%;          /* header ke andar */
     right: 55px;        /* 3-lines ke bilkul left */
     z-index: 1001;
     background: transparent;
