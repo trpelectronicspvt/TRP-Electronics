@@ -40,7 +40,7 @@ header {
   padding: 12px 20px;
   flex-wrap: wrap;
 }
-header .logo {
+header #logo {
   font-size: 22px;
   font-weight: bold;
 }
@@ -512,8 +512,8 @@ body.dark-mode .app-card p {
 /* ===== Mobile Only ===== */
 @media (max-width: 768px) {
 
-  nav ul {
-    display: none;   /* desktop menu hide */
+  header nav ul {
+    display: none !important;   /* desktop menu hide */
   }
 
   .menu-icon {
@@ -534,6 +534,7 @@ body.dark-mode .app-card p {
     flex-direction: column;
     width: 160px;
     z-index: 999;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
   }
 
   .mobile-menu a {
