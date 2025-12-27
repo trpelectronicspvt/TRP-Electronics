@@ -512,6 +512,10 @@ body.dark-mode .app-card p {
 /* ===== Mobile Only ===== */
 @media (max-width: 768px) {
 
+  header {
+    position: relative;
+  }
+  
   header nav ul {
     display: none !important;   /* desktop menu hide */
   }
