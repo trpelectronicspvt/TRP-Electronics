@@ -134,7 +134,24 @@ body.components-page {
     justify-content: center;
     font-size: 14px;
   }
+  /* ❌ OLD behavior remove */
+  .second-right {
+    width: auto;
+    order: unset;
+    padding: 0;
+  }
+
+  /* ✅ Cart ko header ke top-right me fix karo */
+  .cart-box-new {
+    position: absolute;
+    top: 14px;          /* header ke andar */
+    right: 55px;        /* 3-lines ke bilkul left */
+    z-index: 1001;
+    background: transparent;
+  }
+
 }
+
 
 /* ---------------------------------
    PRODUCT GRID
