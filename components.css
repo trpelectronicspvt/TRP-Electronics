@@ -429,3 +429,16 @@ footer {
   padding: 15px;
   margin-top: 40px;
 }
+/* Remove focus outline & caret on clickable boxes */
+.category-menu-new .cat-item {
+  outline: none;
+  user-select: none;
+}
+
+.category-menu-new .cat-item:focus {
+  outline: none;
+}
+
+.category-menu-new .cat-item:focus-visible {
+  outline: none;
+}
