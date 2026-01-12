@@ -442,3 +442,31 @@ footer {
 .category-menu-new .cat-item:focus-visible {
   outline: none;
 }
+
+/* ❌ Stop text typing cursor everywhere */
+body {
+  caret-color: transparent;
+}
+
+/* ❌ Remove focus outline */
+*:focus {
+  outline: none !important;
+}
+
+/* ❌ Prevent text selection on UI */
+h1, h2, h3, p, span,
+.product-card,
+.product-card *,
+.cat-item,
+.notice-line,
+footer,
+header,
+nav {
+  user-select: none;
+}
+
+input,
+textarea {
+  caret-color: auto;
+  user-select: text;
+}
