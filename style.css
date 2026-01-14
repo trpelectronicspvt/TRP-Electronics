@@ -581,9 +581,7 @@ body.dark-mode .app-card p {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.fountain-text {
-  text-shadow: 0 0 12px rgba(255,255,255,0.25);
-}
+
 /* Smooth moving animation */
 @keyframes fountainFlow {
   0% {
