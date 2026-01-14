@@ -554,6 +554,43 @@ body.dark-mode .app-card p {
     display: flex;
   }
 }
+
+.fountain-text {
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 1px;
+
+  /* Fountain gradient */
+  background: linear-gradient(
+    120deg,
+    #ffffff,
+    #00e5ff,
+    #00ff9d,
+    #ffeb3b,
+    #ff9800,
+    #ff4081,
+    #ffffff
+  );
+
+  background-size: 300% 300%;
+  animation: fountainFlow 6s linear infinite;
+
+  /* Text-only color effect */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Smooth moving animation */
+@keyframes fountainFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
 /* ===== Footer ===== */
 footer {
   background: #0044cc;
