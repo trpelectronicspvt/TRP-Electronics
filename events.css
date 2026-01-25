@@ -3,19 +3,31 @@
   position: fixed;
   top: -10px;
   color: white;
-  font-size: 1em;
   pointer-events: none;
   animation: snow-fall linear infinite;
   z-index: 9999;
 }
 
 @keyframes snow-fall {
-  to {
-    transform: translateY(110vh);
-  }
+  to { transform: translateY(110vh); }
 }
 
-/* 🎅 Santa Animation */
+/* 🇮🇳 Tricolor Dots */
+.tri-dot {
+  position: fixed;
+  top: -10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: tri-fall linear infinite;
+  z-index: 9999;
+}
+
+@keyframes tri-fall {
+  to { transform: translateY(110vh); }
+}
+
+/* 🎅 Santa */
 .santa {
   position: fixed;
   top: 20%;
@@ -26,10 +38,39 @@
 }
 
 @keyframes santa-fly {
-  0% {
-    transform: translateX(0) scale(1);
-  }
-  100% {
-    transform: translateX(120vw) scale(1.05);
-  }
+  to { transform: translateX(120vw); }
+}
+
+/* 🇮🇳 Flag */
+.india-flag {
+  position: fixed;
+  top: 30%;
+  left: -100px;
+  font-size: 70px;
+  animation: flag-fly 8s linear forwards;
+  z-index: 9998;
+}
+
+@keyframes flag-fly {
+  to { transform: translateX(120vw); }
+}
+
+/* 🇮🇳 Banner */
+.republic-banner {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg,#FF9933,#fff,#138808);
+  color: #000;
+  padding: 15px 25px;
+  font-size: 22px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 9999;
+  animation: fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; }
 }
