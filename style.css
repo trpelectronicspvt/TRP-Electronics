@@ -501,15 +501,9 @@ body.dark-mode .app-card p {
 }
 
 .heart-icon{
-  width: 0.95em;
-  height: 0.95em;
-  vertical-align: -0.1em;
-}
-.heart-icon{
-  transition: 0.3s;
-}
-.heart-icon:hover{
-  filter: drop-shadow(0 0 6px red);
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
 }
 
 /* ===== Desktop Default ===== */
