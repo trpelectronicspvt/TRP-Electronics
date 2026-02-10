@@ -222,12 +222,12 @@ menuToggle.addEventListener("click", () => {
 });
 
 
-// 📱 Phone Number Validation (Without Form)
+// 📱 Phone Number Validation (TRP FIXED)
 
 const phoneInput = document.getElementById("phone");
-const orderBtn = document.getElementById("placeOrderBtn");
+const orderBtn = document.getElementById("orderNow");
 
-// Only numbers allow
+// allow only numbers while typing
 if (phoneInput) {
   phoneInput.addEventListener("input", () => {
     phoneInput.value = phoneInput.value.replace(/[^0-9]/g, "");
@@ -237,24 +237,27 @@ if (phoneInput) {
   });
 }
 
-// Button click validation
+// validate on order click
 if (orderBtn) {
   orderBtn.addEventListener("click", () => {
     const phone = phoneInput.value.trim();
 
     if (phone.length !== 10) {
-      alert("Please enter valid 10-digit mobile number");
+      alert("❌ Enter exactly 10 digit mobile number");
+      phoneInput.focus();
       return;
     }
 
-    if (!/^[6-9]\d{9}$/.test(phone)) {
-      alert("Mobile number should start from 6, 7, 8 or 9");
+    // INDIA mobile validation
+    if (!/^[6-9][0-9]{9}$/.test(phone)) {
+      alert("❌ Mobile number must start with 6, 7, 8 or 9");
+      phoneInput.focus();
       return;
     }
 
-    // ✅ VALID NUMBER
-    alert("Order placed successfully ✅");
+    // ✅ VALID
+    alert("✅ Order placed successfully");
 
-    // yahan tum apna order logic / redirect / save call kar sakte ho
+    // yahan WhatsApp redirect / order logic add kar sakte ho
   });
 }
