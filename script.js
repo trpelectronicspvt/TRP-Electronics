@@ -222,42 +222,40 @@ menuToggle.addEventListener("click", () => {
 });
 
 
-// 📱 Phone Number Validation (TRP FIXED)
-
 const phoneInput = document.getElementById("phone");
 const orderBtn = document.getElementById("orderNow");
 
-// allow only numbers while typing
-if (phoneInput) {
-  phoneInput.addEventListener("input", () => {
-    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, "");
-    if (phoneInput.value.length > 10) {
-      phoneInput.value = phoneInput.value.slice(0, 10);
-    }
-  });
-}
+// allow only numbers
+phoneInput.addEventListener("input", () => {
+  phoneInput.value = phoneInput.value.replace(/[^0-9]/g, "");
+  if (phoneInput.value.length > 10) {
+    phoneInput.value = phoneInput.value.slice(0, 10);
+  }
+});
 
-// validate on order click
-if (orderBtn) {
-  orderBtn.addEventListener("click", () => {
-    const phone = phoneInput.value.trim();
+orderBtn.addEventListener("click", function (e) {
+  e.preventDefault(); // 🔥 PROCESS STOP HERE
 
-    if (phone.length !== 10) {
-      alert("❌ Enter exactly 10 digit mobile number");
-      phoneInput.focus();
-      return;
-    }
+  const phone = phoneInput.value.trim();
 
-    // INDIA mobile validation
-    if (!/^[6-9][0-9]{9}$/.test(phone)) {
-      alert("❌ Mobile number must start with 6, 7, 8 or 9");
-      phoneInput.focus();
-      return;
-    }
+  // ❌ length check
+  if (phone.length !== 10) {
+    alert("❌ Enter exactly 10 digit mobile number");
+    phoneInput.focus();
+    return; // 🛑 STOP
+  }
 
-    // ✅ VALID
-    alert("✅ Order placed successfully");
+  // ❌ India number check
+  if (!/^[6-9][0-9]{9}$/.test(phone)) {
+    alert("❌ Mobile number must start with 6, 7, 8 or 9");
+    phoneInput.focus();
+    return; // 🛑 STOP
+  }
 
-    // yahan WhatsApp redirect / order logic add kar sakte ho
-  });
-}
+  // ✅ ONLY VALID CASE REACHES HERE
+  const whatsappNumber = "91XXXXXXXXXX"; // apna number
+  const message = `New Order\nPhone: ${phone}`;
+  const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+  window.open(whatsappURL, "_blank"); // ✅ NOW SAFE
+});
