@@ -220,3 +220,41 @@ const mobileMenu = document.getElementById("mobileMenu");
 menuToggle.addEventListener("click", () => {
   mobileMenu.classList.toggle("show");
 });
+
+
+// 📱 Phone Number Validation (Without Form)
+
+const phoneInput = document.getElementById("phone");
+const orderBtn = document.getElementById("placeOrderBtn");
+
+// Only numbers allow
+if (phoneInput) {
+  phoneInput.addEventListener("input", () => {
+    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, "");
+    if (phoneInput.value.length > 10) {
+      phoneInput.value = phoneInput.value.slice(0, 10);
+    }
+  });
+}
+
+// Button click validation
+if (orderBtn) {
+  orderBtn.addEventListener("click", () => {
+    const phone = phoneInput.value.trim();
+
+    if (phone.length !== 10) {
+      alert("Please enter valid 10-digit mobile number");
+      return;
+    }
+
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      alert("Mobile number should start from 6, 7, 8 or 9");
+      return;
+    }
+
+    // ✅ VALID NUMBER
+    alert("Order placed successfully ✅");
+
+    // yahan tum apna order logic / redirect / save call kar sakte ho
+  });
+}
