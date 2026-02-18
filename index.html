@@ -9,6 +9,7 @@
 <script src="script.js" defer></script>
 </head>
 <body>
+  <div id="products"></div>
   <!-- Header / Navbar -->
   <header>
     <div id="logo">TRP Electronics</div>
@@ -138,5 +139,24 @@ At TRP Electronics, our mission is to make electronics learning simple, affordab
   <footer>
     <p>© 2025 TRP Electronics | Made with ❤️</p>
   </footer>
+
+  <script>
+fetch("http://localhost:5000/products")
+  .then(res => res.json())
+  .then(data => {
+
+    const container = document.getElementById("products");
+
+    data.forEach(product => {
+      container.innerHTML += `
+        <div>
+          <h3>${product.name}</h3>
+          <p>Price: ₹${product.price}</p>
+        </div>
+      `;
+    });
+
+  });
+</script>
 </body>
 </html>
