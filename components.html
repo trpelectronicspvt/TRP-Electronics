@@ -84,25 +84,23 @@
 
 
   <script src="script.js"></script>
-  <script>
+<script>
 fetch("http://localhost:5000/products")
   .then(res => res.json())
   .then(data => {
-
-    const container = document.getElementById("products-container");
-    container.innerHTML = "";
+    const container = document.getElementById("product-container");
 
     data.forEach(product => {
       container.innerHTML += `
-        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <div style="border:1px solid black; padding:10px; margin:10px;">
           <h3>${product.name}</h3>
           <p>Price: ₹${product.price}</p>
+          <p>ID: ${product._id}</p>
         </div>
       `;
     });
-
   })
-  .catch(error => console.log(error));
+  .catch(err => console.log(err));
 </script>
 </body>
 </html>
