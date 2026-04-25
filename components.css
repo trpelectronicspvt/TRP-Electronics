@@ -470,3 +470,32 @@ textarea {
   caret-color: auto;
   user-select: text;
 }
+
+.product-card {
+  position: relative;
+  background: #111;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.arrow {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.product-card:hover .arrow {
+  opacity: 1;
+}
+
+.extra-info {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.4s;
+}
+
+.product-card.active .extra-info {
+  max-height: 300px;
+}
