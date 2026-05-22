@@ -476,6 +476,13 @@ body.dark-mode .app-card p {
     background-position: 200% 0;
   }
 }
+
+#logo {
+    text-decoration: none; /* Removes default link underline */
+    cursor: pointer;       /* Ensures the mouse pointer changes to a hand */
+    display: inline-block;
+} 
+
 /* Normal text inherits theme color */
 #logo {
   font-size: 1.5rem;
