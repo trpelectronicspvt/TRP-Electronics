@@ -10,11 +10,11 @@ Here you will find:
 - Circuit Diagrams and Tutorials
 
 ## Projects Available
-'''
+```
 1. Milk Overflow Alarm  
    [📥 Download PDF](pdfs/milk-overflow-alarm.pdf)  
 I share my electronics knowledge, projects, and notes here for free.
-'''
+```
 ---
 
 © 2025 TRP Electronics
