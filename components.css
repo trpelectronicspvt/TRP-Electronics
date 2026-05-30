@@ -471,13 +471,6 @@ textarea {
   user-select: text;
 }
 
-.product-card {
-  position: relative;
-  background: #111;
-  padding: 15px;
-  border-radius: 10px;
-}
-
 .arrow {
   position: absolute;
   right: 10px;
