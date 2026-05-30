@@ -479,16 +479,3 @@ textarea {
   cursor: pointer;
 }
 
-.product-card:hover .arrow {
-  opacity: 1;
-}
-
-.extra-info {
-  max-height: 0;
-  overflow: hidden;
-  transition: 0.4s;
-}
-
-.product-card.active .extra-info {
-  max-height: 300px;
-}
