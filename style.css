@@ -92,8 +92,20 @@ body.dark-mode .hero {
 }
 
 .section-title {
-  text-align: center;
-  margin-bottom: 20px;
+  text-align: left;              /* Text ko left align karne ke liye */
+  margin-bottom: 25px;
+  display: inline-block;         /* Background sirf text jitna hi bada rahe */
+  padding: 8px 24px 8px 16px;    /* Text ke andar space (Top Right Bottom Left) */
+  background-color: #0056b3;     /* Aapki theme se match karta hua Dark Blue color (Aap change kar sakte hain) */
+  color: #ffffff;                /* Text color white taaki dark background par saaf dikhe */
+  font-size: 1.5rem;             /* Font size (Aap apne hisab se customize kar sakte hain) */
+  font-weight: bold;
+  
+  /* Left side flat aur right side round border radius */
+  border-radius: 0px 30px 30px 0px; 
+  
+  /* Modern clean look ke liye thodi si shadow */
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1); 
 }
 .about-section {
   font-size: 14px;   /* yahan chhota kar diya */
