@@ -211,8 +211,8 @@ body.dark-mode .hero {
 
 /* ===== FEATURED VIDEOS SECTION ===== */
 .featured-videos {
-  text-align: center;
-  padding: 60px 20px;
+  text-align: left;
+  padding: 60px 0px;
   background: #fff;
 }
 
