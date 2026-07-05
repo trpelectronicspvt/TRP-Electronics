@@ -379,44 +379,6 @@ orderBtn.addEventListener("click", function (e) {
   window.open(whatsappURL, "_blank"); // ✅ NOW SAFE
 });
 
-const products = [
-  {
-    name: "9V Battery",
-    price: 19,
-    image: "images/battery.jpg",
-    description: "High quality battery",
-    extra: ["images/battery2.jpg"]
-  },
-  {
-    name: "DC Motor",
-    price: 12,
-    image: "images/motor.jpg",
-    description: "Mini motor",
-    extra: ["images/motor2.jpg"]
-  }
-];
-
-const container = document.getElementById("products-container");
-
-products.forEach(p => {
-  container.innerHTML += `
-    <div class="product-card">
-      <img src="${p.image}" class="product-img">
-      <span class="arrow">➤</span>
-
-      <h3>${p.name}</h3>
-      <p>₹${p.price}</p>
-
-      <button onclick="addToCart('${p.name}')">Add to Cart ❤️</button>
-
-      <div class="extra-info">
-        <p>${p.description}</p>
-        ${p.extra.map(img => `<img src="${img}" class="extra-img">`).join("")}
-      </div>
-    </div>
-  `;
-});
-
 // expand card
 document.addEventListener("click", function(e) {
   if(e.target.classList.contains("arrow")) {
