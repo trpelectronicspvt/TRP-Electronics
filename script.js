@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
           saveCart();
           renderCart();
 
-          window.open(`https://api.whatsapp.com/send?phone=919115603213&text=${encodeURIComponent(msg)}`, "_blank");
+          window.location.href = `https://api.whatsapp.com/send?phone=919115603213&text=${encodeURIComponent(msg)}`;
         },
         "prefill": {
           "name": name,
