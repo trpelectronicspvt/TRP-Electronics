@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Setup Razorpay
       var options = {
-        "key": "YOUR_RAZORPAY_KEY_ID", // 🌟 Apni asli Key Id lagayein (e.g., rzp_test_...)
+        "key": "rzp_live_T9fdcBxIRGP1MY", // 🌟 Apni asli Key Id lagayein (e.g., rzp_test_...)
         "amount": amountInPaise,
         "currency": "INR",
         "name": "TRP Electronics",
