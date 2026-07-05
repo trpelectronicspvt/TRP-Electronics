@@ -1,6 +1,7 @@
-/* script.js - single file for shop + cart pages */
+/* script.js - TRP Electronics Single File for Shop + Cart Pages */
 document.addEventListener("DOMContentLoaded", () => {
-  /* ---------- Dark mode toggle (shared) ---------- */
+  
+  /* ---------- 1. DARK MODE TOGGLE (SHARED) ---------- */
   const toggleBtn = document.getElementById("darkModeToggle");
   const body = document.body;
   if (localStorage.getItem("theme") === "dark") {
@@ -15,16 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleBtn.textContent = body.classList.contains("dark-mode") ? "☀ Light Mode" : "🌙 Dark Mode";
   });
 
-  /* ------------------ IMAGE LOAD EFFECT (non-blocking) ------------------ */
+  /* ---------- 2. IMAGE LOAD EFFECT ---------- */
   document.querySelectorAll(".product-card img").forEach(img => {
     if (img.complete) img.classList.add("loaded");
     else img.addEventListener("load", () => img.classList.add("loaded"));
   });
 
-  /* ------------------ LOGO HOVER (non-invasive) ------------------ */
+  /* ---------- 3. LOGO HOVER EFFECTS ---------- */
   const logo = document.getElementById("logo");
   if (logo) {
-    // keep layout stable: wrap characters in spans but no display change
     const text = logo.textContent.trim();
     logo.innerHTML = "";
     text.split("").forEach(ch => {
@@ -39,16 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
     logo.addEventListener("mouseenter", () => {
       pop.currentTime = 0;
       pop.play().catch(()=>{});
-      logo.querySelectorAll("span").forEach((sp,i) => {
-        setTimeout(()=> {
+      logo.querySelectorAll("span").forEach((sp, i) => {
+        setTimeout(() => {
           sp.classList.add("glow");
-          setTimeout(()=> sp.classList.remove("glow"), 350);
-        }, i*55);
+          setTimeout(() => sp.classList.remove("glow"), 350);
+        }, i * 55);
       });
-   });
+    });
   }
 
-  /* ---------- Shared cart storage ---------- */
+  /* ---------- 4. SHARED CART STORAGE GLOBAL LOGIC ---------- */
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const deliveryCharge = 49;
   const freeDeliveryLimit = 999;
@@ -61,44 +61,45 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateHeaderCount() {
     const el = document.getElementById("cart-count");
     if (!el) return;
-    const qty = cart.reduce((s,i) => s + (i.qty||0), 0);
+    const qty = cart.reduce((s, i) => s + (i.qty || 0), 0);
     el.textContent = qty;
   }
-  updateHeaderCount();
+  updateHeaderCount(); // Initialize counter on load
 
-  /* ---------- on components.html: add-to-cart behaviour ---------- */
+  /* ---------- 5. COMPONENTS.HTML: ADD TO CART BEHAVIOR ---------- */
   document.querySelectorAll(".add-cart").forEach(btn => {
     btn.addEventListener("click", () => {
       const name = btn.dataset.name;
       const price = parseFloat(btn.dataset.price);
       const found = cart.find(x => x.name === name);
-      if (found) found.qty++;
-      else cart.push({ name, price, qty: 1, img: btn.closest('.product-card')?.querySelector('img')?.src || ''});
+      
+      if (found) {
+        found.qty++;
+      } else {
+        const productCard = btn.closest('.product-card');
+        const imgUrl = productCard?.querySelector('img')?.src || 'images/all.png';
+        cart.push({ name, price, qty: 1, img: imgUrl });
+      }
+      
       saveCart();
-      // open cart page
-
       showCartAlert(name);
-    
     });
   });
 
-  const openCartBtn = document.getElementById("openCartBtn");
-if (openCartBtn) {
-  openCartBtn.addEventListener("click", () => {
-    window.location.href = "cart.html";
-  });
-}
+  function showCartAlert(productName) {
+    const alertBox = document.getElementById("cart-alert");
+    if (alertBox) {
+      alertBox.innerText = `✅ "${productName}" added to your cart`;
+      alertBox.classList.add("show");
+      setTimeout(() => {
+        alertBox.classList.remove("show");
+      }, 2500);
+    } else {
+      alert(`✅ "${productName}" added to your cart`);
+    }
+  }
 
-function showCartAlert(productName) {
-  const alertBox = document.getElementById("cart-alert");
-  alertBox.innerText = `✅ "${productName}" added to your cart`;
-  alertBox.classList.add("show");
-
-  setTimeout(() => {
-    alertBox.classList.remove("show");
-  }, 2500);
-}
-  /* ---------- components.html: search + category ---------- */
+  /* ---------- 6. COMPONENTS.HTML: SEARCH + CATEGORY FILTER ---------- */
   const searchInput = document.getElementById("componentSearch");
   const productCards = Array.from(document.querySelectorAll(".product-card"));
   let activeCategory = "all";
@@ -114,29 +115,37 @@ function showCartAlert(productName) {
       card.style.display = (matchesCategory && matchesSearch) ? "block" : "none";
     });
   }
-  searchInput?.addEventListener("input", applyFilters);
-  document.querySelectorAll(".category-menu-new .cat-item").forEach(li => {
+
+  if (searchInput) {
+    searchInput.addEventListener("input", applyFilters);
+  }
+
+  document.querySelectorAll(".category-menu-new .cat-item, .category-menu-new button, .cat-item").forEach(li => {
     li.addEventListener("click", () => {
-      document.querySelectorAll(".category-menu-new .cat-item").forEach(x => x.classList.remove("active"));
+      document.querySelectorAll(".category-menu-new .cat-item, .cat-item").forEach(x => x.classList.remove("active"));
       li.classList.add("active");
       activeCategory = li.dataset.cat || "all";
       applyFilters();
     });
   });
-  applyFilters();
+  
+  if (productCards.length > 0) {
+    applyFilters(); // Initial render setup
+  }
 
-  /* ---------- on cart.html: render cart, qty, remove, order ---------- */
+  /* ---------- 7. CART.HTML: RENDER CART & RAZORPAY SYSTEM ---------- */
   if (document.body.classList.contains("cart-page")) {
     const itemsContainer = document.getElementById("cart-items-list");
     const summarySubtotal = document.getElementById("summary-subtotal");
     const summaryDelivery = document.getElementById("summary-delivery");
     const summaryTotal = document.getElementById("summary-total");
     const orderNow = document.getElementById("orderNow");
-    const backToShop = document.getElementById("backToShop");
 
     function renderCart() {
+      if (!itemsContainer) return;
       itemsContainer.innerHTML = "";
       let subtotal = 0;
+      
       if (cart.length === 0) {
         itemsContainer.innerHTML = "<p>Your cart is empty. <a href='components.html'>Continue shopping</a></p>";
       } else {
@@ -145,7 +154,7 @@ function showCartAlert(productName) {
           const row = document.createElement("div");
           row.className = "cart-row";
           row.innerHTML = `
-            <img src="${it.img || 'images/all.png'}" alt="">
+            <img src="${it.img || 'images/all.png'}" alt="" style="width:50px; height:50px;">
             <div class="info">
               <h4>${it.name}</h4>
               <p>₹${it.price} each</p>
@@ -159,12 +168,12 @@ function showCartAlert(productName) {
         });
       }
 
-      const delivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
-      summarySubtotal.textContent = `Subtotal: ₹${subtotal}`;
-      summaryDelivery.textContent = `Delivery: ₹${delivery}`;
-      summaryTotal.textContent = `Total: ₹${subtotal + delivery}`;
+      const delivery = subtotal >= freeDeliveryLimit || subtotal === 0 ? 0 : deliveryCharge;
+      if (summarySubtotal) summarySubtotal.textContent = `Subtotal: ₹${subtotal}`;
+      if (summaryDelivery) summaryDelivery.textContent = `Delivery: ₹${delivery}`;
+      if (summaryTotal) summaryTotal.textContent = `Total: ₹${subtotal + delivery}`;
 
-      // attach listeners
+      // Quantity Update Listeners
       document.querySelectorAll(".qty-input").forEach(inp => {
         inp.onchange = (e) => {
           const i = parseInt(e.target.dataset.i, 10);
@@ -174,10 +183,12 @@ function showCartAlert(productName) {
           renderCart();
         };
       });
+
+      // Remove Product Listeners
       document.querySelectorAll(".remove-btn").forEach(b => {
         b.onclick = (e) => {
           const i = parseInt(e.target.dataset.i, 10);
-          cart.splice(i,1);
+          cart.splice(i, 1);
           saveCart();
           renderCart();
         };
@@ -186,121 +197,52 @@ function showCartAlert(productName) {
 
     renderCart();
 
-    /* ---------- on cart.html: render cart, qty, remove, order ---------- */
-  if (document.body.classList.contains("cart-page")) {
-    const itemsContainer = document.getElementById("cart-items-list");
-    const summarySubtotal = document.getElementById("summary-subtotal");
-    const summaryDelivery = document.getElementById("summary-delivery");
-    const summaryTotal = document.getElementById("summary-total");
-    const orderNow = document.getElementById("orderNow");
-    const backToShop = document.getElementById("backToShop");
-
-    function renderCart() {
-      itemsContainer.innerHTML = "";
-      let subtotal = 0;
-      if (cart.length === 0) {
-        itemsContainer.innerHTML = "<p>Your cart is empty. <a href='components.html'>Continue shopping</a></p>";
-      } else {
-        cart.forEach((it, idx) => {
-          subtotal += it.price * it.qty;
-          const row = document.createElement("div");
-          row.className = "cart-row";
-          row.innerHTML = `
-            <img src="${it.img || 'images/all.png'}" alt="">
-            <div class="info">
-              <h4>${it.name}</h4>
-              <p>₹${it.price} each</p>
-            </div>
-            <div class="controls">
-              <input class="qty-input" data-i="${idx}" type="number" min="1" value="${it.qty}">
-              <button class="remove-btn" data-i="${idx}">Remove</button>
-            </div>
-          `;
-          itemsContainer.appendChild(row);
-        });
-      }
-
-      const delivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
-      summarySubtotal.textContent = `Subtotal: ₹${subtotal}`;
-      summaryDelivery.textContent = `Delivery: ₹${delivery}`;
-      summaryTotal.textContent = `Total: ₹${subtotal + delivery}`;
-
-      // attach listeners
-      document.querySelectorAll(".qty-input").forEach(inp => {
-        inp.onchange = (e) => {
-          const i = parseInt(e.target.dataset.i, 10);
-          const v = Math.max(1, parseInt(e.target.value, 10) || 1);
-          cart[i].qty = v;
-          saveCart();
-          renderCart();
-        };
-      });
-      document.querySelectorAll(".remove-btn").forEach(b => {
-        b.onclick = (e) => {
-          const i = parseInt(e.target.dataset.i, 10);
-          cart.splice(i,1);
-          saveCart();
-          renderCart();
-        };
-      });
-    }
-
-    renderCart();
-
-    // ========================================================
-    // 100% FIXED AUTOMATIC PAYMENT SYSTEM (METHOD B)
-    // ========================================================
+    // FIXED SUBMIT LOGIC WITH VALIDATION & RAZORPAY
     orderNow?.addEventListener("click", (e) => {
-      e.preventDefault(); // Default submit/refresh ko stop karein
+      e.preventDefault();
 
       if (cart.length === 0) return alert("❌ Add products first.");
       
-      const name = document.getElementById("name").value.trim();
-      const address = document.getElementById("address").value.trim();
-      const pincode = document.getElementById("pincode").value.trim();
-      const phone = document.getElementById("phone").value.trim();
+      const name = document.getElementById("name")?.value.trim();
+      const address = document.getElementById("address")?.value.trim();
+      const pincode = document.getElementById("pincode")?.value.trim();
+      const phone = document.getElementById("phone")?.value.trim();
 
-      // Form validation checkpoints
       if (!name || !address || !pincode || !phone) {
-        return alert("❌ Please fill all address details.");
+        return alert("❌ Please fill all delivery details.");
       }
 
       if (phone.length !== 10 || !/^[6-9][0-9]{9}$/.test(phone)) {
-        alert("❌ Enter a valid 10-digit Indian mobile number starting with 6, 7, 8 or 9");
-        document.getElementById("phone").focus();
+        alert("❌ Enter a valid 10-digit Indian mobile number.");
+        document.getElementById("phone")?.focus();
         return;
       }
 
-      // Amount calculation
-      const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+      const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
       const delivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
       const totalAmount = subtotal + delivery;
       const amountInPaise = totalAmount * 100;
 
       const itemsDescription = cart.map(i => `${i.name} (x${i.qty})`).join(", ");
 
-      // Razorpay Options Setup
+      // Setup Razorpay
       var options = {
-        "key": "rzp_live_T9fdcBxIRGP1MY", // 🌟 DASHBOARD SE APNA KEY_ID YAHAN PASTE KAREIN
+        "key": "YOUR_RAZORPAY_KEY_ID", // 🌟 Apni asli Key Id lagayein (e.g., rzp_test_...)
         "amount": amountInPaise,
         "currency": "INR",
         "name": "TRP Electronics",
         "description": "Components Purchase",
         "image": "images/logo.png",
         "handler": function (response) {
-          // 🔥 YEH BLOCK TABHI CHALEGA JAB PAYMENT SUCCESSFUL HO JAYEGI
           alert(`🎉 Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
 
-          // URL Encoded safe WhatsApp string format
           const orderText = cart.map(i => `• ${i.name} - ₹${i.price} x ${i.qty}`).join("\n");
           const msg = `🧾 *New Verified Order*\n*Payment ID:* ${response.razorpay_payment_id}\n--------------------\n${orderText}\n--------------------\n*Delivery:* ₹${delivery}\n*Total Paid:* ₹${totalAmount}\n\n👤 *Name:* ${name}\n🏠 *Address:* ${address}\n📮 *Pincode:* ${pincode}\n📞 *Phone:* ${phone}`;
           
-          // Clear cart storage immediately after order confirmation
           cart = [];
           saveCart();
           renderCart();
 
-          // Open official safe web API whatsapp link
           window.open(`https://api.whatsapp.com/send?phone=919115603213&text=${encodeURIComponent(msg)}`, "_blank");
         },
         "prefill": {
@@ -316,73 +258,33 @@ function showCartAlert(productName) {
         var rzp1 = new Razorpay(options);
         rzp1.open();
       } catch (err) {
-        alert("❌ Razorpay initialize karne me error: " + err.message + "\nKripya check karein ki aapki Key ID sahi hai ya nahi.");
+        alert("❌ Razorpay Open Error: " + err.message + "\nCheck Key ID configuration.");
       }
     });
-const menuToggle = document.getElementById("menuToggle");
-const mobileMenu = document.getElementById("mobileMenu");
-
-menuToggle.addEventListener("click", () => {
-  mobileMenu.classList.toggle("show");
-});
-
-
-const phoneInput = document.getElementById("phone");
-const orderBtn = document.getElementById("orderNow");
-
-// allow only numbers
-phoneInput.addEventListener("input", () => {
-  phoneInput.value = phoneInput.value.replace(/[^0-9]/g, "");
-  if (phoneInput.value.length > 10) {
-    phoneInput.value = phoneInput.value.slice(0, 10);
-  }
-});
-
-orderBtn.addEventListener("click", function (e) {
-  e.preventDefault(); // 🔥 PROCESS STOP HERE
-
-  const phone = phoneInput.value.trim();
-
-  // ❌ length check
-  if (phone.length !== 10) {
-    alert("❌ Enter exactly 10 digit mobile number");
-    phoneInput.focus();
-    return; // 🛑 STOP
   }
 
-  // ❌ India number check
-  if (!/^[6-9][0-9]{9}$/.test(phone)) {
-    alert("❌ Mobile number must start with 6, 7, 8 or 9");
-    phoneInput.focus();
-    return; // 🛑 STOP
-  }
-
-  // ✅ ONLY VALID CASE REACHES HERE
-  const whatsappNumber = "91XXXXXXXXXX"; // apna number
-  const message = `New Order\nPhone: ${phone}`;
-  const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-
-  window.open(whatsappURL, "_blank"); // ✅ NOW SAFE
-});
-
-// expand card
-document.addEventListener("click", function(e) {
-  if(e.target.classList.contains("arrow")) {
-    const card = e.target.closest(".product-card");
-    card.classList.toggle("active");
-  }
-});
-
-// cart
-function addToCart(name) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.push(name);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Added to cart");
-}
-
-fetch("http://localhost:5000/products")
-  .then(res => res.json())
-  .then(data => {
-    console.log(data);
+  /* ---------- 8. MOBILE NAV TOGGLE ---------- */
+  const menuToggle = document.getElementById("menuToggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  menuToggle?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("show");
   });
+
+  /* ---------- 9. EXPAND CARD ARROW LOOK ---------- */
+  document.addEventListener("click", function(e) {
+    if(e.target.classList.contains("arrow")) {
+      const card = e.target.closest(".product-card");
+      card?.classList.toggle("active");
+    }
+  });
+
+  // Phone input formatting restrictor 
+  const phoneInput = document.getElementById("phone");
+  phoneInput?.addEventListener("input", () => {
+    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, "");
+    if (phoneInput.value.length > 10) {
+      phoneInput.value = phoneInput.value.slice(0, 10);
+    }
+  });
+
+});
