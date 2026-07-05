@@ -248,10 +248,10 @@ function showCartAlert(productName) {
     renderCart();
 
     // ========================================================
-    // UPDATED RAZORPAY AUTOMATIC PAYMENT SYSTEM (METHOD B)
+    // 100% FIXED AUTOMATIC PAYMENT SYSTEM (METHOD B)
     // ========================================================
     orderNow?.addEventListener("click", (e) => {
-      e.preventDefault(); // Stop default form submit/refresh
+      e.preventDefault(); // Default submit/refresh ko stop karein
 
       if (cart.length === 0) return alert("❌ Add products first.");
       
@@ -271,68 +271,54 @@ function showCartAlert(productName) {
         return;
       }
 
-      // Dynamic amount calculation
+      // Amount calculation
       const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
       const delivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
       const totalAmount = subtotal + delivery;
-
-      // Razorpay amount humesha Paise me accept karta hai (₹1 = 100 Paise)
       const amountInPaise = totalAmount * 100;
 
-      // Cart details to show on Razorpay dashboard
       const itemsDescription = cart.map(i => `${i.name} (x${i.qty})`).join(", ");
 
       // Razorpay Options Setup
       var options = {
-        "key": "YOUR_RAZORPAY_KEY_ID", // 🌟 Dashboard se apna Key ID yahan paste karein
+        "key": "rzp_live_T9fdcBxIRGP1MY", // 🌟 DASHBOARD SE APNA KEY_ID YAHAN PASTE KAREIN
         "amount": amountInPaise,
         "currency": "INR",
         "name": "TRP Electronics",
         "description": "Components Purchase",
-        "image": "images/logo.png", // Web logo path
+        "image": "images/logo.png",
         "handler": function (response) {
-          // 🔥 PAYMENT SUCCESS: Yeh function tabhi chalega jab payment done ho jayegi
+          // 🔥 YEH BLOCK TABHI CHALEGA JAB PAYMENT SUCCESSFUL HO JAYEGI
           alert(`🎉 Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
 
-          // Hybrid flow security: Verification ke liye dynamic data WhatsApp link par bhejenge
-          const orderText = cart.map(i => `• ${i.name} - ₹${i.price} × ${i.qty}`).join("%0A");
-          const msg = `🧾 *New Verified Order*%0A*Payment ID:* ${response.razorpay_payment_id}%0A--------------------%0A${orderText}%0A--------------------%0A*Delivery:* ₹${delivery}%0A*Total Paid:* ₹${totalAmount}%0A%0A👤 *Name:* ${name}%0A🏠 *Address:* ${address}%0A📮 *Pincode:* ${pincode}%0A📞 *Phone:* ${phone}`;
+          // URL Encoded safe WhatsApp string format
+          const orderText = cart.map(i => `• ${i.name} - ₹${i.price} x ${i.qty}`).join("\n");
+          const msg = `🧾 *New Verified Order*\n*Payment ID:* ${response.razorpay_payment_id}\n--------------------\n${orderText}\n--------------------\n*Delivery:* ₹${delivery}\n*Total Paid:* ₹${totalAmount}\n\n👤 *Name:* ${name}\n🏠 *Address:* ${address}\n📮 *Pincode:* ${pincode}\n📞 *Phone:* ${phone}`;
           
           // Clear cart storage immediately after order confirmation
           cart = [];
           saveCart();
           renderCart();
 
-          // Open WhatsApp text with auto generated billing data
-          window.open(`https://wa.me/919115603213?text=${msg}`, "_blank");
+          // Open official safe web API whatsapp link
+          window.open(`https://api.whatsapp.com/send?phone=919115603213&text=${encodeURIComponent(msg)}`, "_blank");
         },
         "prefill": {
           "name": name,
-          "email": "", // Optional: Agar user email save karwaye toh field lagayein
           "contact": phone
         },
         "theme": {
-          "color": "#0052FF" // Website primary theme color
+          "color": "#0052FF"
         }
       };
 
-      // Checkout Popup Open
-      var rzp1 = new Razorpay(options);
-      rzp1.open();
+      try {
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+      } catch (err) {
+        alert("❌ Razorpay initialize karne me error: " + err.message + "\nKripya check karein ki aapki Key ID sahi hai ya nahi.");
+      }
     });
-
-    backToShop?.addEventListener("click", (e) => {
-      // normal link logic
-    });
-  }
-
-    backToShop?.addEventListener("click", (e) => {
-      // normal link; user can go back to shop
-    });
-  }
-
-});
-
 const menuToggle = document.getElementById("menuToggle");
 const mobileMenu = document.getElementById("mobileMenu");
 
