@@ -186,26 +186,145 @@ function showCartAlert(productName) {
 
     renderCart();
 
-    orderNow?.addEventListener("click", () => {
-      if (cart.length === 0) return alert("Add products first.");
+    /* ---------- on cart.html: render cart, qty, remove, order ---------- */
+  if (document.body.classList.contains("cart-page")) {
+    const itemsContainer = document.getElementById("cart-items-list");
+    const summarySubtotal = document.getElementById("summary-subtotal");
+    const summaryDelivery = document.getElementById("summary-delivery");
+    const summaryTotal = document.getElementById("summary-total");
+    const orderNow = document.getElementById("orderNow");
+    const backToShop = document.getElementById("backToShop");
+
+    function renderCart() {
+      itemsContainer.innerHTML = "";
+      let subtotal = 0;
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = "<p>Your cart is empty. <a href='components.html'>Continue shopping</a></p>";
+      } else {
+        cart.forEach((it, idx) => {
+          subtotal += it.price * it.qty;
+          const row = document.createElement("div");
+          row.className = "cart-row";
+          row.innerHTML = `
+            <img src="${it.img || 'images/all.png'}" alt="">
+            <div class="info">
+              <h4>${it.name}</h4>
+              <p>₹${it.price} each</p>
+            </div>
+            <div class="controls">
+              <input class="qty-input" data-i="${idx}" type="number" min="1" value="${it.qty}">
+              <button class="remove-btn" data-i="${idx}">Remove</button>
+            </div>
+          `;
+          itemsContainer.appendChild(row);
+        });
+      }
+
+      const delivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
+      summarySubtotal.textContent = `Subtotal: ₹${subtotal}`;
+      summaryDelivery.textContent = `Delivery: ₹${delivery}`;
+      summaryTotal.textContent = `Total: ₹${subtotal + delivery}`;
+
+      // attach listeners
+      document.querySelectorAll(".qty-input").forEach(inp => {
+        inp.onchange = (e) => {
+          const i = parseInt(e.target.dataset.i, 10);
+          const v = Math.max(1, parseInt(e.target.value, 10) || 1);
+          cart[i].qty = v;
+          saveCart();
+          renderCart();
+        };
+      });
+      document.querySelectorAll(".remove-btn").forEach(b => {
+        b.onclick = (e) => {
+          const i = parseInt(e.target.dataset.i, 10);
+          cart.splice(i,1);
+          saveCart();
+          renderCart();
+        };
+      });
+    }
+
+    renderCart();
+
+    // ========================================================
+    // UPDATED RAZORPAY AUTOMATIC PAYMENT SYSTEM (METHOD B)
+    // ========================================================
+    orderNow?.addEventListener("click", (e) => {
+      e.preventDefault(); // Stop default form submit/refresh
+
+      if (cart.length === 0) return alert("❌ Add products first.");
+      
       const name = document.getElementById("name").value.trim();
       const address = document.getElementById("address").value.trim();
       const pincode = document.getElementById("pincode").value.trim();
       const phone = document.getElementById("phone").value.trim();
-      if (!name || !address || !pincode || !phone) return alert("Please fill all address details.");
 
+      // Form validation checkpoints
+      if (!name || !address || !pincode || !phone) {
+        return alert("❌ Please fill all address details.");
+      }
+
+      if (phone.length !== 10 || !/^[6-9][0-9]{9}$/.test(phone)) {
+        alert("❌ Enter a valid 10-digit Indian mobile number starting with 6, 7, 8 or 9");
+        document.getElementById("phone").focus();
+        return;
+      }
+
+      // Dynamic amount calculation
       const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
       const delivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
-      const total = subtotal + delivery;
-      const orderText = cart.map(i => `• ${i.name} - ₹${i.price} × ${i.qty}`).join("%0A");
-      const msg = `🧾 *New Order*%0A${orderText}%0A--------------------%0A*Delivery:* ₹${delivery}%0A*Total:* ₹${total}%0A%0A👤 ${name}%0A🏠 ${address}%0A📮 ${pincode}%0A📞 ${phone}`;
-      window.open(`https://wa.me/919115603213?text=${msg}`, "_blank");
+      const totalAmount = subtotal + delivery;
 
-      // clear cart after ordering
-      cart = [];
-      saveCart();
-      renderCart();
+      // Razorpay amount humesha Paise me accept karta hai (₹1 = 100 Paise)
+      const amountInPaise = totalAmount * 100;
+
+      // Cart details to show on Razorpay dashboard
+      const itemsDescription = cart.map(i => `${i.name} (x${i.qty})`).join(", ");
+
+      // Razorpay Options Setup
+      var options = {
+        "key": "YOUR_RAZORPAY_KEY_ID", // 🌟 Dashboard se apna Key ID yahan paste karein
+        "amount": amountInPaise,
+        "currency": "INR",
+        "name": "TRP Electronics",
+        "description": "Components Purchase",
+        "image": "images/logo.png", // Web logo path
+        "handler": function (response) {
+          // 🔥 PAYMENT SUCCESS: Yeh function tabhi chalega jab payment done ho jayegi
+          alert(`🎉 Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
+
+          // Hybrid flow security: Verification ke liye dynamic data WhatsApp link par bhejenge
+          const orderText = cart.map(i => `• ${i.name} - ₹${i.price} × ${i.qty}`).join("%0A");
+          const msg = `🧾 *New Verified Order*%0A*Payment ID:* ${response.razorpay_payment_id}%0A--------------------%0A${orderText}%0A--------------------%0A*Delivery:* ₹${delivery}%0A*Total Paid:* ₹${totalAmount}%0A%0A👤 *Name:* ${name}%0A🏠 *Address:* ${address}%0A📮 *Pincode:* ${pincode}%0A📞 *Phone:* ${phone}`;
+          
+          // Clear cart storage immediately after order confirmation
+          cart = [];
+          saveCart();
+          renderCart();
+
+          // Open WhatsApp text with auto generated billing data
+          window.open(`https://wa.me/919115603213?text=${msg}`, "_blank");
+        },
+        "prefill": {
+          "name": name,
+          "email": "", // Optional: Agar user email save karwaye toh field lagayein
+          "contact": phone
+        },
+        "theme": {
+          "color": "#0052FF" // Website primary theme color
+        }
+      };
+
+      // Checkout Popup Open
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
     });
+
+    backToShop?.addEventListener("click", (e) => {
+      // normal link logic
+    });
+  }
 
     backToShop?.addEventListener("click", (e) => {
       // normal link; user can go back to shop
