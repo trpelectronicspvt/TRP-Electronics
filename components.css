@@ -111,17 +111,14 @@ body.components-page {
 -----------------------------------*/
 @media (max-width: 700px) {
   .second-left {
-    order: 1;
     width: 100%;
     padding: 6px 0;
   }
   .second-center {
-    order: 3;
     width: 100%;
     padding: 6px 0;
   }
   .second-right {
-    order: 2;
     width: 100%;
     justify-content: flex-end;
     padding: 6px 0;
