@@ -175,13 +175,13 @@ body.dark-mode .hero {
 }
 
 .project-card {
-  width: 250px;   /* Fixed width */
+  width: 190px;   /* Fixed width */
   flex: 0 0 auto; /* Prevent stretching */
   background: white;
   border-radius: 10px;
-  padding: 15px;
+  padding: 10px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 6px rgba(0,0,0,0.1);
 }
 .project-card:hover {
   transform: translateY(-5px);
