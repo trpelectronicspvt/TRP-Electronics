@@ -663,9 +663,9 @@ body.dark-mode .app-card p {
 }
 /* ===== Footer ===== */
 footer {
-  background: #0044cc;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  margin-top: 40px;
+  background: #0044cc !important;
+  color: white !important;
+  text-align: center !important;
+  padding: 15px !important;
+  margin-top: 40px !important;
 }
