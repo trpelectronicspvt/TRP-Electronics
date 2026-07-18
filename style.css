@@ -119,7 +119,24 @@ body.dark-mode .hero {
 .about-section b {
   font-size: 15px;   /* Mission / Vision bold text */
 }
+.about-toggle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee; /* Optional: Separator line */
+}
 
+.about-arrow {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+#aboutContent {
+  margin-top: 15px;
+  /* Aapka existing p style yahan aayega */
+}
 
 /* ===== Featured Projects (Home Page) ===== */
 .projects {
