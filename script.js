@@ -66,13 +66,66 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   updateHeaderCount(); // Initialize counter on load
 
-  /* ---------- 5. COMPONENTS.HTML: ADD TO CART BEHAVIOR ---------- */
-  document.querySelectorAll(".add-cart").forEach(btn => {
-    btn.addEventListener("click", () => {
+  /* ---------- 5. DYNAMIC EXPANDABLE CARDS + DATASHEET BUILDER ---------- */
+  document.querySelectorAll(".product-card").forEach(card => {
+    // 1. Add Expand Button
+    const expandBtn = document.createElement("button");
+    expandBtn.className = "expand-icon-btn";
+    expandBtn.innerHTML = "⤢";
+    expandBtn.title = "Expand Details";
+    card.appendChild(expandBtn);
+
+    // 2. Fetch Card Info
+    const title = card.querySelector("h3")?.textContent || "Electronic Component";
+    const priceText = card.querySelector("p")?.textContent || "₹0";
+    const priceVal = card.querySelector(".add-cart")?.dataset.price || "0";
+    const cleanName = title.toLowerCase().replace(/[^a-z0-9]/g, "-");
+
+    // 3. Create Expanded Content Area
+    const expandedBody = document.createElement("div");
+    expandedBody.className = "card-expanded-body";
+    expandedBody.innerHTML = `
+      <h3>${title}</h3>
+      <p class="expand-price">${priceText}</p>
+      <p class="expand-desc">
+        <strong>Technical Specs:</strong> High quality, tested component for circuits and DIY projects. Features standard pin spacing, reliable stability, and long operational life.
+      </p>
+      <div class="card-expanded-actions">
+        <a href="datasheets/${cleanName}-datasheet.pdf" download="${cleanName}-datasheet.pdf" class="datasheet-btn" target="_blank">
+          📥 Download Datasheet
+        </a>
+        <button class="add-cart" data-name="${title}" data-price="${priceVal}">Add to Cart ❤️</button>
+      </div>
+    `;
+    card.appendChild(expandedBody);
+
+    // 4. Click Listener to Toggle Expand
+    expandBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isExpanded = card.classList.contains("expanded");
+      
+      // Close any other open card
+      document.querySelectorAll(".product-card.expanded").forEach(c => {
+        c.classList.remove("expanded");
+        c.querySelector(".expand-icon-btn").innerHTML = "⤢";
+      });
+
+      if (!isExpanded) {
+        card.classList.add("expanded");
+        expandBtn.innerHTML = "✕"; // Close icon
+      }
+    });
+  });
+
+  /* ---------- 6. COMPONENTS.HTML: ADD TO CART BEHAVIOR ---------- */
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("add-cart")) {
+      const btn = e.target;
       const name = btn.dataset.name;
       const price = parseFloat(btn.dataset.price);
+      if (!name || isNaN(price)) return;
+
       const found = cart.find(x => x.name === name);
-      
       if (found) {
         found.qty++;
       } else {
@@ -83,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       saveCart();
       showCartAlert(name);
-    });
+    }
   });
 
   function showCartAlert(productName) {
@@ -99,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ---------- 6. COMPONENTS.HTML: SEARCH + CATEGORY FILTER ---------- */
+  /* ---------- 7. COMPONENTS.HTML: SEARCH + CATEGORY FILTER ---------- */
   const searchInput = document.getElementById("componentSearch");
   const productCards = Array.from(document.querySelectorAll(".product-card"));
   let activeCategory = "all";
@@ -130,10 +183,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   if (productCards.length > 0) {
-    applyFilters(); // Initial render setup
+    applyFilters();
   }
 
-  /* ---------- 7. CART.HTML: RENDER CART & RAZORPAY SYSTEM ---------- */
+  /* ---------- 8. CART.HTML: RENDER CART & RAZORPAY SYSTEM ---------- */
   if (document.body.classList.contains("cart-page")) {
     const itemsContainer = document.getElementById("cart-items-list");
     const summarySubtotal = document.getElementById("summary-subtotal");
@@ -173,7 +226,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (summaryDelivery) summaryDelivery.textContent = `Delivery: ₹${delivery}`;
       if (summaryTotal) summaryTotal.textContent = `Total: ₹${subtotal + delivery}`;
 
-      // Quantity Update Listeners
       document.querySelectorAll(".qty-input").forEach(inp => {
         inp.onchange = (e) => {
           const i = parseInt(e.target.dataset.i, 10);
@@ -184,7 +236,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
       });
 
-      // Remove Product Listeners
       document.querySelectorAll(".remove-btn").forEach(b => {
         b.onclick = (e) => {
           const i = parseInt(e.target.dataset.i, 10);
@@ -197,7 +248,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderCart();
 
-    // FIXED SUBMIT LOGIC WITH VALIDATION & RAZORPAY
     orderNow?.addEventListener("click", (e) => {
       e.preventDefault();
 
@@ -225,9 +275,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const itemsDescription = cart.map(i => `${i.name} (x${i.qty})`).join(", ");
 
-      // Setup Razorpay
       var options = {
-        "key": "rzp_live_T9fdcBxIRGP1MY", // 🌟 Apni asli Key Id lagayein (e.g., rzp_test_...)
+        "key": "rzp_live_T9fdcBxIRGP1MY", 
         "amount": amountInPaise,
         "currency": "INR",
         "name": "TRP Electronics",
@@ -263,22 +312,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ---------- 8. MOBILE NAV TOGGLE ---------- */
+  /* ---------- 9. MOBILE NAV TOGGLE & ABOUT ACCORDION ---------- */
   const menuToggle = document.getElementById("menuToggle");
   const mobileMenu = document.getElementById("mobileMenu");
   menuToggle?.addEventListener("click", () => {
     mobileMenu?.classList.toggle("show");
   });
 
-  /* ---------- 9. EXPAND CARD ARROW LOOK ---------- */
-  document.addEventListener("click", function(e) {
-    if(e.target.classList.contains("arrow")) {
-      const card = e.target.closest(".product-card");
-      card?.classList.toggle("active");
+  const aboutToggle = document.getElementById('aboutToggle');
+  aboutToggle?.addEventListener('click', function() {
+    const content = document.getElementById('aboutContent');
+    const arrow = document.getElementById('aboutArrow');
+    if (content) {
+      content.classList.toggle('show');
+      if (arrow) {
+        arrow.style.transform = content.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
     }
   });
 
-  // Phone input formatting restrictor 
   const phoneInput = document.getElementById("phone");
   phoneInput?.addEventListener("input", () => {
     phoneInput.value = phoneInput.value.replace(/[^0-9]/g, "");
@@ -287,16 +339,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-});
-document.getElementById('aboutToggle').addEventListener('click', function() {
-    const content = document.getElementById('aboutContent');
-    const arrow = document.getElementById('aboutArrow');
-
-    if (content.style.display === 'none') {
-        content.style.display = 'block';
-        arrow.style.transform = 'rotate(180deg)';
-    } else {
-        content.style.display = 'none';
-        arrow.style.transform = 'rotate(0deg)';
-    }
 });
