@@ -638,3 +638,57 @@ body.dark-mode .card-expanded-body .expand-desc {
     width: 100%;
   }
 }
+/* Ensure Expand Details body is hidden by default */
+.card-details-expand {
+  display: none;
+}
+
+/* Fixed Expand Button on Top Right Corner */
+.product-card .expand-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 68, 204, 0.1);
+  color: #0044cc;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.product-card .expand-btn:hover {
+  background: #0044cc;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Expanded Card View Layout */
+.product-card.expanded {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+  gap: 25px;
+  padding: 20px;
+  border: 2px solid #0044cc;
+}
+
+.product-card.expanded > h3,
+.product-card.expanded > p,
+.product-card.expanded > .add-cart {
+  display: none; /* Hide compact elements in expand mode */
+}
+
+.product-card.expanded .card-details-expand {
+  display: block; /* Show expanded details */
+  flex: 1;
+}
