@@ -66,36 +66,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   updateHeaderCount(); // Initialize counter on load
 
-  /* ---------- 5. CLEAN EXPAND CARD TOGGLE LOGIC ---------- */
-  document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("expand-btn") || e.target.closest(".expand-btn")) {
-      const btn = e.target.closest(".expand-btn");
-      const card = btn.closest(".product-card");
-      if (!card) return;
-
-      const isExpanded = card.classList.contains("expanded");
-
-      // Close all currently open expanded cards
-      document.querySelectorAll(".product-card.expanded").forEach(c => {
-        c.classList.remove("expanded");
-        const b = c.querySelector(".expand-btn");
-        if (b) b.innerHTML = "⤢";
-      });
-
-      // Toggle clicked card
-      if (!isExpanded) {
-        card.classList.add("expanded");
-        btn.innerHTML = "✕";
-      }
-    }
-  });
-
-  /* ---------- 6. COMPONENTS.HTML: ADD TO CART BEHAVIOR ---------- */
+  /* ---------- 5. COMPONENTS.HTML: ADD TO CART BEHAVIOR ---------- */
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("add-cart")) {
       const btn = e.target;
-      const name = btn.dataset.name;
-      const price = parseFloat(btn.dataset.price);
+      let name = btn.dataset.name;
+      let price = parseFloat(btn.dataset.price);
+
+      // Agar Modal ke andar se click hua ho
+      if (!name || isNaN(price)) {
+        name = document.getElementById("modalTitle")?.textContent;
+        price = parseFloat(document.getElementById("modalAddCart")?.dataset.price);
+      }
+
       if (!name || isNaN(price)) return;
 
       const found = cart.find(x => x.name === name);
@@ -103,12 +86,16 @@ document.addEventListener("DOMContentLoaded", () => {
         found.qty++;
       } else {
         const productCard = btn.closest('.product-card');
-        const imgUrl = productCard?.querySelector('img')?.src || 'images/all.png';
+        const imgUrl = productCard?.querySelector('img')?.src || document.getElementById("modalImg")?.src || 'images/all.png';
         cart.push({ name, price, qty: 1, img: imgUrl });
       }
       
       saveCart();
       showCartAlert(name);
+
+      // Close modal if item added from modal
+      const modal = document.getElementById("product-modal");
+      if (modal) modal.classList.remove("active");
     }
   });
 
@@ -125,6 +112,52 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* ---------- 6. EXPAND POPUP MODAL LOGIC ---------- */
+  const modal = document.getElementById("product-modal");
+  const modalImg = document.getElementById("modalImg");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalPrice = document.getElementById("modalPrice");
+  const modalDesc = document.getElementById("modalDesc");
+  const modalDatasheet = document.getElementById("modalDatasheet");
+  const modalAddCart = document.getElementById("modalAddCart");
+  const closeModal = document.getElementById("closeModal");
+
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("expand-btn")) {
+      const card = e.target.closest(".product-card");
+      if (!card) return;
+
+      const title = card.querySelector("h3")?.textContent || "Component";
+      const priceText = card.querySelector("p")?.textContent || "₹0";
+      const imgSrc = card.querySelector("img")?.src || "images/all.png";
+      const addCartBtn = card.querySelector(".add-cart");
+      const priceVal = addCartBtn?.dataset.price || "0";
+
+      const desc = card.dataset.desc || `High quality ${title} component for electronics DIY projects, circuit designing, and testing.`;
+      const datasheet = card.dataset.datasheet || `datasheets/${title.toLowerCase().replace(/[^a-z0-9]/g, "-")}.pdf`;
+
+      if (modalImg) modalImg.src = imgSrc;
+      if (modalTitle) modalTitle.textContent = title;
+      if (modalPrice) modalPrice.textContent = priceText;
+      if (modalDesc) modalDesc.innerHTML = `<strong>Description:</strong> ${desc}`;
+      if (modalDatasheet) modalDatasheet.href = datasheet;
+      if (modalAddCart) {
+        modalAddCart.dataset.name = title;
+        modalAddCart.dataset.price = priceVal;
+      }
+
+      if (modal) modal.classList.add("active");
+    }
+  });
+
+  closeModal?.addEventListener("click", () => {
+    modal?.classList.remove("active");
+  });
+
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) modal.classList.remove("active");
+  });
+
   /* ---------- 7. COMPONENTS.HTML: SEARCH + CATEGORY FILTER ---------- */
   const searchInput = document.getElementById("componentSearch");
   const productCards = Array.from(document.querySelectorAll(".product-card"));
@@ -138,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const keywords = (card.dataset.keywords || "").toLowerCase();
       const matchesCategory = (activeCategory === "all") || (cat === activeCategory.toLowerCase());
       const matchesSearch = !q || name.includes(q) || keywords.includes(q);
-      card.style.display = (matchesCategory && matchesSearch) ? "block" : "none";
+      card.style.display = (matchesCategory && matchesSearch) ? "flex" : "none";
     });
   }
 
@@ -156,10 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   if (productCards.length > 0) {
-    applyFilters();
+    applyFilters(); // Initial render setup
   }
 
-  /* ---------- 8. CART.HTML: RENDER CART & RAZORPAY SYSTEM ---------- */
+  /* ---------- 8. CART.HTML: RENDER CART & RAZORPAY SYSTEM (EXACT ORIGINAL) ---------- */
   if (document.body.classList.contains("cart-page")) {
     const itemsContainer = document.getElementById("cart-items-list");
     const summarySubtotal = document.getElementById("summary-subtotal");
@@ -199,6 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (summaryDelivery) summaryDelivery.textContent = `Delivery: ₹${delivery}`;
       if (summaryTotal) summaryTotal.textContent = `Total: ₹${subtotal + delivery}`;
 
+      // Quantity Update Listeners
       document.querySelectorAll(".qty-input").forEach(inp => {
         inp.onchange = (e) => {
           const i = parseInt(e.target.dataset.i, 10);
@@ -209,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
       });
 
+      // Remove Product Listeners
       document.querySelectorAll(".remove-btn").forEach(b => {
         b.onclick = (e) => {
           const i = parseInt(e.target.dataset.i, 10);
@@ -221,6 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderCart();
 
+    // FIXED SUBMIT LOGIC WITH VALIDATION & RAZORPAY
     orderNow?.addEventListener("click", (e) => {
       e.preventDefault();
 
@@ -246,8 +282,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const totalAmount = subtotal + delivery;
       const amountInPaise = totalAmount * 100;
 
+      const itemsDescription = cart.map(i => `${i.name} (x${i.qty})`).join(", ");
+
+      // Setup Razorpay
       var options = {
-        "key": "rzp_live_T9fdcBxIRGP1MY", 
+        "key": "rzp_live_T9fdcBxIRGP1MY", // 🌟 Key ID Preserved
         "amount": amountInPaise,
         "currency": "INR",
         "name": "TRP Electronics",
@@ -294,14 +333,19 @@ document.addEventListener("DOMContentLoaded", () => {
   aboutToggle?.addEventListener('click', function() {
     const content = document.getElementById('aboutContent');
     const arrow = document.getElementById('aboutArrow');
+
     if (content) {
-      content.classList.toggle('show');
-      if (arrow) {
-        arrow.style.transform = content.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
+      if (content.style.display === 'none' || !content.style.display) {
+        content.style.display = 'block';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        content.style.display = 'none';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
       }
     }
   });
 
+  // Phone input formatting restrictor 
   const phoneInput = document.getElementById("phone");
   phoneInput?.addEventListener("input", () => {
     phoneInput.value = phoneInput.value.replace(/[^0-9]/g, "");
