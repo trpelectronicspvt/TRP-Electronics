@@ -66,55 +66,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   updateHeaderCount(); // Initialize counter on load
 
-  /* ---------- 5. DYNAMIC EXPANDABLE CARDS + DATASHEET BUILDER ---------- */
-  document.querySelectorAll(".product-card").forEach(card => {
-    // 1. Add Expand Button
-    const expandBtn = document.createElement("button");
-    expandBtn.className = "expand-icon-btn";
-    expandBtn.innerHTML = "⤢";
-    expandBtn.title = "Expand Details";
-    card.appendChild(expandBtn);
+  /* ---------- 5. CLEAN EXPAND CARD TOGGLE LOGIC ---------- */
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("expand-btn") || e.target.closest(".expand-btn")) {
+      const btn = e.target.closest(".expand-btn");
+      const card = btn.closest(".product-card");
+      if (!card) return;
 
-    // 2. Fetch Card Info
-    const title = card.querySelector("h3")?.textContent || "Electronic Component";
-    const priceText = card.querySelector("p")?.textContent || "₹0";
-    const priceVal = card.querySelector(".add-cart")?.dataset.price || "0";
-    const cleanName = title.toLowerCase().replace(/[^a-z0-9]/g, "-");
-
-    // 3. Create Expanded Content Area
-    const expandedBody = document.createElement("div");
-    expandedBody.className = "card-expanded-body";
-    expandedBody.innerHTML = `
-      <h3>${title}</h3>
-      <p class="expand-price">${priceText}</p>
-      <p class="expand-desc">
-        <strong>Technical Specs:</strong> High quality, tested component for circuits and DIY projects. Features standard pin spacing, reliable stability, and long operational life.
-      </p>
-      <div class="card-expanded-actions">
-        <a href="datasheets/${cleanName}-datasheet.pdf" download="${cleanName}-datasheet.pdf" class="datasheet-btn" target="_blank">
-          📥 Download Datasheet
-        </a>
-        <button class="add-cart" data-name="${title}" data-price="${priceVal}">Add to Cart ❤️</button>
-      </div>
-    `;
-    card.appendChild(expandedBody);
-
-    // 4. Click Listener to Toggle Expand
-    expandBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
       const isExpanded = card.classList.contains("expanded");
-      
-      // Close any other open card
+
+      // Close all currently open expanded cards
       document.querySelectorAll(".product-card.expanded").forEach(c => {
         c.classList.remove("expanded");
-        c.querySelector(".expand-icon-btn").innerHTML = "⤢";
+        const b = c.querySelector(".expand-btn");
+        if (b) b.innerHTML = "⤢";
       });
 
+      // Toggle clicked card
       if (!isExpanded) {
         card.classList.add("expanded");
-        expandBtn.innerHTML = "✕"; // Close icon
+        btn.innerHTML = "✕";
       }
-    });
+    }
   });
 
   /* ---------- 6. COMPONENTS.HTML: ADD TO CART BEHAVIOR ---------- */
@@ -272,8 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const delivery = subtotal >= freeDeliveryLimit ? 0 : deliveryCharge;
       const totalAmount = subtotal + delivery;
       const amountInPaise = totalAmount * 100;
-
-      const itemsDescription = cart.map(i => `${i.name} (x${i.qty})`).join(", ");
 
       var options = {
         "key": "rzp_live_T9fdcBxIRGP1MY", 
