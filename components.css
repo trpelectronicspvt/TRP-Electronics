@@ -410,3 +410,28 @@ body.dark-mode .product-card h3 {
 body.dark-mode .product-card p {
   color: #ccc;
 }
+/* 🌟 SMOOTH FLOATING TOAST POP-UP (.cart-alert) */
+.cart-alert {
+  position: fixed;
+  bottom: 30px; /* Top ki jagah bottom screen par floating pop-up */
+  left: 50%;
+  transform: translateX(-50%) translateY(100px); /* Initial state: Screen ke niche chhupa hua */
+  background: #28a745; /* Clean Green Toast Background */
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 30px; /* Modern round pill shape */
+  font-size: 15px;
+  font-weight: 600;
+  z-index: 99999; /* Header, Navbar aur sabhi elements ke upar floating rahega */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none; /* Mouse hover block na kare */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth spring/pop-up transition */
+}
+
+/* Jab Javascript .show class toggle karega tab Screen par slide-up hoga */
+.cart-alert.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0); /* Pop-up upar aayega */
+  pointer-events: auto;
+}
