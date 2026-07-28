@@ -92,52 +92,77 @@ body.dark-mode .hero {
 }
 
 .section-title {
-  text-align: left;              /* Text ko left align karne ke liye */
+  text-align: left;
   margin-bottom: 25px;
-  display: inline-block;         /* Background sirf text jitna hi bada rahe */
-  padding: 8px 24px 8px 16px;    /* Text ke andar space (Top Right Bottom Left) */
-  background-color: #0056b3;     /* Aapki theme se match karta hua Dark Blue color (Aap change kar sakte hain) */
-  color: #ffffff;                /* Text color white taaki dark background par saaf dikhe */
-  font-size: 1.5rem;             /* Font size (Aap apne hisab se customize kar sakte hain) */
+  display: inline-block;
+  padding: 8px 24px 8px 16px;
+  background-color: #0056b3;
+  color: #ffffff;
+  font-size: 1.5rem;
   font-weight: bold;
-  
-  /* Left side flat aur right side round border radius */
   border-radius: 0px 30px 30px 0px; 
-  
-  /* Modern clean look ke liye thodi si shadow */
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1); 
 }
+
 .about-section {
-  font-size: 14px;   /* yahan chhota kar diya */
-  line-height: 1.6;  /* readability ke liye */
+  font-size: 14px;
+  line-height: 1.6;
   color: #333;
 }
 .about-section h2 {
-  font-size: 20px;   /* "About Us" heading thoda bada */
+  font-size: 20px;
   margin-bottom: 15px;
 }
 .about-section b {
-  font-size: 15px;   /* Mission / Vision bold text */
+  font-size: 15px;
 }
+
 .about-toggle-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   padding: 10px 0;
-  border-bottom: 1px solid #eee; /* Optional: Separator line */
+  border-bottom: 1px solid #eee;
+  user-select: none; /* Text select highlight hone se rokne ke liye */
 }
 
+/* Arrow smooth 90-degree rotation animation */
 .about-arrow {
   font-size: 20px;
-  transition: transform 0.3s ease;
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Open state par arrow niche Rotate ho jayega */
+.about-toggle-header.active .about-arrow {
+  transform: rotate(90deg);
+}
+
+/* ========================================================
+   🌟 SMOOTH ACCORDION / SLIDE-DOWN ANIMATION (#aboutContent)
+   ======================================================== */
 #aboutContent {
-  margin-top: 15px;
-  /* Aapka existing p style yahan aayega */
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-8px);
+  /* Smooth animation transition for height, opacity & movement */
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s ease-in-out,
+              transform 0.4s ease-in-out,
+              margin 0.4s ease;
+  margin-top: 0;
 }
 
+/* Jab Javascript Content open karega (active class add hone par) */
+#aboutContent.show,
+.about-toggle-header.active + #aboutContent {
+  max-height: 800px; /* Safe limit text height ke liye */
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 15px;
+}
 /* ===== Featured Projects (Home Page) ===== */
 .projects {
   padding: 50px 20px;
