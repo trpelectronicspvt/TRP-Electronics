@@ -322,28 +322,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ---------- 9. MOBILE NAV TOGGLE & ABOUT ACCORDION ---------- */
-  const menuToggle = document.getElementById("menuToggle");
-  const mobileMenu = document.getElementById("mobileMenu");
-  menuToggle?.addEventListener("click", () => {
-    mobileMenu?.classList.toggle("show");
-  });
+ /* ---------- ABOUT SECTION TOGGLE FIX ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  const aboutHeader = document.querySelector(".about-toggle-header") || document.getElementById("aboutToggle");
+  const aboutContent = document.getElementById("aboutContent");
+  const aboutArrow = document.querySelector(".about-arrow") || document.getElementById("aboutArrow");
 
-  const aboutToggle = document.getElementById('aboutToggle');
-  aboutToggle?.addEventListener('click', function() {
-    const content = document.getElementById('aboutContent');
-    const arrow = document.getElementById('aboutArrow');
-
-    if (content) {
-      if (content.style.display === 'none' || !content.style.display) {
-        content.style.display = 'block';
-        if (arrow) arrow.style.transform = 'rotate(180deg)';
-      } else {
-        content.style.display = 'none';
-        if (arrow) arrow.style.transform = 'rotate(0deg)';
-      }
+  aboutHeader?.addEventListener("click", () => {
+    aboutHeader.classList.toggle("active");
+    
+    if (aboutContent) {
+      aboutContent.classList.toggle("show");
+    }
+    
+    if (aboutArrow) {
+      aboutArrow.style.transform = aboutHeader.classList.contains("active") ? "rotate(90deg)" : "rotate(0deg)";
     }
   });
+});
 
   // Phone input formatting restrictor 
   const phoneInput = document.getElementById("phone");
