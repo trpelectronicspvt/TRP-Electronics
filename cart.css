@@ -116,10 +116,11 @@ header {
   padding: 18px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.06);
   text-align: center;
+  cursor: default;
 }
 
-.order-summary h3 { color: #0044cc; margin-bottom: 12px; }
-.total-amount { font-size: 20px; font-weight: 800; color: #111; }
+.order-summary h3 { color: #0044cc; margin-bottom: 12px; cursor: default; }
+.total-amount { font-size: 20px; font-weight: 800; color: #111; cursor: default; }
 
 .primary-btn {
   display: block;
@@ -128,7 +129,6 @@ header {
   background: #4ca557;
   color: #fff;
   border-radius: 12px;
-  border: none;
   font-weight: 700;
   margin-top: 12px;
   cursor: pointer;
