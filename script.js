@@ -322,24 +322,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
- /* ---------- ABOUT SECTION TOGGLE FIX ---------- */
-document.addEventListener("DOMContentLoaded", () => {
+/* ---------- 9. MOBILE NAV TOGGLE & ABOUT ACCORDION ---------- */
+  const menuToggle = document.getElementById("menuToggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  menuToggle?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("show");
+  });
+
   const aboutHeader = document.querySelector(".about-toggle-header") || document.getElementById("aboutToggle");
   const aboutContent = document.getElementById("aboutContent");
   const aboutArrow = document.querySelector(".about-arrow") || document.getElementById("aboutArrow");
 
   aboutHeader?.addEventListener("click", () => {
     aboutHeader.classList.toggle("active");
-    
     if (aboutContent) {
       aboutContent.classList.toggle("show");
     }
-    
     if (aboutArrow) {
       aboutArrow.style.transform = aboutHeader.classList.contains("active") ? "rotate(90deg)" : "rotate(0deg)";
     }
   });
-});
 
   // Phone input formatting restrictor 
   const phoneInput = document.getElementById("phone");
