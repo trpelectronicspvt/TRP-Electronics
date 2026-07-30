@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-/* ---------- 9. MOBILE NAV TOGGLE & ABOUT ACCORDION ---------- */
+  /* ---------- 9. MOBILE NAV TOGGLE & ABOUT ACCORDION FIXED ---------- */
   const menuToggle = document.getElementById("menuToggle");
   const mobileMenu = document.getElementById("mobileMenu");
   menuToggle?.addEventListener("click", () => {
