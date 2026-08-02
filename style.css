@@ -994,6 +994,44 @@ input,
 textarea {
   caret-color: auto !important;
 }
+
+
+
+/* 🚫 DISABLE TEXT SELECTION & BLUE HIGHLIGHT ON CARDS */
+.project-card,
+.product-card,
+.card,
+.second-nav,
+header,
+footer {
+  -webkit-user-select: none !important; /* Safari / Chrome */
+  -moz-user-select: none !important;    /* Firefox */
+  -ms-user-select: none !important;     /* IE / Edge */
+  user-select: none !important;        /* Standard */
+}
+
+/* 🚫 PREVENT IMAGE DRAGGING & BLUE HIGHLIGHT */
+.project-card img,
+.product-card img,
+.card img {
+  -webkit-user-drag: none !important;
+  user-drag: none !important;
+  pointer-events: none !important; /* Prevents long-press image selection on mobile */
+}
+
+/* Allow text selection ONLY in Search Input & Textareas */
+input,
+textarea {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+  pointer-events: auto !important;
+}
+
+
+
+
 /* ===== Footer ===== */
 footer {
   background: #0044cc !important;
