@@ -377,3 +377,62 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+/* ---------- PROJECTS PAGE SEARCH & CATEGORY FILTER ---------- */
+  const projectSearchInput = document.getElementById("projectSearch");
+  const projectSearchClearBtn = document.getElementById("projectSearchClearBtn");
+  const projectCards = Array.from(document.querySelectorAll(".project-card, .card, .product-card"));
+  let activeProjectCat = "all";
+
+  function applyProjectFilters() {
+    const q = (projectSearchInput?.value || "").toLowerCase().trim();
+
+    if (projectSearchInput) {
+      if (q.length > 0) {
+        projectSearchInput.classList.add("has-text");
+        if (projectSearchClearBtn) projectSearchClearBtn.style.display = "block";
+      } else {
+        if (document.activeElement !== projectSearchInput) {
+          projectSearchInput.classList.remove("has-text");
+        }
+        if (projectSearchClearBtn) projectSearchClearBtn.style.display = "none";
+      }
+    }
+
+    projectCards.forEach(card => {
+      const cat = (card.dataset.category || "").toLowerCase();
+      const title = (card.querySelector("h3, h2, .title")?.textContent || "").toLowerCase();
+      const desc = (card.querySelector("p, .desc")?.textContent || "").toLowerCase();
+      const matchesCategory = (activeProjectCat === "all") || (cat === activeProjectCat.toLowerCase());
+      const matchesSearch = !q || title.includes(q) || desc.includes(q);
+
+      card.style.display = (matchesCategory && matchesSearch) ? "block" : "none";
+    });
+  }
+
+  if (projectSearchInput) {
+    projectSearchInput.addEventListener("input", applyProjectFilters);
+    projectSearchInput.addEventListener("focus", () => projectSearchInput.classList.add("has-text"));
+    projectSearchInput.addEventListener("blur", () => {
+      if (!projectSearchInput.value.trim()) {
+        projectSearchInput.classList.remove("has-text");
+      }
+    });
+  }
+
+  projectSearchClearBtn?.addEventListener("click", () => {
+    if (projectSearchInput) {
+      projectSearchInput.value = "";
+      applyProjectFilters();
+      projectSearchInput.focus();
+    }
+  });
+
+  document.querySelectorAll(".second-center .cat-item").forEach(li => {
+    li.addEventListener("click", () => {
+      document.querySelectorAll(".second-center .cat-item").forEach(x => x.classList.remove("active"));
+      li.classList.add("active");
+      activeProjectCat = li.dataset.cat || "all";
+      applyProjectFilters();
+    });
+  });
