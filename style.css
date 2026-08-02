@@ -837,8 +837,8 @@ body.dark-mode .instagram-btn:active { border-color: #e1306c; }
 }
 
 input#projectSearch {
-  width: 42px; /* Default Compact State */
-  height: 40px;
+  width: 0px; /* Default Compact State */
+  height: 37px;
   padding: 0 12px 0 36px;
   border-radius: 25px;
   border: 2px solid #0044cc;
