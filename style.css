@@ -688,99 +688,117 @@ body.dark-mode .app-card p {
 }
 
 /* ========================================================
-   🌟 SLEEK SINGLE-LINE SOCIAL LINKS (CONTACT PAGE)
+   🌟 PREMIUM SOCIAL CARDS (DESKTOP + MOBILE TOUCH OPTIMIZED)
    ======================================================== */
 .contact-links-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  margin: 35px auto 20px;
-  flex-wrap: wrap; /* Screen choti hone par safely wrap hoga */
+  gap: 16px;
+  margin: 35px auto 25px;
   width: 100%;
-  max-width: 750px;
+  max-width: 800px;
 }
 
+/* Base Card Box */
 .social-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 12px 22px;
+  padding: 12px 20px;
   border-radius: 12px;
   background: #ffffff;
-  color: #333333;
+  color: #2c3e50;
   font-weight: 600;
   font-size: 15px;
   text-decoration: none;
-  border: 1px solid #e2e8f0;
+  border: 2px solid #e0e6ed;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
   user-select: none;
+  -webkit-tap-highlight-color: transparent; /* Remove blue flash on mobile tap */
+  flex-shrink: 0; /* Prevents buttons from shrinking */
 }
 
 .social-btn .btn-icon {
-  font-size: 18px;
-  display: inline-block;
-  transition: transform 0.3s ease;
+  font-size: 20px;
+  transition: transform 0.25s ease;
 }
 
-/* Hover Effect: Soft Lift & Shadow */
-.social-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
+/* 🎨 ORIGINAL BRAND LOGO COLORS */
+.email-btn .btn-icon { color: #ea4335; }      
+.whatsapp-btn .btn-icon { color: #25d366; }   
+.youtube-btn .btn-icon { color: #ff0000; }    
+.instagram-btn .btn-icon { color: #e1306c; }  
 
-.social-btn:hover .btn-icon {
-  transform: scale(1.15);
-}
-
-/* 🎨 BRAND COLORED ACCENTS ON HOVER */
-.email-btn:hover {
-  border-color: #ea4335;
-  color: #ea4335;
-}
-
-.whatsapp-btn:hover {
-  border-color: #25d366;
-  color: #25d366;
-}
-
-.youtube-btn:hover {
-  border-color: #ff0000;
-  color: #ff0000;
-}
-
-.instagram-btn:hover {
-  border-color: #e1306c;
-  color: #e1306c;
-}
-
-/* 🌙 DARK MODE SUPPORT */
-body.dark-mode .social-btn {
-  background: #1e1e1e;
-  border-color: #333333;
-  color: #f5f5f5;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-body.dark-mode .email-btn:hover { color: #ff6b6b; border-color: #ff6b6b; }
-body.dark-mode .whatsapp-btn:hover { color: #34d399; border-color: #34d399; }
-body.dark-mode .youtube-btn:hover { color: #ff4d4d; border-color: #ff4d4d; }
-body.dark-mode .instagram-btn:hover { color: #f472b6; border-color: #f472b6; }
-
-/* 📱 MOBILE RESPONSIVE FIX */
-@media (max-width: 600px) {
-  .contact-links-container {
-    gap: 10px;
+/* 🖥️ DESKTOP HOVER EFFECT */
+@media (hover: hover) {
+  .social-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   }
+
+  .social-btn:hover .btn-icon {
+    transform: scale(1.18);
+  }
+
+  .email-btn:hover { border-color: #ea4335; }
+  .whatsapp-btn:hover { border-color: #25d366; }
+  .youtube-btn:hover { border-color: #ff0000; }
+  .instagram-btn:hover { border-color: #e1306c; }
+}
+
+/* 📱 MOBILE TAP / TOUCH ACTIVE EFFECT (Jab ungli se dabaoge) */
+.social-btn:active {
+  transform: scale(0.94) translateY(2px); /* Button press down bounce */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.email-btn:active { border-color: #ea4335; background: rgba(234, 67, 53, 0.05); }
+.whatsapp-btn:active { border-color: #25d366; background: rgba(37, 211, 102, 0.05); }
+.youtube-btn:active { border-color: #ff0000; background: rgba(255, 0, 0, 0.05); }
+.instagram-btn:active { border-color: #e1306c; background: rgba(225, 48, 108, 0.05); }
+
+/* 📱 MOBILE ONE-LINE SCROLLABLE LAYOUT */
+@media (max-width: 650px) {
+  .contact-links-container {
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 15px;
+    gap: 12px;
+    
+    /* Side Fade Gradient mask for smooth scroll indication */
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  }
+
+  .contact-links-container::-webkit-scrollbar {
+    display: none; /* Clean look, no scrollbar */
+  }
+
   .social-btn {
     padding: 10px 16px;
     font-size: 14px;
     border-radius: 10px;
   }
 }
+
+/* 🌙 DARK MODE SUPPORT */
+body.dark-mode .social-btn {
+  background: #1e1e1e;
+  border-color: #333333;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .email-btn:active { border-color: #ea4335; }
+body.dark-mode .whatsapp-btn:active { border-color: #25d366; }
+body.dark-mode .youtube-btn:active { border-color: #ff0000; }
+body.dark-mode .instagram-btn:active { border-color: #e1306c; }
 
 /* ===== Footer ===== */
 footer {
