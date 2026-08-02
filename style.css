@@ -211,6 +211,7 @@ body.dark-mode .hero {
 .project-grid {
   display: flex;
   flex-wrap: wrap;
+  padding: 30px;
   gap: 20px;
   justify-content: center;
   min-height: 300px;
@@ -969,7 +970,30 @@ body.dark-mode .category-menu-new .cat-item.active {
   background: #3c6aff;
   color: #ffffff;
 }
+/* ❌ HIDE TYPING CURSOR / CARET LINE ON ALL CARDS & CONTAINERS */
+.project-card,
+.product-card,
+.card,
+.project-card *,
+.product-card *,
+.card * {
+  caret-color: transparent !important;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
 
+/* Clear selection focus ring */
+*:focus,
+*:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Keep normal caret ONLY in actual inputs */
+input,
+textarea {
+  caret-color: auto !important;
+}
 /* ===== Footer ===== */
 footer {
   background: #0044cc !important;
