@@ -31,23 +31,30 @@
   <a href="contact.html">Contact</a>
 </nav>
   </header>
-  <!-- SECOND NAV ROW -->
+  <!-- SECOND NAV ROW FOR PROJECTS PAGE -->
   <div class="second-nav">
     <div class="second-left">
-      <input id="componentSearch" type="text" placeholder="Search Anything..." />
+      <div class="search-wrapper">
+        <input id="projectSearch" type="text" placeholder="Search..." />
+        <button id="projectSearchClearBtn" class="search-clear-btn" title="Clear text">✕</button>
+      </div>
     </div>
 
     <div class="second-center">
       <ul class="category-menu-new">
-        <li class="cat-item active">All</li>
-        <li class="cat-item">Projects</li>
-        <li class="cat-item">Books</li>
-        <li class="cat-item">Circuits</li>
-        <li class="cat-item">Guide</li>
-        <li class="cat-item">Programming</li>
-        <li class="cat-item">Embedded System</li>
+        <li data-cat="all" class="cat-item active">All</li>
+        <li data-cat="Projects" class="cat-item">Projects</li>
+        <li data-cat="Books" class="cat-item">Books</li>
+        <li data-cat="Circuits" class="cat-item">Circuits</li>
+        <li data-cat="Guide" class="cat-item">Guide</li>
+        <li data-cat="Programming" class="cat-item">Programming</li>
+        <li data-cat="Embedded System" class="cat-item">Embedded System</li>
       </ul>
     </div>
+  </div>
+
+   <!----- Project Grid, Lists & Cards ----->
+  
     <div class="project-grid" id="projectList">
 
      <div class="project-card">
