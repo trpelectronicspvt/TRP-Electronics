@@ -158,13 +158,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === modal) modal.classList.remove("active");
   });
 
-  /* ---------- 7. COMPONENTS.HTML: SEARCH + CATEGORY FILTER ---------- */
+  /* ---------- 7. COMPONENTS.HTML: SEARCH & EXPANDING INPUT HANDLER ---------- */
   const searchInput = document.getElementById("componentSearch");
+  const searchClearBtn = document.getElementById("searchClearBtn");
   const productCards = Array.from(document.querySelectorAll(".product-card"));
   let activeCategory = "all";
 
   function applyFilters() {
     const q = (searchInput?.value || "").toLowerCase().trim();
+    
+    // Manage expanded class and clear button visibility
+    if (searchInput) {
+      if (q.length > 0) {
+        searchInput.classList.add("has-text");
+        if (searchClearBtn) searchClearBtn.style.display = "block";
+      } else {
+        if (document.activeElement !== searchInput) {
+          searchInput.classList.remove("has-text");
+        }
+        if (searchClearBtn) searchClearBtn.style.display = "none";
+      }
+    }
+
     productCards.forEach(card => {
       const cat = (card.dataset.category || "").toLowerCase();
       const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
@@ -177,21 +192,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (searchInput) {
     searchInput.addEventListener("input", applyFilters);
+    searchInput.addEventListener("focus", () => searchInput.classList.add("has-text"));
+    searchInput.addEventListener("blur", () => {
+      if (!searchInput.value.trim()) {
+        searchInput.classList.remove("has-text");
+      }
+    });
   }
 
-  document.querySelectorAll(".category-menu-new .cat-item, .category-menu-new button, .cat-item").forEach(li => {
+  searchClearBtn?.addEventListener("click", () => {
+    if (searchInput) {
+      searchInput.value = "";
+      applyFilters();
+      searchInput.focus();
+    }
+  });
+
+  document.querySelectorAll(".category-menu-new .cat-item").forEach(li => {
     li.addEventListener("click", () => {
-      document.querySelectorAll(".category-menu-new .cat-item, .cat-item").forEach(x => x.classList.remove("active"));
+      document.querySelectorAll(".category-menu-new .cat-item").forEach(x => x.classList.remove("active"));
       li.classList.add("active");
       activeCategory = li.dataset.cat || "all";
       applyFilters();
     });
   });
-  
-  if (productCards.length > 0) {
-    applyFilters(); // Initial render setup
-  }
-
   /* ---------- 8. CART.HTML: RENDER CART & RAZORPAY SYSTEM (EXACT ORIGINAL) ---------- */
   if (document.body.classList.contains("cart-page")) {
     const itemsContainer = document.getElementById("cart-items-list");
