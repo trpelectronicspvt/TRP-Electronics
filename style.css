@@ -800,6 +800,176 @@ body.dark-mode .whatsapp-btn:active { border-color: #25d366; }
 body.dark-mode .youtube-btn:active { border-color: #ff0000; }
 body.dark-mode .instagram-btn:active { border-color: #e1306c; }
 
+/* ========================================================
+   🌟 SECOND NAV & CATEGORY BAR STYLES (PROJECTS PAGE)
+   ======================================================== */
+.second-nav {
+  width: auto;
+  background: #ffffff;
+  border-bottom: 1px solid #dcdcdc;
+  padding: 8px 12px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 15px;
+}
+
+.second-left {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.second-center {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 🔍 EXPANDING SEARCH BOX */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+input#projectSearch {
+  width: 42px; /* Default Compact State */
+  height: 40px;
+  padding: 0 12px 0 36px;
+  border-radius: 25px;
+  border: 2px solid #0044cc;
+  outline: none;
+  font-size: 14px;
+  background-color: #fff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%230044cc" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  cursor: pointer;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  white-space: nowrap;
+  color: transparent;
+}
+
+input#projectSearch:hover,
+input#projectSearch:focus,
+input#projectSearch.has-text {
+  width: 260px;
+  padding-right: 30px;
+  color: #333;
+  cursor: text;
+  box-shadow: 0 4px 12px rgba(0, 68, 204, 0.15);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  cursor: pointer;
+  display: none;
+  padding: 0;
+  line-height: 1;
+}
+
+.search-clear-btn:hover {
+  color: #ff3333;
+}
+
+/* 🏷️ CATEGORY MENU */
+.category-menu-new {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  padding: 5px 10px;
+  margin: 0;
+  align-items: center;
+  outline: none;
+  white-space: nowrap;
+}
+
+.category-menu-new .cat-item {
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #0044cc;
+  background: rgba(0, 68, 204, 0.08);
+  font-weight: 600;
+  transition: 0.18s ease;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.category-menu-new .cat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.category-menu-new .cat-item.active {
+  background: #0044cc;
+  color: white;
+  box-shadow: 0 4px 14px rgba(0, 68, 204, 0.22);
+}
+
+/* 📱 MOBILE RESPONSIVE SCROLL & FADE */
+@media (max-width: 700px) {
+  .second-nav {
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  input#projectSearch:focus,
+  input#projectSearch.has-text {
+    width: 180px;
+  }
+
+  .second-center {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    padding: 2px 0;
+  }
+
+  .second-center::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-menu-new {
+    padding: 0 15px;
+  }
+}
+
+/* 🌙 DARK MODE OVERRIDES FOR SECOND NAV */
+body.dark-mode .second-nav {
+  background: #000000;
+  border-bottom: 1px solid #333333;
+}
+
+body.dark-mode input#projectSearch {
+  background-color: #1e1e1e;
+  border-color: #2b5cff;
+  color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%238bb3ff" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>');
+}
+
+body.dark-mode .category-menu-new .cat-item {
+  background: #1e1e1e;
+  color: #9ab6ff;
+}
+
+body.dark-mode .category-menu-new .cat-item.active {
+  background: #3c6aff;
+  color: #ffffff;
+}
+
 /* ===== Footer ===== */
 footer {
   background: #0044cc !important;
