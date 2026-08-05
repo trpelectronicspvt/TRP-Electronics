@@ -265,21 +265,19 @@ body.dark-mode .hero {
 }
 
 /* ========================================================
-   📱 MOBILE-ONLY HORIZONTAL RECTANGULAR PROJECT CARDS
+   📱 MOBILE-ONLY HORIZONTAL RECTANGULAR CARDS (YOUR EXACT HTML)
    ======================================================== */
 @media (max-width: 650px) {
-  
-  /* Project Cards Container */
-  .projects-container,
-  .project-grid,
-  .cards-container {
+
+  /* Main Container Layout */
+  .project-grid {
     display: flex !important;
     flex-direction: column !important;
     gap: 12px !important;
     padding: 10px 12px !important;
   }
 
-  /* Horizontal Rectangular Card Box */
+  /* Horizontal Card Box */
   .project-card {
     display: flex !important;
     flex-direction: row !important;
@@ -289,47 +287,38 @@ body.dark-mode .hero {
     border: 1px solid #e2e8f0;
     border-radius: 14px;
     padding: 10px 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
     width: 100% !important;
     box-sizing: border-box !important;
     overflow: hidden;
   }
 
-  /* Mobile Active Touch Bounce Effect */
+  /* Mobile Tap Response */
   .project-card:active {
     transform: scale(0.98);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
-  /* Left Side Image (Perfect Size, Not Too Small) */
+  /* Left Side Image (Optimized Size & Fast Render) */
   .project-card img {
-    width: 85px !important;
-    height: 85px !important;
-    min-width: 85px !important;
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
     object-fit: cover !important;
     border-radius: 10px !important;
     flex-shrink: 0 !important;
     background: #f8fafc;
-    /* Fast Smooth Loading Render */
-    content-visibility: auto;
+    content-visibility: auto; /* High performance image loading */
   }
 
-  /* Center Content: Title & Description */
-  .project-info {
-    flex: 1 1 auto !important;
-    padding: 0 10px !important;
+  /* Center Content (Title & Description) */
+  .project-card h3,
+  .project-card p {
     text-align: center !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    overflow: hidden;
   }
 
-  .project-info h3,
   .project-card h3 {
-    font-size: 14px !important;
+    font-size: 13.5px !important;
     font-weight: 700 !important;
     color: #0044cc;
     margin: 0 0 4px 0 !important;
@@ -340,9 +329,8 @@ body.dark-mode .hero {
     overflow: hidden;
   }
 
-  .project-info p,
   .project-card p {
-    font-size: 11.5px !important;
+    font-size: 11px !important;
     color: #555555;
     margin: 0 !important;
     line-height: 1.3 !important;
@@ -352,52 +340,59 @@ body.dark-mode .hero {
     overflow: hidden;
   }
 
-  /* Right Side Open Button / Arrow Box */
-  .open-btn-mobile,
-  .project-card .open-btn,
-  .project-card button.open-file {
+  /* Wrapper for center text positioning */
+  .project-card {
+    position: relative;
+  }
+  
+  /* Auto align center text inside middle area */
+  .project-card h3, 
+  .project-card p {
+    padding: 0 8px;
+  }
+
+  /* Right Side Arrow Button */
+  .project-card .btn,
+  .project-card a.btn {
     flex-shrink: 0 !important;
     display: inline-flex !important;
-    flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 2px !important;
+    gap: 4px !important;
     background: #ffcc00;
     color: #000000;
     font-weight: 800;
     font-size: 10px;
     padding: 8px 10px;
-    border-radius: 10px;
+    border-radius: 8px;
     text-decoration: none;
     border: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, background 0.2s ease;
+    white-space: nowrap;
   }
 
-  .open-btn-mobile .arrow-icon,
-  .project-card .arrow-icon {
-    font-size: 14px;
-    line-height: 1;
+  /* CSS pseudo-element se automatically Arrow `➔` add ho jayega */
+  .project-card .btn::after {
+    content: " ➔";
+    font-size: 11px;
     transition: transform 0.2s ease;
   }
 
-  .open-btn-mobile:active .arrow-icon {
+  .project-card .btn:active::after {
     transform: translateX(3px);
   }
 
-  /* 🌙 DARK MODE OVERRIDES */
+  /* 🌙 DARK MODE OVERRIDES FOR MOBILE CARDS */
   body.dark-mode .project-card {
     background: #1e1e1e !important;
     border-color: #333333 !important;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
   }
 
-  body.dark-mode .project-info h3,
   body.dark-mode .project-card h3 {
     color: #6699ff !important;
   }
 
-  body.dark-mode .project-info p,
   body.dark-mode .project-card p {
     color: #cccccc !important;
   }
