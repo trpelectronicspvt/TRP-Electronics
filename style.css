@@ -1,3 +1,15 @@
+/* 🚫 PREVENT HORIZONTAL SCROLL / SIDE OVERFLOW ON MOBILE */
+html, body {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  position: relative;
+}
+
+/* Ensure all containers stay inside screen limits */
+* {
+  box-sizing: border-box !important;
+}
+
 /* ===== Global Styles ===== */
 body {
   font-family: "Segoe UI", Arial, sans-serif;
@@ -346,39 +358,60 @@ body.dark-mode .searchbox input {
 .contact {
   padding: 50px 20px;
   max-width: 800px;
+  width: 100%;
   margin: auto;
   text-align: center;
+  box-sizing: border-box !important;
+  overflow-x: hidden;
 }
+
 .contact h2 {
   color: #0044cc;
 }
+
 .contact-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin: 30px auto;
   max-width: 500px;
+  width: 100%;
+  box-sizing: border-box !important;
 }
+
 .contact-form input,
 .contact-form textarea {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
+  width: 100%;
+  box-sizing: border-box !important;
 }
+
 .contact-form button {
   background: #0044cc;
   color: white;
   border: none;
   cursor: pointer;
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box !important;
 }
+
 .contact-form button:hover {
   background: #002a80;
 }
+
 .contact-info {
   margin-top: 30px;
   line-height: 1.8;
+  width: 100%;
+  box-sizing: border-box !important;
 }
+
 .contact-info a {
   color: #0044cc;
   font-weight: bold;
@@ -993,6 +1026,15 @@ body.dark-mode .category-menu-new .cat-item.active {
 input,
 textarea {
   caret-color: auto !important;
+}
+
+.contact-links-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  overflow-x: auto; /* Enable touch scroll without overflowing parent */
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 
