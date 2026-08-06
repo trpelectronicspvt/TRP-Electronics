@@ -265,109 +265,116 @@ body.dark-mode .hero {
 }
 
 /* ========================================================
-   📱 PERFECT MOBILE CARD LAYOUT (COLORED + CLEAN FLEX)
+   📱 MOBILE HORIZONTAL CARDS (PERFECT CENTER ALIGNED TEXT)
    ======================================================== */
 @media (max-width: 650px) {
 
   .project-grid {
     display: flex !important;
     flex-direction: column !important;
-    gap: 14px !important;
+    gap: 12px !important;
     padding: 10px 12px !important;
   }
 
-  /* Main Card Box */
+  /* Rectangular Horizontal Card Box */
   .project-card {
     display: flex !important;
-    flex-wrap: wrap !important;
     flex-direction: row !important;
-    align-items: flex-start !important;
+    align-items: center !important;
     justify-content: space-between !important;
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 14px;
-    padding: 12px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    padding: 10px 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
     width: 100% !important;
     box-sizing: border-box !important;
-    position: relative;
   }
 
   .project-card:active {
     transform: scale(0.98);
   }
 
-  /* 1. Left Image Box */
+  /* Left Side: Image */
   .project-card img {
-    width: 80px !important;
-    height: 80px !important;
-    min-width: 80px !important;
+    width: 75px !important;
+    height: 75px !important;
+    min-width: 75px !important;
     object-fit: cover !important;
     border-radius: 10px !important;
-    background: #f8fafc;
     flex-shrink: 0 !important;
+    background: #f8fafc;
   }
 
-  /* 2. Middle Content Container (Title + Description) */
-  .project-card h3 {
-    width: calc(100% - 95px) !important; /* Left Image ke aage ki bachi poori space */
-    font-size: 15px !important;
+  /* Center Area: Title & Description Container */
+  .project-card .project-info {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 8px !important;
+    text-align: center !important;
+    overflow: hidden;
+  }
+
+  /* Title: Centered, Blue Theme Color */
+  .project-card .project-info h3 {
+    font-size: 13.5px !important;
     font-weight: 700 !important;
-    color: #0044cc !important; /* Original Blue Color */
-    margin: 0 0 6px 0 !important;
+    color: #0044cc !important;
+    margin: 0 0 4px 0 !important;
     line-height: 1.25 !important;
-    text-align: center !important; /* Center Aligned Title */
-    white-space: normal !important;
-  }
-
-  /* Description: Image ke niche poori width lekar center align hoga */
-  .project-card p {
+    text-align: center !important;
     width: 100% !important;
-    font-size: 11.5px !important;
-    color: #555555;
-    margin: 10px 0 8px 0 !important;
-    line-height: 1.35 !important;
-    text-align: center !important; /* Center Aligned Description */
-    white-space: normal !important;
   }
 
-  /* 3. Original Yellow Button (Right / Bottom Aligned) */
+  /* Description: Directly below title, Centered */
+  .project-card .project-info p {
+    font-size: 11px !important;
+    color: #555555 !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  /* Right Side: Yellow Button */
   .project-card .btn,
   .project-card a.btn {
+    flex-shrink: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 4px !important;
-    background: #ffcc00 !important; /* Original Yellow Color */
+    background: #ffcc00 !important;
     color: #000000 !important;
     font-weight: 800 !important;
     font-size: 10px !important;
-    padding: 7px 12px !important;
+    padding: 8px 10px !important;
     border-radius: 8px !important;
     border: none !important;
     text-decoration: none !important;
     white-space: nowrap !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
-    margin-left: auto !important; /* Push to right */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
   }
 
   .project-card .btn::after {
     content: " ➔";
     font-size: 11px;
-    transition: transform 0.2s ease;
   }
 
-  /* 🌙 DARK MODE OVERRIDES */
+  /* Dark Mode Styling */
   body.dark-mode .project-card {
     background: #1e1e1e !important;
     border-color: #333333 !important;
   }
 
-  body.dark-mode .project-card h3 {
+  body.dark-mode .project-card .project-info h3 {
     color: #6699ff !important;
   }
 
-  body.dark-mode .project-card p {
+  body.dark-mode .project-card .project-info p {
     color: #cccccc !important;
   }
 }
