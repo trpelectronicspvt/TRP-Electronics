@@ -9,6 +9,18 @@ html, body {
 * {
   box-sizing: border-box !important;
 }
+/* 💻 Desktop View: Break tag ko hide karke ek single line me rakhein */
+.mobile-break {
+  display: none;
+}
+
+/* 📱 Mobile View (max-width: 650px): Only mobile par break enable karein */
+@media (max-width: 650px) {
+  .hero h1 br.mobile-break,
+  h1 br.mobile-break {
+    display: block !important;
+  }
+}
 /* ===== Global Styles ===== */
 body {
   font-family: "Segoe UI", Arial, sans-serif;
