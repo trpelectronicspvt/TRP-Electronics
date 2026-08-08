@@ -100,44 +100,13 @@ body.dark-mode .hero {
   margin: 10px 0 20px;
 }
 
-/* ===== About Section ===== */
+/* ========================================================
+   🌟 ABOUT US ACCORDION SECTION (JS INTEGRATED)
+   ======================================================== */
 .about {
-  padding: 50px 20px;
-  text-align: center;
+  padding: 20px;
+  max-width: 800px;
   margin: 0 auto;
-}
-.about h2 {
-  color: #0044cc;
-}
-.about p {
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.section-title {
-  text-align: left;
-  margin-bottom: 25px;
-  display: inline-block;
-  padding: 8px 24px 8px 16px;
-  background-color: #0056b3;
-  color: #ffffff;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border-radius: 0px 30px 30px 0px; 
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-.about-section {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #333;
-}
-.about-section h2 {
-  font-size: 20px;
-  margin-bottom: 15px;
-}
-.about-section b {
-  font-size: 15px;
 }
 
 .about-toggle-header {
@@ -145,46 +114,56 @@ body.dark-mode .hero {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
-  user-select: none; /* Text select highlight hone se rokne ke liye */
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+  user-select: none;
 }
 
-/* Arrow smooth 90-degree rotation animation */
-.about-arrow {
+.about-toggle-header h2 {
+  color: #0044cc;
+  margin: 0;
   font-size: 20px;
+}
+
+.about-arrow {
+  font-size: 18px;
+  color: #0044cc;
   display: inline-block;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s ease;
 }
 
-/* Open state par arrow niche Rotate ho jayega */
-.about-toggle-header.active .about-arrow {
-  transform: rotate(90deg);
-}
-
-/* ========================================================
-   🌟 SMOOTH ACCORDION / SLIDE-DOWN ANIMATION (#aboutContent)
-   ======================================================== */
+/* Hidden state (Initial) */
 #aboutContent {
   max-height: 0;
   opacity: 0;
   overflow: hidden;
-  transform: translateY(-8px);
-  /* Smooth animation transition for height, opacity & movement */
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.4s ease-in-out,
-              transform 0.4s ease-in-out,
-              margin 0.4s ease;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
   margin-top: 0;
 }
 
-/* Jab Javascript Content open karega (active class add hone par) */
-#aboutContent.show,
-.about-toggle-header.active + #aboutContent {
-  max-height: 800px; /* Safe limit text height ke liye */
-  opacity: 1;
-  transform: translateY(0);
-  margin-top: 15px;
+/* Show state (Jab JS .show add karega) */
+#aboutContent.show {
+  max-height: 1000px !important;
+  opacity: 1 !important;
+  margin-top: 15px !important;
+}
+
+#aboutContent p {
+  line-height: 1.6;
+  margin-bottom: 12px;
+  color: #333333;
+  font-size: 14px;
+}
+
+/* 🌙 Dark Mode Support */
+body.dark-mode .about-toggle-header h2,
+body.dark-mode .about-arrow {
+  color: #6699ff !important;
+}
+
+body.dark-mode #aboutContent p {
+  color: #cccccc !important;
+}
 }
 /* ===== Featured Projects (Home Page) ===== */
 .projects {
