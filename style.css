@@ -9,7 +9,20 @@ html, body {
 * {
   box-sizing: border-box !important;
 }
+/* Mobile Heading Break & Styling */
+@media (max-width: 650px) {
+  .hero h1,
+  .hero-section h1 {
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+  }
 
+  /* Force line break for TRP Electronics on mobile */
+  .hero h1 br {
+    display: block !important;
+  }
+}
 /* ===== Global Styles ===== */
 body {
   font-family: "Segoe UI", Arial, sans-serif;
