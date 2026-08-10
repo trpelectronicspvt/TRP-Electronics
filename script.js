@@ -1,4 +1,4 @@
-/* script.js - TRP Electronics Single File for Shop + Cart Pages */
+/* script.js - TRP Electronics Single File for Shop + Cart + Projects Pages */
 document.addEventListener("DOMContentLoaded", () => {
   
   /* ---------- 1. DARK MODE TOGGLE (SHARED) ---------- */
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ---------- 2. IMAGE LOAD EFFECT ---------- */
-  document.querySelectorAll(".product-card img").forEach(img => {
+  document.querySelectorAll(".product-card img, .project-card img").forEach(img => {
     if (img.complete) img.classList.add("loaded");
     else img.addEventListener("load", () => img.classList.add("loaded"));
   });
@@ -76,7 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Agar Modal ke andar se click hua ho
       if (!name || isNaN(price)) {
         name = document.getElementById("modalTitle")?.textContent;
-        price = parseFloat(document.getElementById("modalAddCart")?.dataset.price);
+        const modalBtn = document.getElementById("modalAddCart");
+        price = parseFloat(modalBtn?.dataset.price || "0");
       }
 
       if (!name || isNaN(price)) return;
@@ -167,7 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function applyFilters() {
     const q = (searchInput?.value || "").toLowerCase().trim();
     
-    // Manage expanded class and clear button visibility
     if (searchInput) {
       if (q.length > 0) {
         searchInput.classList.add("has-text");
@@ -216,7 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
       applyFilters();
     });
   });
-  /* ---------- 8. CART.HTML: RENDER CART & RAZORPAY SYSTEM (EXACT ORIGINAL) ---------- */
+
+  /* ---------- 8. CART.HTML: RENDER CART & RAZORPAY SYSTEM ---------- */
   if (document.body.classList.contains("cart-page")) {
     const itemsContainer = document.getElementById("cart-items-list");
     const summarySubtotal = document.getElementById("summary-subtotal");
@@ -256,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (summaryDelivery) summaryDelivery.textContent = `Delivery: ₹${delivery}`;
       if (summaryTotal) summaryTotal.textContent = `Total: ₹${subtotal + delivery}`;
 
-      // Quantity Update Listeners
       document.querySelectorAll(".qty-input").forEach(inp => {
         inp.onchange = (e) => {
           const i = parseInt(e.target.dataset.i, 10);
@@ -267,7 +267,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
       });
 
-      // Remove Product Listeners
       document.querySelectorAll(".remove-btn").forEach(b => {
         b.onclick = (e) => {
           const i = parseInt(e.target.dataset.i, 10);
@@ -280,7 +279,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderCart();
 
-    // FIXED SUBMIT LOGIC WITH VALIDATION & RAZORPAY
     orderNow?.addEventListener("click", (e) => {
       e.preventDefault();
 
@@ -306,11 +304,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const totalAmount = subtotal + delivery;
       const amountInPaise = totalAmount * 100;
 
-      const itemsDescription = cart.map(i => `${i.name} (x${i.qty})`).join(", ");
-
-      // Setup Razorpay
       var options = {
-        "key": "rzp_live_T9fdcBxIRGP1MY", // 🌟 Key ID Preserved
+        "key": "rzp_live_T9fdcBxIRGP1MY",
         "amount": amountInPaise,
         "currency": "INR",
         "name": "TRP Electronics",
@@ -367,7 +362,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Phone input formatting restrictor 
   const phoneInput = document.getElementById("phone");
   phoneInput?.addEventListener("input", () => {
     phoneInput.value = phoneInput.value.replace(/[^0-9]/g, "");
@@ -376,12 +370,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-});
-
-/* ---------- PROJECTS PAGE SEARCH & CATEGORY FILTER ---------- */
+  /* ---------- 10. PROJECTS PAGE SEARCH & CATEGORY FILTER (INSIDE DOM LOAD) ---------- */
   const projectSearchInput = document.getElementById("projectSearch");
   const projectSearchClearBtn = document.getElementById("projectSearchClearBtn");
-  const projectCards = Array.from(document.querySelectorAll(".project-card, .card, .product-card"));
+  const projectCards = Array.from(document.querySelectorAll(".project-card, .card"));
   let activeProjectCat = "all";
 
   function applyProjectFilters() {
@@ -406,7 +398,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const matchesCategory = (activeProjectCat === "all") || (cat === activeProjectCat.toLowerCase());
       const matchesSearch = !q || title.includes(q) || desc.includes(q);
 
-      card.style.display = (matchesCategory && matchesSearch) ? "block" : "none";
+      // Flex display layout preserves horizontal alignment on mobile
+      card.style.display = (matchesCategory && matchesSearch) ? "flex" : "none";
     });
   }
 
@@ -428,11 +421,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  document.querySelectorAll(".second-center .cat-item").forEach(li => {
+  document.querySelectorAll(".second-center .cat-item, .category-btn").forEach(li => {
     li.addEventListener("click", () => {
-      document.querySelectorAll(".second-center .cat-item").forEach(x => x.classList.remove("active"));
+      document.querySelectorAll(".second-center .cat-item, .category-btn").forEach(x => x.classList.remove("active"));
       li.classList.add("active");
-      activeProjectCat = li.dataset.cat || "all";
+      activeProjectCat = li.dataset.cat || li.dataset.category || "all";
       applyProjectFilters();
     });
   });
+
+});
