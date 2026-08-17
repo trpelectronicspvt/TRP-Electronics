@@ -149,7 +149,12 @@ body.dark-mode .hero p,
 body.dark-mode .hero-section p {
   color: #94a3b8;
 }
-
+@font-face {
+  font-family: 'Fountain';
+  src: url('fonts/Fountain.ttf') format('truetype'); /* Font file ka sahi path dein */
+  font-weight: normal;
+  font-style: normal;
+}
 /* ========================================================
    🌙 DARK MODE: AI AMBIENT GLOW + TECH DOTS + BOTTOM FADE
    ======================================================== */
