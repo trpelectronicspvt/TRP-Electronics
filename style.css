@@ -82,22 +82,112 @@ header nav ul li a.active {
   border-bottom: 2px solid #ffcc00;
 }
 
-/* ===== Hero Section ===== */
-.hero {
+/* ========================================================
+   ✨ AI AMBIENT GLOW + TECH DOT GRID HERO BACKGROUND
+   ======================================================== */
+.hero,
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  padding: 60px 20px 50px 20px;
   text-align: center;
-  padding: 80px 20px;
-  background: linear-gradient(to bottom, #003bff , #007bff , #ffff);
-  color: white;
+  background-color: #ffffff;
+  /* Multi-layer Background: 
+     1. Bottom smooth fade into pure white 
+     2. Moving AI color radial mesh 
+     3. Subtle tech dot pattern */
+  background-image: 
+    linear-gradient(to bottom, transparent 60%, #ffffff 100%),
+    radial-gradient(#94a3b8 1.1px, transparent 1.1px),
+    radial-gradient(circle at 50% 30%, rgba(56, 189, 248, 0.18), rgba(99, 102, 241, 0.12), transparent 70%);
+  background-size: 100% 100%, 22px 22px, 200% 200%;
+  animation: ambientAIFlow 12s ease-in-out infinite alternate;
 }
-body.dark-mode .hero {
-    background: linear-gradient(to bottom, #003bff 0%, #0033 80%, #121212 100%);
+
+/* Dheeme-dheeme AI Ambient Color Movement Animation */
+@keyframes ambientAIFlow {
+  0% {
+    background-position: 0 0, 0 0, 0% 0%;
+  }
+  50% {
+    background-position: 0 0, 0 0, 100% 50%;
+  }
+  100% {
+    background-position: 0 0, 0 0, 0% 100%;
+  }
 }
-.hero h1 {
-  font-size: 2.8em;
+
+/* Subtitle clean contrast */
+.hero p,
+.hero-section p {
+  color: #475569;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 8px;
+  position: relative;
+  z-index: 2;
 }
-.hero p {
-  font-size: 1.2em;
-  margin: 10px 0 20px;
+
+/* Ensure Button stays on top layer */
+.hero .hero-btn-group,
+.hero-section .hero-btn-group {
+  position: relative;
+  z-index: 2;
+}
+
+/* 🌙 Dark Mode Support for AI Hero Glow */
+body.dark-mode .hero,
+body.dark-mode .hero-section {
+  background-color: #0f172a;
+  background-image: 
+    linear-gradient(to bottom, transparent 60%, #0f172a 100%),
+    radial-gradient(#334155 1.1px, transparent 1.1px),
+    radial-gradient(circle at 50% 30%, rgba(56, 189, 248, 0.12), rgba(129, 140, 248, 0.1), transparent 70%);
+}
+
+body.dark-mode .hero p,
+body.dark-mode .hero-section p {
+  color: #94a3b8;
+}
+
+/* ========================================================
+   🌙 DARK MODE: AI AMBIENT GLOW + TECH DOTS + BOTTOM FADE
+   ======================================================== */
+body.dark-mode .hero,
+body.dark-mode .hero-section {
+  /* Match base background with your dark theme */
+  background-color: #121212 !important;
+  
+  /* Multi-layer Dark Background:
+     1. Bottom smooth fade into exact Dark body color (#121212)
+     2. Subtle glowing Tech Dots (#334155)
+     3. Deep Neon Cyan & Electric Indigo AI Ambient Glow */
+  background-image: 
+    linear-gradient(to bottom, transparent 55%, #121212 100%),
+    radial-gradient(rgba(148, 163, 184, 0.22) 1.1px, transparent 1.1px),
+    radial-gradient(circle at 50% 35%, rgba(0, 212, 255, 0.16), rgba(99, 102, 241, 0.14), rgba(15, 23, 42, 0.05) 75%) !important;
+  background-size: 100% 100%, 22px 22px, 200% 200% !important;
+  animation: ambientAIFlowDark 14s ease-in-out infinite alternate !important;
+  border-bottom: 0px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Dark Mode Smooth AI Movement */
+@keyframes ambientAIFlowDark {
+  0% {
+    background-position: 0 0, 0 0, 0% 0%;
+  }
+  50% {
+    background-position: 0 0, 0 0, 100% 50%;
+  }
+  100% {
+    background-position: 0 0, 0 0, 0% 100%;
+  }
+}
+
+/* Subtitle for Dark Mode */
+body.dark-mode .hero p,
+body.dark-mode .hero-section p {
+  color: #94a3b8 !important;
 }
 
 /* ========================================================
@@ -788,6 +878,7 @@ body.dark-mode .app-card p {
   }
 }
 .fountain-text {
+  font-family: 'Fountain', cursive;
   font-size: clamp(28px, 5vw, 52px);
   font-weight: 800;
   text-align: center;
