@@ -1221,6 +1221,108 @@ textarea {
 body.dark-mode .modal-desc li {
   color: #ccc;
 }
+
+/* ===== Single Hero E-Shop Button ===== */
+.hero-btn-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.hero-btn.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ffcc00 0%, #ffaa00 100%);
+  color: #111111;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 12px 28px;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(255, 170, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.hero-btn.btn-primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 22px rgba(255, 170, 0, 0.55);
+}
+
+/* ===== 5th "More Projects" Card Styling ===== */
+.more-projects-card {
+  text-decoration: none;
+  background: linear-gradient(145deg, #f0f7ff, #e0efff) !important;
+  border: 2px dashed #0056b3 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.more-projects-card .more-card-icon {
+  width: 60px;
+  height: 60px;
+  background: #0056b3;
+  color: #ffffff;
+  font-size: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  transition: transform 0.3s ease;
+}
+
+.more-projects-card h3 {
+  color: #0044cc !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  margin: 0 0 6px 0 !important;
+}
+
+.more-projects-card p {
+  color: #4b5563 !important;
+  font-size: 12px !important;
+  margin: 0 0 14px 0 !important;
+  line-height: 1.4 !important;
+}
+
+.more-projects-card .view-all-btn {
+  background: #0056b3 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  padding: 8px 14px !important;
+}
+
+/* Hover Effect on 5th Card */
+.more-projects-card:hover {
+  transform: translateY(-6px) !important;
+  border-color: #003d82 !important;
+  box-shadow: 0 10px 22px rgba(0, 86, 179, 0.2) !important;
+}
+
+.more-projects-card:hover .more-card-icon {
+  transform: scale(1.15) rotate(10deg);
+}
+
+/* 🌙 Dark Mode Support for 5th Card */
+body.dark-mode .more-projects-card {
+  background: linear-gradient(145deg, #182234, #121926) !important;
+  border-color: #3b82f6 !important;
+}
+
+body.dark-mode .more-projects-card h3 {
+  color: #60a5fa !important;
+}
+
+body.dark-mode .more-projects-card p {
+  color: #9ca3af !important;
+}
 /* ===== Footer ===== */
 footer {
   background: #0044cc !important;
