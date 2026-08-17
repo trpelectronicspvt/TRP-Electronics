@@ -219,7 +219,7 @@ body.dark-mode #aboutContent p {
 }
 
 .project-card {
-  width: 190px;   /* Fixed width */
+  width: 220px;   /* Fixed width */
   flex: 0 0 auto; /* Prevent stretching */
   background: white;
   border-radius: 10px;
