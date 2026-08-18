@@ -1241,6 +1241,7 @@ textarea {
   max-width: 100% !important;
   box-sizing: border-box;
   overflow-x: auto; /* Enable touch scroll without overflowing parent */
+  padding: 10px;
   padding-left: 15px;
   padding-right: 15px;
 }
