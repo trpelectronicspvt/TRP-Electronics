@@ -893,7 +893,7 @@ body.dark-mode .app-card p {
 }
 .fountain-text {
   font-family: 'Fountain', cursive;
-  font-size: clamp(28px, 5vw, 52px);
+  font-size: clamp(40px, 6vw, 52px);
   font-weight: 800;
   text-align: center;
   letter-spacing: 1px;
