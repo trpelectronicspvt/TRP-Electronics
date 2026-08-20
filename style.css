@@ -332,96 +332,128 @@ body.dark-mode #aboutContent p {
 }
 
 /* ========================================================
-   📂 2. ALL PROJECTS PAGE (DESKTOP GRID)
+   📂 DESKTOP PROJECT CARDS (FULL IMAGE & SHANDAR LOOK)
    ======================================================== */
-.all-projects { 
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.project-grid {
+.project-grid,
+.cards {
   display: flex;
   flex-wrap: wrap;
-  padding: 20px;
-  gap: 20px;
   justify-content: center;
-  min-height: 300px;
+  gap: 24px;
+  padding: 30px 15px;
 }
 
-/* Desktop Vertical Card */
-.project-card {
-  width: 220px;
-  flex: 0 0 auto;
+.project-card,
+.card {
+  width: 260px; /* Perfect width for title & full image */
   background: #ffffff;
-  border-radius: 12px;
-  padding: 15px;
-  text-align: center;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
-.project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.12);
+/* Hover Floating Effect */
+.project-card:hover,
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 14px 28px rgba(0, 86, 179, 0.18);
+  border-color: #0056b3;
 }
 
-.project-card img {
+/* Full Uncropped Image Frame */
+.project-card img,
+.card img {
   width: 100%;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  background: #f8fafc;
-  opacity: 0;
-  transform: scale(0.98);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.project-card img.loaded {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.project-card h3 {
-  color: #0044cc;
-  font-size: 15px;
-  margin: 0 0 6px 0;
-}
-
-.project-card p {
-  color: #555555;
-  font-size: 12px;
-  line-height: 1.4;
+  height: 170px;
+  object-fit: contain; /* 🌟 Image kabhi cut nahi hogi, puri dikhegi */
+  background: #f8fafc; /* Clean frame backdrop */
+  border-radius: 12px;
+  padding: 6px;
+  box-sizing: border-box;
   margin-bottom: 12px;
 }
 
-.project-card .btn {
-  background: #ffcc00;
-  color: #111111;
+/* Title Styling */
+.project-card h3,
+.card h3 {
+  font-size: 16px;
   font-weight: 800;
-  font-size: 12px;
-  padding: 8px 14px;
-  border-radius: 6px;
+  color: #0044cc;
+  margin: 4px 0 8px 0;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* Description */
+.project-card p,
+.card p {
+  font-size: 12.5px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+  text-align: center;
+  flex-grow: 1; /* Keeps all buttons aligned at the bottom */
+}
+
+/* Bright Yellow Open File Button */
+.project-card .btn,
+.card .btn,
+.project-card a.btn {
+  background: linear-gradient(135deg, #ffcc00 0%, #ffaa00 100%);
+  color: #000000;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 10px 0;
+  border-radius: 10px;
+  text-align: center;
   text-decoration: none;
-  display: inline-block;
-  transition: transform 0.2s ease;
+  display: block;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(255, 170, 0, 0.35);
+  transition: all 0.25s ease;
 }
 
-.project-card .btn:hover {
-  transform: scale(1.03);
+.project-card .btn:hover,
+.card .btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 18px rgba(255, 170, 0, 0.55);
 }
 
-/* 🛑 JS Search / Filter Hide Helper */
-.project-card.is-hidden,
-.card.is-hidden {
-  display: none !important;
+/* 🌙 Dark Mode Support for Desktop Cards */
+body.dark-mode .project-card,
+body.dark-mode .card {
+  background: #18181b;
+  border: 1px solid #27272a;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
+body.dark-mode .project-card:hover,
+body.dark-mode .card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+}
+
+body.dark-mode .project-card img,
+body.dark-mode .card img {
+  background: #09090b;
+}
+
+body.dark-mode .project-card h3,
+body.dark-mode .card h3 {
+  color: #ffffff;
+}
+
+body.dark-mode .project-card p,
+body.dark-mode .card p {
+  color: #a1a1aa;
+}
 /* ========================================================
    📱 3. MOBILE HORIZONTAL CARDS (MAX-WIDTH: 650PX)
    ======================================================== */
