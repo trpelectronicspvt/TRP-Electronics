@@ -330,8 +330,7 @@ body.dark-mode #aboutContent p {
 .card .btn:hover {
   background: #002a80;
 }
-
-/* ===== All Projects Page (Desktop) ===== */
+/* ===== All Projects Page ===== */
 .all-projects {
   padding: 50px 20px;
   text-align: center;
@@ -339,48 +338,60 @@ body.dark-mode #aboutContent p {
 .project-grid {
   display: flex;
   flex-wrap: wrap;
-  padding: 30px 10px;
+  padding: 30px;
   gap: 20px;
   justify-content: center;
   min-height: 300px;
 }
 
-/* Original Fixed Desktop Box Size */
+/* Original Fixed Desktop Box Size with Click/Hover Feedback */
 .project-card {
-  width: 220px;
-  flex: 0 0 220px;
+  width: 220px;   /* Exact Fixed width */
+  flex: 0 0 auto; /* Prevent stretching */
   background: white;
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 10px;
+  padding: 10px;
   text-align: center;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 6px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+  cursor: pointer;
 }
 
 .project-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0px 8px 18px rgba(0,0,0,0.15);
+  box-shadow: 0px 6px 14px rgba(0,0,0,0.15);
 }
 
-/* ✅ Side Space Fixed: Full Edge-To-Edge Image */
+.project-card:active {
+  transform: scale(0.97); /* Subtle card press feedback */
+}
+
 .project-card img {
   width: 100%;
-  height: 145px;
-  object-fit: cover; /* Side ka sara extra space khatam */
+  height: 140px;
+  object-fit: contain;
   border-radius: 8px;
-  margin: 0 0 10px 0;
-  display: block;
+  margin-bottom: 10px;
+  background: #f8fafc;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.project-card img.loaded {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .project-card h3 {
   color: #0044cc;
   font-size: 14px;
-  margin: 2px 0 4px 0;
-  line-height: 1.25;
+  margin: 4px 0;
+  line-height: 1.3;
 }
 
 .project-card p {
@@ -391,117 +402,124 @@ body.dark-mode #aboutContent p {
   flex-grow: 1;
 }
 
-.project-card .btn {
+/* Open File Action Button Click Effect */
+.project-card .btn,
+.project-card a.btn {
   background: #ffcc00;
   color: #000000;
   font-weight: 800;
   font-size: 11px;
-  padding: 8px 0;
+  padding: 8px 12px;
   border-radius: 8px;
   text-decoration: none;
   display: block;
-  width: 100%;
-  box-sizing: border-box;
-  transition: transform 0.15s ease, background 0.15s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .project-card .btn:hover {
   background: #e6b800;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .project-card .btn:active {
-  transform: scale(0.94);
+  transform: scale(0.92); /* Crisp Button Tap Effect */
 }
 
 /* ========================================================
-   📱 MOBILE HORIZONTAL CARDS (FIXED WITHOUT !IMPORTANT CONFLICT)
+   📱 MOBILE HORIZONTAL CARDS (PERFECT CENTER ALIGNED TEXT)
    ======================================================== */
 @media (max-width: 650px) {
 
   .project-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 10px 12px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 10px 12px !important;
   }
 
-  /* Notice: !important removed so JS can hide/filter cards */
+  /* Rectangular Horizontal Card Box */
   .project-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 14px;
     padding: 10px 12px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
-    width: 100%;
-    box-sizing: border-box;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .project-card:active {
-    transform: scale(0.98);
+    transform: scale(0.97) !important;
   }
 
-  /* Left Side Thumbnail */
+  /* Left Side: Image */
   .project-card img {
-    width: 75px;
-    height: 75px;
-    min-width: 75px;
-    object-fit: cover;
-    border-radius: 10px;
-    flex-shrink: 0;
-    margin: 0;
+    width: 75px !important;
+    height: 75px !important;
+    min-width: 75px !important;
+    object-fit: cover !important;
+    border-radius: 10px !important;
+    flex-shrink: 0 !important;
+    margin-bottom: 0 !important;
+    background: #f8fafc;
   }
 
+  /* Center Area: Title & Description Container */
   .project-card .project-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 8px;
-    text-align: center;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 8px !important;
+    text-align: center !important;
     overflow: hidden;
   }
 
+  /* Title: Centered, Blue Theme Color */
   .project-card .project-info h3 {
-    font-size: 13.5px;
-    font-weight: 700;
-    color: #0044cc;
-    margin: 0 0 4px 0;
-    line-height: 1.25;
-    text-align: center;
-    width: 100%;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: #0044cc !important;
+    margin: 0 0 4px 0 !important;
+    line-height: 1.25 !important;
+    text-align: center !important;
+    width: 100% !important;
   }
 
+  /* Description: Directly below title, Centered */
   .project-card .project-info p {
-    font-size: 11px;
-    color: #555555;
-    margin: 0;
-    line-height: 1.3;
-    text-align: center;
-    width: 100%;
+    font-size: 11px !important;
+    color: #555555 !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    width: 100% !important;
   }
 
+  /* Right Side: Yellow Button */
   .project-card .btn,
   .project-card a.btn {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    background: #ffcc00;
-    color: #000000;
-    font-weight: 800;
-    font-size: 10px;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: none;
-    text-decoration: none;
-    white-space: nowrap;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    background: #ffcc00 !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    font-size: 10px !important;
+    padding: 8px 10px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
   }
 
   .project-card .btn::after {
@@ -511,16 +529,16 @@ body.dark-mode #aboutContent p {
 
   /* Dark Mode Styling */
   body.dark-mode .project-card {
-    background: #1e1e1e;
-    border-color: #333333;
+    background: #1e1e1e !important;
+    border-color: #333333 !important;
   }
 
   body.dark-mode .project-card .project-info h3 {
-    color: #6699ff;
+    color: #6699ff !important;
   }
 
   body.dark-mode .project-card .project-info p {
-    color: #cccccc;
+    color: #cccccc !important;
   }
 }
 /* ===== FEATURED VIDEOS SECTION ===== */
