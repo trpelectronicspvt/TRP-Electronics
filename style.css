@@ -331,168 +331,99 @@ body.dark-mode #aboutContent p {
   background: #002a80;
 }
 
-/* ========================================================
-   1. DESKTOP CARDS (EXACT 5 COLUMNS - COMPACT & FULL IMAGE)
-   ======================================================== */
-@media (min-width: 651px) {
-  .project-grid,
-  .cards {
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important; /* Forces exact 5 cards in 1 row */
-    gap: 15px !important;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 10px;
-    box-sizing: border-box;
-  }
+/* ===== All Projects Page ===== */
+.all-projects {
+  padding: 50px 20px;
+  text-align: center;
+}
+.project-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px;
+  gap: 20px;
+  justify-content: center;
+  min-height: 300px;
+}
 
-  .project-card,
-  .card {
-    width: 100% !important;
-    max-width: 100% !important;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-sizing: border-box;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
+.project-card {
+  width: 220px;   /* Fixed width */
+  flex: 0 0 auto; /* Prevent stretching */
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0px 0px 6px rgba(0,0,0,0.1);
+}
+.project-card:hover {
+  transform: translateY(-5px);
+}
+.project-card img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
 
-  .project-card:hover,
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-  }
+.project-card h3 {
+  color: #0044cc;
+}
 
-  /* Full Image Frame (1st Image Style) */
-  .project-card img,
-  .card img {
-    width: 100%;
-    height: 135px;
-    object-fit: cover;
-    border-radius: 10px;
-    display: block;
-    margin-bottom: 8px;
-    background: #f8fafc;
-  }
+.project-card img {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
 
-  /* Schematics & Diagrams uncropped */
-  .project-card img[src*="Water"],
-  .project-card img[src*="Traffic"] {
-    object-fit: contain !important;
-    background: #ffffff;
-  }
-
-  .project-card h3,
-  .card h3 {
-    font-size: 13.5px;
-    font-weight: 700;
-    color: #0044cc;
-    margin: 2px 0 4px 0;
-    line-height: 1.25;
-    text-align: center;
-  }
-
-  .project-card p,
-  .card p {
-    font-size: 11px;
-    color: #64748b;
-    line-height: 1.35;
-    margin: 0 0 10px 0;
-    text-align: center;
-    flex-grow: 1;
-  }
-
-  .project-card .btn,
-  .card .btn,
-  .project-card a.btn {
-    background: #ffcc00;
-    color: #000000;
-    font-weight: 800;
-    font-size: 11px;
-    padding: 7px 0;
-    border-radius: 6px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* 5th Card Desktop View */
-  .more-projects-card {
-    text-align: center;
-    justify-content: center !important;
-    align-items: center;
-    border: 2px dashed #0056b3 !important;
-    background: #f0f7ff !important;
-  }
-
-  .more-projects-card .more-card-icon {
-    width: 42px;
-    height: 42px;
-    font-size: 20px;
-    background: #0056b3;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 8px;
-  }
+.project-card img.loaded {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* ========================================================
-   2. MOBILE CARDS (HORIZONTAL ROW - ZERO OVERFLOW)
+   📱 MOBILE HORIZONTAL CARDS (PERFECT CENTER ALIGNED TEXT)
    ======================================================== */
 @media (max-width: 650px) {
-  .project-grid,
-  .cards {
+
+  .project-grid {
     display: flex !important;
     flex-direction: column !important;
     gap: 12px !important;
-    padding: 10px 14px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
+    padding: 10px 12px !important;
   }
 
-  .project-card,
-  .card {
+  /* Rectangular Horizontal Card Box */
+  .project-card {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 8px 10px !important;
+    border-radius: 14px;
+    padding: 10px 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
     width: 100% !important;
-    max-width: 100% !important;
     box-sizing: border-box !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   }
 
-  /* Mobile Left Image */
-  .project-card img,
-  .card img {
-    width: 70px !important;
-    height: 70px !important;
-    min-width: 70px !important;
-    max-width: 70px !important;
+  .project-card:active {
+    transform: scale(0.98);
+  }
+
+  /* Left Side: Image */
+  .project-card img {
+    width: 75px !important;
+    height: 75px !important;
+    min-width: 75px !important;
     object-fit: cover !important;
-    border-radius: 8px !important;
+    border-radius: 10px !important;
     flex-shrink: 0 !important;
-    margin: 0 !important;
+    background: #f8fafc;
   }
 
-  /* Mobile Center Text */
-  .project-card .project-info,
-  .card .project-info {
+  /* Center Area: Title & Description Container */
+  .project-card .project-info {
     flex: 1 !important;
     display: flex !important;
     flex-direction: column !important;
@@ -500,81 +431,68 @@ body.dark-mode #aboutContent p {
     justify-content: center !important;
     padding: 0 8px !important;
     text-align: center !important;
-    min-width: 0 !important;
+    overflow: hidden;
   }
 
-  .project-card h3,
-  .card h3 {
-    font-size: 13px !important;
+  /* Title: Centered, Blue Theme Color */
+  .project-card .project-info h3 {
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
     color: #0044cc !important;
-    margin: 0 0 2px 0 !important;
-    line-height: 1.2 !important;
+    margin: 0 0 4px 0 !important;
+    line-height: 1.25 !important;
     text-align: center !important;
+    width: 100% !important;
   }
 
-  .project-card p,
-  .card p {
-    font-size: 10.5px !important;
+  /* Description: Directly below title, Centered */
+  .project-card .project-info p {
+    font-size: 11px !important;
     color: #555555 !important;
     margin: 0 !important;
-    line-height: 1.2 !important;
+    line-height: 1.3 !important;
     text-align: center !important;
+    width: 100% !important;
   }
 
-  /* Mobile Right Button */
+  /* Right Side: Yellow Button */
   .project-card .btn,
-  .card .btn,
   .project-card a.btn {
     flex-shrink: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
     background: #ffcc00 !important;
     color: #000000 !important;
     font-weight: 800 !important;
     font-size: 10px !important;
-    padding: 7px 9px !important;
-    border-radius: 6px !important;
-    white-space: nowrap !important;
+    padding: 8px 10px !important;
+    border-radius: 8px !important;
     border: none !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
   }
 
   .project-card .btn::after {
     content: " ➔";
+    font-size: 11px;
   }
 
-  /* 5th Card Mobile Adapt */
-  .more-projects-card {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    background: #f0f7ff !important;
-    border: 1.5px dashed #0056b3 !important;
-    text-decoration: none;
+  /* Dark Mode Styling */
+  body.dark-mode .project-card {
+    background: #1e1e1e !important;
+    border-color: #333333 !important;
   }
-}
 
-/* ========================================================
-   3. SHARED DARK MODE STYLING
-   ======================================================== */
-body.dark-mode .project-card,
-body.dark-mode .card {
-  background: #18181b !important;
-  border-color: #27272a !important;
-}
+  body.dark-mode .project-card .project-info h3 {
+    color: #6699ff !important;
+  }
 
-body.dark-mode .project-card h3,
-body.dark-mode .card h3 {
-  color: #60a5fa !important;
-}
-
-body.dark-mode .project-card p,
-body.dark-mode .card p {
-  color: #9ca3af !important;
-}
-
-body.dark-mode .project-card img[src*="Water"] {
-  background: #ffffff !important;
+  body.dark-mode .project-card .project-info p {
+    color: #cccccc !important;
+  }
 }
 /* ===== FEATURED VIDEOS SECTION ===== */
 .featured-videos {
