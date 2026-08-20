@@ -332,117 +332,128 @@ body.dark-mode #aboutContent p {
 }
 
 /* ========================================================
-   📂 DESKTOP PROJECT CARDS (FULL IMAGE & SHANDAR LOOK)
+   📂 DESKTOP: EXACT 5 CARDS IN 1 ROW (COMPACT LOOK)
    ======================================================== */
 .project-grid,
 .cards {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 24px;
-  padding: 30px 15px;
+  gap: 14px; /* Balanced spacing to fit 5 cards */
+  padding: 20px 10px;
+  max-width: 1250px;
+  margin: 0 auto;
 }
 
+/* Compact Card Box */
 .project-card,
 .card {
-  width: 260px; /* Perfect width for title & full image */
+  width: 205px !important; /* Perfect width for 5 in a row */
+  flex: 0 0 205px !important;
   background: #ffffff;
-  border-radius: 16px;
-  padding: 16px;
+  border-radius: 14px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Hover Floating Effect */
 .project-card:hover,
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 14px 28px rgba(0, 86, 179, 0.18);
-  border-color: #0056b3;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
-/* Full Uncropped Image Frame */
+/* Square Rounded Full Thumbnail Frame (Like Image 1) */
 .project-card img,
 .card img {
   width: 100%;
-  height: 170px;
-  object-fit: contain; /* 🌟 Image kabhi cut nahi hogi, puri dikhegi */
-  background: #f8fafc; /* Clean frame backdrop */
+  height: 145px; /* Compact height */
+  object-fit: cover; /* Edge-to-edge neat fit */
   border-radius: 12px;
-  padding: 6px;
-  box-sizing: border-box;
-  margin-bottom: 12px;
+  display: block;
+  margin-bottom: 10px;
+  background: #f1f5f9;
+}
+
+/* 4th Card/Schematic Image handling (No cropping for diagrams) */
+.project-card img[src*="Water"],
+.project-card img[src*="Traffic"] {
+  object-fit: contain !important;
+  background: #ffffff;
 }
 
 /* Title Styling */
 .project-card h3,
 .card h3 {
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 14.5px;
+  font-weight: 700;
   color: #0044cc;
-  margin: 4px 0 8px 0;
-  line-height: 1.3;
+  margin: 0 0 5px 0;
+  line-height: 1.25;
   text-align: center;
 }
 
-/* Description */
+/* Description Text */
 .project-card p,
 .card p {
-  font-size: 12.5px;
+  font-size: 11.5px;
   color: #64748b;
-  line-height: 1.5;
-  margin: 0 0 16px 0;
+  line-height: 1.35;
+  margin: 0 0 12px 0;
   text-align: center;
-  flex-grow: 1; /* Keeps all buttons aligned at the bottom */
+  flex-grow: 1;
 }
 
-/* Bright Yellow Open File Button */
+/* Compact Yellow Button */
 .project-card .btn,
 .card .btn,
 .project-card a.btn {
-  background: linear-gradient(135deg, #ffcc00 0%, #ffaa00 100%);
+  background: #ffcc00;
   color: #000000;
   font-weight: 800;
-  font-size: 13px;
-  padding: 10px 0;
-  border-radius: 10px;
+  font-size: 11.5px;
+  padding: 8px 0;
+  border-radius: 8px;
   text-align: center;
   text-decoration: none;
   display: block;
   width: 100%;
-  box-shadow: 0 4px 12px rgba(255, 170, 0, 0.35);
-  transition: all 0.25s ease;
+  box-shadow: 0 3px 8px rgba(255, 204, 0, 0.3);
+  transition: transform 0.2s ease;
 }
 
 .project-card .btn:hover,
 .card .btn:hover {
   transform: scale(1.02);
-  box-shadow: 0 6px 18px rgba(255, 170, 0, 0.55);
 }
 
-/* 🌙 Dark Mode Support for Desktop Cards */
+/* 🌟 5th "More Projects" Card Size Match */
+.more-projects-card {
+  width: 205px !important;
+  flex: 0 0 205px !important;
+  padding: 15px 12px !important;
+  border-radius: 14px !important;
+}
+
+.more-projects-card .more-card-icon {
+  width: 48px !important;
+  height: 48px !important;
+  font-size: 22px !important;
+  margin-bottom: 8px !important;
+}
+
+/* ========================================================
+   🌙 DARK MODE COMPACT CARDS
+   ======================================================== */
 body.dark-mode .project-card,
 body.dark-mode .card {
   background: #18181b;
   border: 1px solid #27272a;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
-body.dark-mode .project-card:hover,
-body.dark-mode .card:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
-}
-
-body.dark-mode .project-card img,
-body.dark-mode .card img {
-  background: #09090b;
 }
 
 body.dark-mode .project-card h3,
@@ -453,6 +464,16 @@ body.dark-mode .card h3 {
 body.dark-mode .project-card p,
 body.dark-mode .card p {
   color: #a1a1aa;
+}
+
+body.dark-mode .project-card img,
+body.dark-mode .card img {
+  background: #09090b;
+}
+
+/* Water level / Schematics clean white backing on dark mode */
+body.dark-mode .project-card img[src*="Water"] {
+  background: #ffffff !important;
 }
 /* ========================================================
    📱 3. MOBILE HORIZONTAL CARDS (MAX-WIDTH: 650PX)
