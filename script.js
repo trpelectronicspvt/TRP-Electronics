@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /* ---------- 10. PROJECTS PAGE SEARCH & CATEGORY FILTER (FINAL PERFECT FIX) ---------- */
+ /* ---------- 10. PROJECTS PAGE SEARCH & CATEGORY FILTER ---------- */
   const projectSearchInput = document.getElementById("projectSearch");
   const projectSearchClearBtn = document.getElementById("projectSearchClearBtn");
   const projectCards = Array.from(document.querySelectorAll(".project-card"));
@@ -390,23 +390,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     projectCards.forEach(card => {
-      // Direct Data Attribute check
       const cardCategory = (card.getAttribute("data-category") || "").toLowerCase().trim();
       const selectedCategory = activeProjectCat.toLowerCase().trim();
 
-      // Content Match (Title, Description, and Keywords)
       const title = (card.querySelector("h3")?.textContent || "").toLowerCase();
       const desc = (card.querySelector("p")?.textContent || "").toLowerCase();
       const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
 
-      // Category matching
       const matchesCategory = (selectedCategory === "all" || selectedCategory === "" || cardCategory === selectedCategory);
-
-      // Search matching (Search keyword, title, ya description me kahi bhi mile)
       const matchesSearch = !q || title.includes(q) || desc.includes(q) || keywords.includes(q);
 
-      // Reset to empty string to respect desktop vs mobile CSS naturally
-      card.style.display = (matchesCategory && matchesSearch) ? "" : "none";
+      // setProperty se Mobile aur Desktop dono par 100% force hide/show hoga
+      if (matchesCategory && matchesSearch) {
+        card.style.removeProperty("display");
+      } else {
+        card.style.setProperty("display", "none", "important");
+      }
     });
   }
 
@@ -428,15 +427,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Second Nav Category Filter Click Listener
+  // Second Nav Category Filter Click / Touch Listener (Works on Mobile + PC)
   document.querySelectorAll(".second-center .cat-item").forEach(li => {
-    li.addEventListener("click", (e) => {
+    li.addEventListener("click", function(e) {
       e.preventDefault();
       document.querySelectorAll(".second-center .cat-item").forEach(x => x.classList.remove("active"));
-      li.classList.add("active");
-      activeProjectCat = li.getAttribute("data-cat") || li.textContent.trim();
+      this.classList.add("active");
+      activeProjectCat = this.getAttribute("data-cat") || this.textContent.trim();
       applyProjectFilters();
     });
   });
-
-});
