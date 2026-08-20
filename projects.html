@@ -31,11 +31,11 @@
   <a href="contact.html">Contact</a>
 </nav>
   </header>
-  <!-- SECOND NAV ROW FOR PROJECTS PAGE -->
+<!-- SECOND NAV ROW FOR PROJECTS PAGE -->
   <div class="second-nav">
     <div class="second-left">
       <div class="search-wrapper">
-        <input id="projectSearch" type="text" placeholder="Search..." />
+        <input id="projectSearch" type="text" placeholder="Search projects, books, circuits..." />
         <button id="projectSearchClearBtn" class="search-clear-btn" title="Clear text">✕</button>
       </div>
     </div>
@@ -53,154 +53,170 @@
     </div>
   </div>
 
- <!----- Project Grid, Lists & Cards ----->
-<div class="project-grid" id="projectList">
+  <!-- Project Grid, Lists & Cards -->
+  <div class="project-grid" id="projectList">
 
-  <div class="project-card">
-    <img src="Data Files/Milk.png" alt="Milk Overflow Alarm" data-cat="Projects" data-keywords="resistor 1ohm"loading="lazy">
-    <div class="project-info">
-      <h3>Milk Overflow Alarm</h3>
-      <p>A simple circuit to alert when milk starts overflowing.</p>
+    <!-- 1. Milk Overflow Alarm (Projects / Circuits) -->
+    <div class="project-card" data-category="Projects" data-keywords="milk overflow alarm buzzer sensor kitchen diy">
+      <img src="Data Files/Milk.png" alt="Milk Overflow Alarm" loading="lazy">
+      <div class="project-info">
+        <h3>Milk Overflow Alarm</h3>
+        <p>A simple circuit to alert when milk starts overflowing.</p>
+      </div>
+      <a href="pdfs/milk-overflow-alarm.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="pdfs/milk-overflow-alarm.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/Gas.png" alt="Gas Leakage Detector" data-cat="Projects" projectSearch="GAS Leakage Alarm smoke detactor lpg" loading="lazy">
-    <div class="project-info">
-      <h3>Gas Leakage Detector</h3>
-      <p>Detect LPG/Gas leakage with a simple sensor-based circuit.</p>
+    <!-- 2. Gas Leakage Detector (Projects / Circuits) -->
+    <div class="project-card" data-category="Projects" data-keywords="gas leakage detector lpg mq2 mq6 smoke detector sensor alarm">
+      <img src="Data Files/Gas.png" alt="Gas Leakage Detector" loading="lazy">
+      <div class="project-info">
+        <h3>Gas Leakage Detector</h3>
+        <p>Detect LPG/Gas leakage with a simple sensor-based circuit.</p>
+      </div>
+      <a href="pdfs/Gas Leakage Detector.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="pdfs/Gas Leakage Detector.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/Smart Home.png" alt="Home Automation" loading="lazy">
-    <div class="project-info">
-      <h3>Home Automation</h3>
-      <p>Control your home appliances without any microcontroller.</p>
+    <!-- 3. Home Automation (Projects / Circuits) -->
+    <div class="project-card" data-category="Projects" data-keywords="home automation smart home relay wireless remote control diy">
+      <img src="Data Files/Smart Home.png" alt="Home Automation" loading="lazy">
+      <div class="project-info">
+        <h3>Home Automation</h3>
+        <p>Control your home appliances without any microcontroller.</p>
+      </div>
+      <a href="Data Files/Home Automation.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/Home Automation.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/Traffic Light.png" alt="Traffic Light with Counter" loading="lazy">
-    <div class="project-info">
-      <h3>Traffic Light Controller</h3>
-      <p>Design of traffic light controller using timer circuit.</p>
+    <!-- 4. Traffic Light Controller (Circuits / Projects) -->
+    <div class="project-card" data-category="Circuits" data-keywords="traffic light controller 555 timer 4017 counter ic circuit led">
+      <img src="Data Files/Traffic Light.png" alt="Traffic Light Controller" loading="lazy">
+      <div class="project-info">
+        <h3>Traffic Light Controller</h3>
+        <p>Design of traffic light controller using timer circuit.</p>
+      </div>
+      <a href="Data Files/Traffic Light.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/Traffic Light.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/Water.png" alt="Water Level Indicator" loading="lazy">
-    <div class="project-info">
-      <h3>Water Level Indicator</h3>
-      <p>LED based water level indicator using BC547 transistors.</p>
+    <!-- 5. Water Level Indicator (Circuits / Projects) -->
+    <div class="project-card" data-category="Circuits" data-keywords="water level indicator tank bc547 transistor sensor led">
+      <img src="Data Files/Water.png" alt="Water Level Indicator" loading="lazy">
+      <div class="project-info">
+        <h3>Water Level Indicator</h3>
+        <p>LED based water level indicator using BC547 transistors.</p>
+      </div>
+      <a href="Data Files/Water Level Indicator (TRP).pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/Water Level Indicator (TRP).pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/Arduino1.png" alt="Arduino Projects For Beginners" loading="lazy">
-    <div class="project-info">
-      <h3>Arduino Projects</h3>
-      <p>Basics to advance arduino Projects For Beginners.</p>
+    <!-- 6. Arduino Projects Book (Books / Guide) -->
+    <div class="project-card" data-category="Books" data-keywords="arduino projects for beginners book pdf guide uno mega coding">
+      <img src="Data Files/Arduino1.png" alt="Arduino Projects For Beginners" loading="lazy">
+      <div class="project-info">
+        <h3>Arduino Projects</h3>
+        <p>Basics to advance arduino Projects For Beginners.</p>
+      </div>
+      <a href="Data Files/Arduino Book.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/Arduino Book.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/Simple.png" alt="Simple Projects" loading="lazy">
-    <div class="project-info">
-      <h3>Simple Projects</h3>
-      <p>Easy electronics projects for beginners.</p>
+    <!-- 7. Simple Projects (Books / Projects) -->
+    <div class="project-card" data-category="Books" data-keywords="simple projects you can make at home diy electronics book pdf">
+      <img src="Data Files/Simple.png" alt="Simple Projects" loading="lazy">
+      <div class="project-info">
+        <h3>Simple Projects</h3>
+        <p>Easy electronics projects for beginners.</p>
+      </div>
+      <a href="pdfs/Simple Projects, You Can Make At Home.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="pdfs/Simple Projects, You Can Make At Home.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/lg.png" alt="Logic Gates PDF Learn Electronics" loading="lazy">
-    <div class="project-info">
-      <h3>Logic Gates From Pathshala</h3>
-      <p>All information About logic Gates - Learn and Build.</p>
+    <!-- 8. Logic Gates (Guide / Books) -->
+    <div class="project-card" data-category="Guide" data-keywords="logic gates from pathshala digital electronics and or not nand nor xor notes">
+      <img src="Data Files/lg.png" alt="Logic Gates PDF Learn Electronics" loading="lazy">
+      <div class="project-info">
+        <h3>Logic Gates From Pathshala</h3>
+        <p>All information About logic Gates - Learn and Build.</p>
+      </div>
+      <a href="Data Files/Logic Gates.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/Logic Gates.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/a1.png" alt="Arduino Made Simple" loading="lazy">
-    <div class="project-info">
-      <h3>Arduino Made Simple</h3>
-      <p>With Interactive Projects by Ashwin Pajankar.</p>
+    <!-- 9. Arduino Made Simple (Books / Programming) -->
+    <div class="project-card" data-category="Books" data-keywords="arduino made simple ashwin pajankar book programming interactive projects">
+      <img src="Data Files/a1.png" alt="Arduino Made Simple" loading="lazy">
+      <div class="project-info">
+        <h3>Arduino Made Simple</h3>
+        <p>With Interactive Projects by Ashwin Pajankar.</p>
+      </div>
+      <a href="Data Files/arduino2.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/arduino2.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/t.png" alt="Types And Features of Transistors" loading="lazy">
-    <div class="project-info">
-      <h3>Types And Features of Transistors</h3>
-      <p>Simple Principles and Circuits.</p>
+    <!-- 10. Types And Features of Transistors (Guide / Circuits) -->
+    <div class="project-card" data-category="Guide" data-keywords="types and features of transistors tfot bjt fet mosfet guide principles">
+      <img src="Data Files/t.png" alt="Types And Features of Transistors" loading="lazy">
+      <div class="project-info">
+        <h3>Types And Features of Transistors</h3>
+        <p>Simple Principles and Circuits.</p>
+      </div>
+      <a href="Data Files/TFOT.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/TFOT.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/b.png" alt="Bipolar Transistor Basics" loading="lazy">
-    <div class="project-info">
-      <h3>Bipolar Transistor Basics</h3>
-      <p>Basics of BJT Transistors npn or pnp , Symbols etc.</p>
+    <!-- 11. Bipolar Transistor Basics (Guide / Circuits) -->
+    <div class="project-card" data-category="Guide" data-keywords="bipolar transistor basics btb bjt npn pnp symbols configuration guide">
+      <img src="Data Files/b.png" alt="Bipolar Transistor Basics" loading="lazy">
+      <div class="project-info">
+        <h3>Bipolar Transistor Basics</h3>
+        <p>Basics of BJT Transistors npn or pnp , Symbols etc.</p>
+      </div>
+      <a href="Data Files/BTB.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/BTB.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/c.png" alt="Characteristics & Formulas" loading="lazy">
-    <div class="project-info">
-      <h3>Characteristics & Formulas</h3>
-      <p>BJT, FET, MOSFET, Equations, Characteristics, Biasing.</p>
+    <!-- 12. Characteristics & Formulas (Guide / Books) -->
+    <div class="project-card" data-category="Guide" data-keywords="characteristics and formulas bjt fet mosfet equations biasing formulas notes">
+      <img src="Data Files/c.png" alt="Characteristics & Formulas" loading="lazy">
+      <div class="project-info">
+        <h3>Characteristics & Formulas</h3>
+        <p>BJT, FET, MOSFET, Equations, Characteristics, Biasing.</p>
+      </div>
+      <a href="Data Files/TCF.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/TCF.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/r.png" alt="Radar System Using Arduino" loading="lazy">
-    <div class="project-info">
-      <h3>Radar System Using Arduino</h3>
-      <p>Make Yours Radar System At Home.</p>
+    <!-- 13. Radar System Using Arduino (Embedded System / Projects) -->
+    <div class="project-card" data-category="Embedded System" data-keywords="radar system using arduino ultrasonic sensor servo processing embedded project">
+      <img src="Data Files/r.png" alt="Radar System Using Arduino" loading="lazy">
+      <div class="project-info">
+        <h3>Radar System Using Arduino</h3>
+        <p>Make Yours Radar System At Home.</p>
+      </div>
+      <a href="Data Files/Radar System Using Arduino.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/Radar System Using Arduino.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/uc.png" alt="Ultimate C Programming Guide" loading="lazy">
-    <div class="project-info">
-      <h3>Ultimate C Programming Guide</h3>
-      <p>Learn C programming - All in One Guide.</p>
+    <!-- 14. Ultimate C Programming Guide (Programming / Books) -->
+    <div class="project-card" data-category="Programming" data-keywords="ultimate c programming guide learn c language coding embedded c">
+      <img src="Data Files/uc.png" alt="Ultimate C Programming Guide" loading="lazy">
+      <div class="project-info">
+        <h3>Ultimate C Programming Guide</h3>
+        <p>Learn C programming - All in One Guide.</p>
+      </div>
+      <a href="Data Files/uc.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/uc.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/pcb.png" alt="Introduction To PCB Designs" loading="lazy">
-    <div class="project-info">
-      <h3>Introduction To PCB Designs</h3>
-      <p>Make & Learn PCB Designs With BAYAREA CIRCUITS .</p>
+    <!-- 15. Introduction To PCB Designs (Guide / Circuits) -->
+    <div class="project-card" data-category="Guide" data-keywords="introduction to pcb designs bayarea circuits schematic layout designing guide">
+      <img src="Data Files/pcb.png" alt="Introduction To PCB Designs" loading="lazy">
+      <div class="project-info">
+        <h3>Introduction To PCB Designs</h3>
+        <p>Make & Learn PCB Designs With BAYAREA CIRCUITS .</p>
+      </div>
+      <a href="Data Files/PCB.pdf" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="Data Files/PCB.pdf" class="btn">OPEN FILE</a>
-  </div>
 
-  <div class="project-card">
-    <img src="Data Files/avr.png" alt="AVR Micro controller & Embedded Systems" loading="lazy">
-    <div class="project-info">
-      <h3>AVR Micro controller & Embedded Systems</h3>
-      <p>Learn Using Assembly and C Language.</p>
+    <!-- 16. AVR Microcontroller & Embedded Systems (Embedded System / Programming) -->
+    <div class="project-card" data-category="Embedded System" data-keywords="avr microcontroller embedded systems assembly c language atmega book">
+      <img src="Data Files/avr.png" alt="AVR Micro controller & Embedded Systems" loading="lazy">
+      <div class="project-info">
+        <h3>AVR Micro controller & Embedded Systems</h3>
+        <p>Learn Using Assembly and C Language.</p>
+      </div>
+      <a href="https://drive.google.com/file/d/1Af0RnXO0fpjjlFPcOMwKGdpS9LnQWyEx/view?usp=drive_link" class="btn" target="_blank">OPEN FILE</a>
     </div>
-    <a href="https://drive.google.com/file/d/1Af0RnXO0fpjjlFPcOMwKGdpS9LnQWyEx/view?usp=drive_link" class="btn" target="_blank">OPEN FILE</a>
-  </div>
 
-</div>
+  </div>
   </section>
 <button id="darkModeToggle">🌙 Dark Mode</button>
   
