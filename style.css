@@ -89,7 +89,7 @@ header nav ul li a.active {
 .hero,
 .hero-section {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   padding: 60px 20px 50px 20px;
   text-align: center;
   background-color: #ffffff;
