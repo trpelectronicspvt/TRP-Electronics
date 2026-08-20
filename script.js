@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const qty = cart.reduce((s, i) => s + (i.qty || 0), 0);
     el.textContent = qty;
   }
-  updateHeaderCount(); // Initialize counter on load
+  updateHeaderCount();
 
   /* ---------- 5. COMPONENTS.HTML: ADD TO CART BEHAVIOR ---------- */
   document.addEventListener("click", (e) => {
@@ -73,7 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
       let name = btn.dataset.name;
       let price = parseFloat(btn.dataset.price);
 
-      // Agar Modal ke andar se click hua ho
       if (!name || isNaN(price)) {
         name = document.getElementById("modalTitle")?.textContent;
         const modalBtn = document.getElementById("modalAddCart");
@@ -94,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
       saveCart();
       showCartAlert(name);
 
-      // Close modal if item added from modal
       const modal = document.getElementById("product-modal");
       if (modal) modal.classList.remove("active");
     }
@@ -186,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const keywords = (card.dataset.keywords || "").toLowerCase();
       const matchesCategory = (activeCategory === "all") || (cat === activeCategory.toLowerCase());
       const matchesSearch = !q || name.includes(q) || keywords.includes(q);
-      card.style.display = (matchesCategory && matchesSearch) ? "flex" : "none";
+      card.style.display = (matchesCategory && matchesSearch) ? "" : "none";
     });
   }
 
@@ -370,10 +368,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /* ---------- 10. PROJECTS PAGE SEARCH & CATEGORY FILTER (INSIDE DOM LOAD) ---------- */
+  /* ---------- 10. PROJECTS PAGE SEARCH & CATEGORY FILTER (FINAL PERFECT FIX) ---------- */
   const projectSearchInput = document.getElementById("projectSearch");
   const projectSearchClearBtn = document.getElementById("projectSearchClearBtn");
-  const projectCards = Array.from(document.querySelectorAll(".project-card, .card"));
+  const projectCards = Array.from(document.querySelectorAll(".project-card"));
   let activeProjectCat = "all";
 
   function applyProjectFilters() {
@@ -392,14 +390,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     projectCards.forEach(card => {
-      const cat = (card.dataset.category || "").toLowerCase();
-      const title = (card.querySelector("h3, h2, .title")?.textContent || "").toLowerCase();
-      const desc = (card.querySelector("p, .desc")?.textContent || "").toLowerCase();
-      const matchesCategory = (activeProjectCat === "all") || (cat === activeProjectCat.toLowerCase());
-      const matchesSearch = !q || title.includes(q) || desc.includes(q);
+      // Direct Data Attribute check
+      const cardCategory = (card.getAttribute("data-category") || "").toLowerCase().trim();
+      const selectedCategory = activeProjectCat.toLowerCase().trim();
 
-      // Flex display layout preserves horizontal alignment on mobile
-      card.style.display = (matchesCategory && matchesSearch) ? "flex" : "none";
+      // Content Match (Title, Description, and Keywords)
+      const title = (card.querySelector("h3")?.textContent || "").toLowerCase();
+      const desc = (card.querySelector("p")?.textContent || "").toLowerCase();
+      const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
+
+      // Category matching
+      const matchesCategory = (selectedCategory === "all" || selectedCategory === "" || cardCategory === selectedCategory);
+
+      // Search matching (Search keyword, title, ya description me kahi bhi mile)
+      const matchesSearch = !q || title.includes(q) || desc.includes(q) || keywords.includes(q);
+
+      // Reset to empty string to respect desktop vs mobile CSS naturally
+      card.style.display = (matchesCategory && matchesSearch) ? "" : "none";
     });
   }
 
@@ -421,84 +428,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  document.querySelectorAll(".second-center .cat-item, .category-btn").forEach(li => {
-    li.addEventListener("click", () => {
-      document.querySelectorAll(".second-center .cat-item, .category-btn").forEach(x => x.classList.remove("active"));
+  // Second Nav Category Filter Click Listener
+  document.querySelectorAll(".second-center .cat-item").forEach(li => {
+    li.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.querySelectorAll(".second-center .cat-item").forEach(x => x.classList.remove("active"));
       li.classList.add("active");
-      activeProjectCat = li.dataset.cat || li.dataset.category || "all";
+      activeProjectCat = li.getAttribute("data-cat") || li.textContent.trim();
       applyProjectFilters();
     });
   });
 
 });
-/* ---------- 10. PROJECTS PAGE SEARCH & CATEGORY FILTER (FIXED) ---------- */
-  const projectSearchInput = document.getElementById("projectSearch");
-  const projectSearchClearBtn = document.getElementById("projectSearchClearBtn");
-  const projectCards = Array.from(document.querySelectorAll(".project-card, .card"));
-  let activeProjectCat = "all";
-
-  function applyProjectFilters() {
-    const q = (projectSearchInput?.value || "").toLowerCase().trim();
-
-    if (projectSearchInput) {
-      if (q.length > 0) {
-        projectSearchInput.classList.add("has-text");
-        if (projectSearchClearBtn) projectSearchClearBtn.style.display = "block";
-      } else {
-        if (document.activeElement !== projectSearchInput) {
-          projectSearchInput.classList.remove("has-text");
-        }
-        if (projectSearchClearBtn) projectSearchClearBtn.style.display = "none";
-      }
-    }
-
-    projectCards.forEach(card => {
-      // Category read (Case-insensitive & clean)
-      const cat = (card.getAttribute("data-category") || card.getAttribute("data-cat") || "").toLowerCase().trim();
-      const targetCat = activeProjectCat.toLowerCase().trim();
-
-      // Title & Description Text
-      const title = (card.querySelector("h3, h2, .title")?.textContent || "").toLowerCase();
-      const desc = (card.querySelector("p, .desc")?.textContent || "").toLowerCase();
-
-      // Matching Logic
-      const matchesCategory = (targetCat === "all" || targetCat === "" || cat === targetCat || cat.includes(targetCat));
-      const matchesSearch = !q || title.includes(q) || desc.includes(q);
-
-      // Class toggle - layout kabhi distort nahi hoga
-      if (matchesCategory && matchesSearch) {
-        card.classList.remove("is-hidden");
-      } else {
-        card.classList.add("is-hidden");
-      }
-    });
-  }
-
-  if (projectSearchInput) {
-    projectSearchInput.addEventListener("input", applyProjectFilters);
-    projectSearchInput.addEventListener("focus", () => projectSearchInput.classList.add("has-text"));
-    projectSearchInput.addEventListener("blur", () => {
-      if (!projectSearchInput.value.trim()) {
-        projectSearchInput.classList.remove("has-text");
-      }
-    });
-  }
-
-  projectSearchClearBtn?.addEventListener("click", () => {
-    if (projectSearchInput) {
-      projectSearchInput.value = "";
-      applyProjectFilters();
-      projectSearchInput.focus();
-    }
-  });
-
-  // Category Buttons Click Event
-  document.querySelectorAll(".second-center .cat-item, .category-menu-new .cat-item, .category-btn, .cat-pill").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      document.querySelectorAll(".second-center .cat-item, .category-menu-new .cat-item, .category-btn, .cat-pill").forEach(x => x.classList.remove("active"));
-      btn.classList.add("active");
-      activeProjectCat = btn.dataset.cat || btn.dataset.category || btn.textContent.trim();
-      applyProjectFilters();
-    });
-  });
