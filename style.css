@@ -371,12 +371,11 @@ body.dark-mode #aboutContent p {
 }
 
 .project-card img {
-  width: 100%;
-  height: 140px;
+  width: auto;
+  height: 150px;
   object-fit: contain;
   border-radius: 8px;
   margin-bottom: 10px;
-  background: #f8fafc;
   opacity: 0;
   transform: scale(0.98);
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -1506,4 +1505,37 @@ footer {
   text-align: center !important;
   padding: 15px !important;
   margin-top: 40px !important;
+}
+
+/* ========================================================
+   ⚓ STICKY FOOTER (KEEPS FOOTER AT BOTTOM ON SEARCH/FILTER)
+   ======================================================== */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Page content area stretches to push footer down */
+.all-projects,
+.project-grid,
+main {
+  flex: 1 0 auto;
+}
+
+.project-grid {
+  min-height: calc(100vh - 280px); /* Ensures content area always covers screen height */
+  align-content: flex-start;       /* Keeps cards neatly at the top */
+}
+
+/* Footer locked to the bottom */
+footer,
+.footer {
+  margin-top: auto;
+  width: 100%;
 }
