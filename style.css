@@ -89,7 +89,7 @@ header nav ul li a.active {
 .hero,
 .hero-section {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   padding: 60px 20px 50px 20px;
   text-align: center;
   background-color: #ffffff;
@@ -1508,34 +1508,28 @@ footer {
 }
 
 /* ========================================================
-   ⚓ STICKY FOOTER (KEEPS FOOTER AT BOTTOM ON SEARCH/FILTER)
+   ⚓ STICKY FOOTER (ONLY FOR PROJECTS PAGE)
    ======================================================== */
-html, body {
+html, 
+body.projects-page {
   height: 100%;
   margin: 0;
 }
 
-body {
+body.projects-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Page content area stretches to push footer down */
-.all-projects,
-.project-grid,
-main {
+/* Push footer down ONLY on Projects page */
+body.projects-page .all-projects,
+body.projects-page .project-grid {
   flex: 1 0 auto;
 }
 
-.project-grid {
-  min-height: calc(100vh - 280px); /* Ensures content area always covers screen height */
-  align-content: flex-start;       /* Keeps cards neatly at the top */
-}
-
-/* Footer locked to the bottom */
-footer,
-.footer {
+body.projects-page footer,
+body.projects-page .footer {
   margin-top: auto;
   width: 100%;
 }
