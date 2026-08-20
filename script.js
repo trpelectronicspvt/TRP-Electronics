@@ -437,3 +437,5 @@ document.addEventListener("DOMContentLoaded", () => {
       applyProjectFilters();
     });
   });
+
+  });
