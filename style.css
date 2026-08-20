@@ -338,9 +338,10 @@ body.dark-mode #aboutContent p {
 .project-grid {
   display: flex;
   flex-wrap: wrap;
-  padding: 30px;
+  padding: 30px 10px;
   gap: 20px;
   justify-content: center;
+  align-content: flex-start !important; /* Top alignment on desktop */
   min-height: 300px;
 }
 
@@ -433,6 +434,8 @@ body.dark-mode #aboutContent p {
   .project-grid {
     display: flex !important;
     flex-direction: column !important;
+    justify-content: flex-start !important; /* Forces cards to start from TOP */
+    align-items: stretch !important;
     gap: 12px !important;
     padding: 10px 12px !important;
   }
