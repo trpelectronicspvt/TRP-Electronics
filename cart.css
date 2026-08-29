@@ -235,11 +235,3 @@ body.dark-mode .secondary-btn {
   border: 2px solid #2a4ea0;
 }
 
-/* ===== Footer ===== */
-footercart {
-  background: #0044cc !important;
-  color: white !important;
-  text-align: center !important;
-  padding: 15px !important;
-  margin-top: 90px !important;
-}
