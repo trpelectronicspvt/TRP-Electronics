@@ -1509,6 +1509,14 @@ footer {
   padding: 15px !important;
   margin-top: 40px !important;
 }
+/* ===== Footer ===== */
+footercart {
+  background: #0044cc !important;
+  color: white !important;
+  text-align: center !important;
+  padding: 15px !important;
+  margin-top: 90px !important;
+}
 
 /* ========================================================
    ⚓ STICKY FOOTER (ONLY FOR PROJECTS PAGE)
