@@ -210,62 +210,193 @@ body.components-page {
   }
 }
 
-/* ---------------------------------
-   PRODUCT GRID
------------------------------------*/
+/* ============================================================
+   RESPONSIVE COMPONENT STORE CARDS (DESKTOP & MOBILE)
+   ============================================================ */
+
+/* 1. MAIN GRID CONTAINER */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 25px;
-  width: 90%;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+  padding: 16px;
   max-width: 1200px;
-  margin: 20px auto;
-  min-height: 300px;
+  margin: 0 auto;
 }
 
-@media (max-width: 700px) {
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-}
-
+/* 2. CARD BASE (PREMIUM SLEEK LOOK) */
 .product-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  text-align: center;
-  padding: 15px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
+  background: #181b20;
+  border: 1px solid #282c35;
+  border-radius: 12px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
 }
 
 .product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  border-color: #3b82f6;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-.product-card img {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-  margin-bottom: 10px;
+/* 3. UNIFORM IMAGE CANVAS FRAME */
+.product-img-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Pure square frame, never stretches */
+  background: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
+.product-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Component scales perfectly to fit */
+  display: block;
+}
+
+/* 4. DETAILS (TITLE & PRICE) */
 .product-card h3 {
-  font-size: 18px;
-  color: #0044cc;
-  margin: 5px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 10px 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Long component names trim cleanly */
+  text-align: center;
 }
 
 .product-card p {
-  font-size: 16px;
-  color: #222;
-  margin-bottom: 10px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 700;
+  color: #38bdf8;
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+/* 5. BUTTON STYLING */
+.btn-group {
+  margin-top: auto;
+  width: 100%;
+}
+
+.btn-group .btn.add-cart {
+  width: 100%;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-group .btn.add-cart:hover {
+  background: #1d4ed8;
+}
+
+/* 6. OVERLAYS (BADGE & EXPAND ICON) */
+.discount-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #16a34a;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.expand-icon-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  font-size: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.expand-icon-btn:hover {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+/* ============================================================
+   MOBILE-SPECIFIC VIEW (Max-Width: 600px)
+   ============================================================ */
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 items per row */
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .product-card {
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .product-img-wrapper {
+    padding: 6px;
+    border-radius: 6px;
+  }
+
+  .product-card h3 {
+    font-size: 12.5px;
+    margin: 8px 0 2px;
+  }
+
+  .product-card p {
+    font-size: 13.5px;
+    margin: 0 0 8px;
+  }
+
+  .btn-group .btn.add-cart,
+  .notify-stock-btn {
+    font-size: 11.5px;
+    padding: 7px 6px;
+  }
+
+  .discount-badge {
+    top: 11px;
+    left: 11px;
+    font-size: 9px;
+    padding: 2px 5px;
+  }
+
+  .expand-icon-btn {
+    top: 11px;
+    right: 11px;
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
 }
 
 .add-cart {
