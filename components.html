@@ -841,5 +841,35 @@
   <button id="darkModeToggle">🌙 Dark Mode</button>
 
   <script src="script.js"></script>
+  <script type="module">
+  import { db } from "./firebase-config.js";
+  import { collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const container = document.getElementById("componentsContainer");
+
+  // Real-time listener: Admin jaise hi product add karega, bina reload kiye turant display hoga
+  onSnapshot(collection(db, "products"), (snapshot) => {
+    container.innerHTML = "";
+    snapshot.forEach((doc) => {
+      const p = doc.data();
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.setAttribute("data-category", p.category);
+      card.setAttribute("data-keywords", (p.name + " " + p.category + " " + (p.desc || "")).toLowerCase());
+      card.setAttribute("data-desc", p.desc || "");
+
+      card.innerHTML = `
+        <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
+        <h3>${p.name}</h3>
+        <p>₹${p.price}</p>
+        <div class="prod-btn-group">
+          <button class="add-cart" data-name="${p.name}" data-price="${p.price}">Add to Cart</button>
+          <button class="expand-btn">View</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  });
+</script>
 </body>
 </html>
