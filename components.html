@@ -140,25 +140,29 @@
         card.setAttribute("data-desc", p.desc || "");
 
 card.innerHTML = `
-  ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
-  <button class="expand-icon-btn expand-btn" title="Expand View">⛶</button>
-  
   <div class="product-img-wrapper">
+    ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
+    <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
     <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
   </div>
-  
-  <h3>${p.name}</h3>
-  
-  <div class="product-bottom-bar">
-    <div class="price-tag">
-      <span class="label">Price</span>
-      <span class="val">₹${p.price}</span>
+
+  <div class="product-info">
+    <h3>${p.name}</h3>
+    <div class="product-bottom-bar">
+      <div class="price-box">
+        <span class="price-title">Price</span>
+        <span class="price-amount">₹${p.price}</span>
+      </div>
+
+      ${p.outOfStock 
+        ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
+             <span>🔔</span> Out
+           </button>`
+        : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
+             <span>🛒</span> Add
+           </button>`
+      }
     </div>
-    
-    ${p.outOfStock 
-      ? `<button class="action-dock-btn notify-btn notify-stock-btn" title="Notify when in stock" data-name="${p.name}" data-price="${p.price}">🔔</button>`
-      : `<button class="action-dock-btn add-cart" title="Add to Cart" data-name="${p.name}" data-price="${p.price}">🛒</button>`
-    }
   </div>
 `;
         container.appendChild(card);
