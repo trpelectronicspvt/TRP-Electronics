@@ -139,27 +139,28 @@
         card.setAttribute("data-keywords", p.keywords || "");
         card.setAttribute("data-desc", p.desc || "");
 
-        card.innerHTML = `
-          ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
-          <button class="expand-icon-btn expand-btn" title="View Details">⛶</button>
-          
-          <div class="product-img-wrapper">
-            <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
-          </div>
-          <h3>${p.name}</h3>
-          <p>₹${p.price}</p>
-          
-          <div class="btn-group">
-            ${p.outOfStock 
-              ? `<button class="btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
-                   Out of Stock 🔔
-                 </button>`
-              : `<button class="btn add-cart" data-name="${p.name}" data-price="${p.price}">
-                   Add to Cart
-                 </button>`
-            }
-          </div>
-        `;
+card.innerHTML = `
+  ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
+  <button class="expand-icon-btn expand-btn" title="Expand View">⛶</button>
+  
+  <div class="product-img-wrapper">
+    <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
+  </div>
+  
+  <h3>${p.name}</h3>
+  
+  <div class="product-bottom-bar">
+    <div class="price-tag">
+      <span class="label">Price</span>
+      <span class="val">₹${p.price}</span>
+    </div>
+    
+    ${p.outOfStock 
+      ? `<button class="action-dock-btn notify-btn notify-stock-btn" title="Notify when in stock" data-name="${p.name}" data-price="${p.price}">🔔</button>`
+      : `<button class="action-dock-btn add-cart" title="Add to Cart" data-name="${p.name}" data-price="${p.price}">🛒</button>`
+    }
+  </div>
+`;
         container.appendChild(card);
       });
 
