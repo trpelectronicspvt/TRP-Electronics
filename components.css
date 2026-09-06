@@ -748,41 +748,66 @@ body.dark-mode .close-modal {
   object-fit: contain; /* Prevents stretching */
 }
 
-/* Offer Discount Badge */
+/* 1. Green Offer Discount Badge */
 .discount-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #ff3b30;
+  background: #16a34a !important; /* Fresh Green */
   color: #ffffff;
   font-size: 11px;
   font-weight: 800;
   padding: 3px 8px;
   border-radius: 4px;
   z-index: 2;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
-/* Stylish Out of Stock Pill Badge */
-.stock-badge.out-stock {
+/* 2. Top-Right Minimal Expand Icon Button */
+.expand-icon-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(239, 68, 68, 0.9);
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 7px;
-  border-radius: 4px;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
+  top: 8px;
+  right: 8px;
+  background: rgba(241, 245, 249, 0.9);
+  border: 1px solid #cbd5e1;
+  color: #1e40af;
+  font-size: 14px;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
   z-index: 2;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
 }
 
-.product-card.is-out-of-stock .add-cart {
-  background: #64748b !important;
-  color: #cbd5e1 !important;
-  cursor: not-allowed !important;
-  pointer-events: none;
+.expand-icon-btn:hover {
+  background: #0052cc;
+  color: #ffffff;
+  border-color: #0052cc;
+  transform: scale(1.08);
+}
+
+/* 3. Red Out of Stock Action Button */
+.notify-stock-btn {
+  width: 100%;
+  background: #dc2626 !important; /* Crimson Red */
+  color: #ffffff !important;
+  font-weight: 700;
+  border: none;
+  padding: 9px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.2s ease;
+}
+
+.notify-stock-btn:hover {
+  background: #b91c1c !important;
 }
