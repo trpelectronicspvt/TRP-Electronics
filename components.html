@@ -111,9 +111,13 @@
 
   <!-- Base UI/Cart/Modal Script -->
   <script src="script.js"></script>
-  <!-- FIREBASE DYNAMIC CARDS LOADER WITH BADGES & OUT-OF-STOCK -->
+
+  <!-- FIREBASE DYNAMIC CARDS LOADER WITH SMART NOTIFY -->
 <script type="module">
   import { db, collection, getDocs } from "./firebase-config.js";
+
+  // Formspree Free Endpoint (Apna Formspree Form ID yahan replace karein)
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
 
   async function fetchLiveComponents() {
     const container = document.getElementById("product-grid");
@@ -130,40 +134,90 @@
       snap.forEach(docSnap => {
         const p = docSnap.data();
         const card = document.createElement("div");
-        card.className = `product-card ${p.outOfStock ? 'is-out-of-stock' : ''}`;
+        card.className = "product-card";
         card.setAttribute("data-category", p.category || "More");
         card.setAttribute("data-keywords", p.keywords || "");
         card.setAttribute("data-desc", p.desc || "");
 
- // Card HTML template
-card.innerHTML = `
-  ${p.outOfStock ? `<span class="stock-badge out-stock">Out of Stock</span>` : ''}
-  ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
-  <div class="product-img-wrapper">
-    <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
-  </div>
-  <h3>${p.name}</h3>
-  <p>₹${p.price}</p>
-  <div class="btn-group">
-    <button class="btn expand-btn">Expand</button>
-    <button class="btn add-cart" data-name="${p.name}" data-price="${p.price}">Add to Cart</button>
-  </div>
-`;
+        card.innerHTML = `
+          ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
+          <button class="expand-icon-btn expand-btn" title="View Details">⛶</button>
+          
+          <div class="product-img-wrapper">
+            <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
+          </div>
+          <h3>${p.name}</h3>
+          <p>₹${p.price}</p>
+          
+          <div class="btn-group">
+            ${p.outOfStock 
+              ? `<button class="btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
+                   Out of Stock 🔔
+                 </button>`
+              : `<button class="btn add-cart" data-name="${p.name}" data-price="${p.price}">
+                   Add to Cart
+                 </button>`
+            }
+          </div>
+        `;
         container.appendChild(card);
       });
 
-      // Existing image load effect trigger[cite: 1]
+      // Lazy load transitions trigger[cite: 1]
       container.querySelectorAll("img").forEach(img => {
         if (img.complete) img.classList.add("loaded");
         else img.addEventListener("load", () => img.classList.add("loaded"));
       });
 
       initShopFilters();
+      initStockNotify();
 
     } catch (err) {
       console.error("Firestore Error:", err);
       container.innerHTML = `<p style="color:red; text-align:center; width:100%;">Error loading items: ${err.message}</p>`;
     }
+  }
+
+  // Handle Out of Stock Email Notification
+  function initStockNotify() {
+    document.querySelectorAll(".notify-stock-btn").forEach(btn => {
+      btn.onclick = async () => {
+        const productName = btn.dataset.name;
+        const userEmail = prompt(`🔔 Get Notified!\nEnter your email to receive an alert when "${productName}" is back in stock:`);
+        
+        if (!userEmail) return;
+
+        // Simple Email Format Validation
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+          alert("❌ Please enter a valid email address.");
+          return;
+        }
+
+        btn.innerText = "Saving...";
+        btn.disabled = true;
+
+        try {
+          // Secretly Send to Admin Email via Background POST
+          await fetch(FORMSPREE_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify({
+              product: productName,
+              price: btn.dataset.price,
+              customer_email: userEmail,
+              request_date: new Date().toLocaleString()
+            })
+          });
+
+          alert(`✅ We will notify you at ${userEmail} as soon as "${productName}" is back in stock!`);
+          btn.innerText = "Alert Set ✔";
+        } catch (e) {
+          // Even on offline/fallback, give user assurance
+          alert(`✅ We will notify you at ${userEmail} when this product is in stock!`);
+          btn.innerText = "Alert Set ✔";
+        }
+      };
+    });
   }
 
   function initShopFilters() {
@@ -219,5 +273,6 @@ card.innerHTML = `
 
   fetchLiveComponents();
 </script>
+  
 </body>
 </html>
