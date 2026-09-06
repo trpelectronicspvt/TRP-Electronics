@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRP Admin Panel</title>
+  <style>
+    body { font-family: sans-serif; background: #0f172a; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .admin-container { background: #1e293b; padding: 25px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    h2 { color: #38bdf8; text-align: center; }
+    input, select, textarea, button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; box-sizing: border-box; }
+    button { background: #ffcc00; color: #000; font-weight: bold; border: none; cursor: pointer; margin-top: 15px; }
+    button:hover { background: #eab308; }
+    .hidden { display: none; }
+    .danger-btn { background: #ef4444; color: #fff; margin-top: 5px; }
+    .product-list { margin-top: 25px; border-top: 1px solid #334155; padding-top: 15px; }
+    .prod-item { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+<div class="admin-container">
+  <!-- 1. Admin Login Form -->
+  <div id="loginSection">
+    <h2>Admin Login</h2>
+    <input type="email" id="adminEmail" placeholder="Admin Email">
+    <input type="password" id="adminPassword" placeholder="Password">
+    <button id="loginBtn">Login</button>
+  </div>
+
+  <!-- 2. Admin Dashboard (After Login) -->
+  <div id="dashSection" class="hidden">
+    <h2>Add New Component</h2>
+    <input type="text" id="pName" placeholder="Component Name (e.g. NE555 IC)">
+    <input type="number" id="pPrice" placeholder="Price (₹)">
+    <select id="pCategory">
+      <option value="ICs">ICs</option>
+      <option value="Modules">Modules</option>
+      <option value="Sensors">Sensors</option>
+      <option value="DIY Kits">DIY Kits</option>
+      <option value="Transistors">Transistors</option>
+    </select>
+    <input type="text" id="pImage" placeholder="Image URL (e.g. images/ne555.png or Web link)">
+    <textarea id="pDesc" placeholder="Component description..."></textarea>
+    <button id="addProdBtn">Add Product</button>
+    <button id="logoutBtn" class="danger-btn">Logout</button>
+
+    <div class="product-list">
+      <h3>Live Inventory</h3>
+      <div id="liveProducts">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { db, auth } from "./firebase-config.js";
+  import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const loginSection = document.getElementById("loginSection");
+  const dashSection = document.getElementById("dashSection");
+
+  // Auth State
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      loginSection.classList.add("hidden");
+      dashSection.classList.remove("hidden");
+      loadLiveProducts();
+    } else {
+      loginSection.classList.remove("hidden");
+      dashSection.classList.add("hidden");
+    }
+  });
+
+  // Login
+  document.getElementById("loginBtn").onclick = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, document.getElementById("adminEmail").value, document.getElementById("adminPassword").value);
+    } catch(err) { alert("❌ " + err.message); }
+  };
+
+  // Logout
+  document.getElementById("logoutBtn").onclick = () => signOut(auth);
+
+  // Add Component to Firestore
+  document.getElementById("addProdBtn").onclick = async () => {
+    const name = document.getElementById("pName").value.trim();
+    const price = parseFloat(document.getElementById("pPrice").value);
+    const category = document.getElementById("pCategory").value;
+    const image = document.getElementById("pImage").value.trim();
+    const desc = document.getElementById("pDesc").value.trim();
+
+    if(!name || isNaN(price)) return alert("Please fill Name and Price");
+
+    await addDoc(collection(db, "products"), { name, price, category, image, desc, createdAt: new Date() });
+    alert("✅ Product Added!");
+    document.getElementById("pName").value = "";
+    document.getElementById("pPrice").value = "";
+    document.getElementById("pImage").value = "";
+    document.getElementById("pDesc").value = "";
+    loadLiveProducts();
+  };
+
+  // Fetch Inventory for Quick Delete
+  async function loadLiveProducts() {
+    const container = document.getElementById("liveProducts");
+    container.innerHTML = "";
+    const snap = await getDocs(collection(db, "products"));
+    snap.forEach(d => {
+      const data = d.data();
+      const div = document.createElement("div");
+      div.className = "prod-item";
+      div.innerHTML = `<span>${data.name} (₹${data.price})</span> <button class="danger-btn" style="width: auto; padding: 4px 8px;" onclick="window.del('${d.id}')">Delete</button>`;
+      container.appendChild(div);
+    });
+  }
+
+  window.del = async (id) => {
+    if(confirm("Delete this component?")) {
+      await deleteDoc(doc(db, "products", id));
+      loadLiveProducts();
+    }
+  };
+</script>
+</body>
+</html>
