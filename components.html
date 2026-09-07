@@ -142,6 +142,7 @@
           card.setAttribute("data-name", p.name || "");
           card.setAttribute("data-image", p.image || "images/all.png");
           card.setAttribute("data-datasheet", p.datasheet || "");
+          card.setAttribute("data-out-of-stock", p.outOfStock ? "true" : "false");
           
           card.innerHTML = `
             <div class="product-img-wrapper">
@@ -160,10 +161,10 @@
 
                 ${p.outOfStock 
                   ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
-                       <span>🔔</span> Out
+                       <span>🔔</span> Notify
                      </button>`
                   : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
-                       <span>🛒</span> Add
+                       <span>🛒</span> Pick
                      </button>`
                 }
               </div>
@@ -181,6 +182,8 @@
             const price = card.getAttribute("data-price") || card.querySelector(".price-amount")?.innerText.replace("₹", "").trim() || "0";
             const img = card.getAttribute("data-image") || card.querySelector("img")?.src || "images/all.png";
             const desc = card.getAttribute("data-desc") || "High quality electronic component for DIY projects.";
+            const isOut = card.getAttribute("data-out-of-stock") === "true";
+            const datasheet = card.getAttribute("data-datasheet") || "";
 
             const modal = document.getElementById("product-modal");
             if (modal) {
@@ -189,29 +192,46 @@
               const modalPrice = document.getElementById("modalPrice");
               const modalDesc = document.getElementById("modalDesc");
               const modalCartBtn = document.getElementById("modalAddCart");
+              const modalPdfBtn = document.getElementById("modalDatasheet");
 
               if (modalImg) modalImg.src = img;
               if (modalTitle) modalTitle.innerText = title;
               if (modalPrice) modalPrice.innerText = `₹${price}`;
               if (modalDesc) modalDesc.innerHTML = `<strong>Description:</strong> ${desc}`;
+
+              // --- OUT OF STOCK vs ADD TO CART BUTTON SYNC ---
               if (modalCartBtn) {
                 modalCartBtn.setAttribute("data-name", title);
                 modalCartBtn.setAttribute("data-price", price);
+
+                if (isOut) {
+                  modalCartBtn.className = "cart-action-btn stock-notify-btn notify-stock-btn";
+                  modalCartBtn.innerHTML = "<span>🔔</span> Notify";
+                  modalCartBtn.onclick = (event) => {
+                    event.stopPropagation();
+                    handleStockNotify(title, price, modalCartBtn);
+                  };
+                } else {
+                  modalCartBtn.className = "cart-action-btn add-cart";
+                  modalCartBtn.innerHTML = "<span>🛒</span> Pick";
+                  modalCartBtn.onclick = (event) => {
+                    event.stopPropagation();
+                    triggerAddToCart(title, parseFloat(price));
+                  };
+                }
               }
 
-              const datasheet = card.getAttribute("data-datasheet") || "";
-const modalPdfBtn = document.getElementById("modalDatasheet");
+              // Datasheet visibility
+              if (modalPdfBtn) {
+                if (datasheet) {
+                  modalPdfBtn.href = datasheet;
+                  modalPdfBtn.style.display = "inline-flex";
+                  modalPdfBtn.innerText = "📥 Download Datasheet";
+                } else {
+                  modalPdfBtn.style.display = "none";
+                }
+              }
 
-if (modalPdfBtn) {
-  if (datasheet) {
-    modalPdfBtn.href = datasheet;
-    modalPdfBtn.style.display = "inline-flex";
-    modalPdfBtn.innerText = "📥 Download Datasheet";
-    modalPdfBtn.removeAttribute("disabled");
-  } else {
-    modalPdfBtn.style.display = "none"; // Ya disabled state
-  }
-}
               modal.style.display = "flex";
             }
           };
@@ -227,52 +247,35 @@ if (modalPdfBtn) {
           };
         }
 
-        // 3. Add to Cart Binding (Cards + Modal Button)
-        document.querySelectorAll(".add-cart").forEach(btn => {
+        // 3. Add to Cart Binding for Cards Grid
+        container.querySelectorAll(".add-cart").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
             const name = btn.getAttribute("data-name") || btn.closest(".product-card")?.getAttribute("data-name");
             const price = parseFloat(btn.getAttribute("data-price") || btn.closest(".product-card")?.getAttribute("data-price") || 0);
 
             if (!name) return;
-
-            if (typeof window.addToCart === "function") {
-              window.addToCart(name, price);
-            } else {
-              let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-              const existing = cart.find(item => item.name === name);
-              if (existing) {
-                existing.qty = (existing.qty || 1) + 1;
-              } else {
-                cart.push({ name, price, qty: 1 });
-              }
-              localStorage.setItem("cart", JSON.stringify(cart));
-              
-              const countEl = document.getElementById("cart-count");
-              if (countEl) {
-                const totalCount = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
-                countEl.innerText = totalCount;
-              }
-
-              const alertBox = document.getElementById("cart-alert");
-              if (alertBox) {
-                alertBox.classList.add("show");
-                setTimeout(() => alertBox.classList.remove("show"), 2000);
-              } else {
-                alert(`✔ Added ${name} to cart!`);
-              }
-            }
+            triggerAddToCart(name, price);
           };
         });
 
-        // 4. Image Transitions Trigger
+        // 4. Out of Stock Button Binding for Cards Grid
+        container.querySelectorAll(".notify-stock-btn").forEach(btn => {
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            const name = btn.getAttribute("data-name");
+            const price = btn.getAttribute("data-price");
+            handleStockNotify(name, price, btn);
+          };
+        });
+
+        // 5. Image Transitions Trigger
         container.querySelectorAll("img").forEach(img => {
           if (img.complete) img.classList.add("loaded");
           else img.addEventListener("load", () => img.classList.add("loaded"));
         });
 
         initShopFilters();
-        initStockNotify();
 
       } catch (err) {
         console.error("Firestore Error:", err);
@@ -280,44 +283,68 @@ if (modalPdfBtn) {
       }
     }
 
-    // Out of Stock Email Alert
-    function initStockNotify() {
-      document.querySelectorAll(".notify-stock-btn").forEach(btn => {
-        btn.onclick = async (e) => {
-          e.stopPropagation();
-          const productName = btn.dataset.name;
-          const userEmail = prompt(`🔔 Get Notified!\nEnter your email to receive an alert when "${productName}" is back in stock:`);
-          
-          if (!userEmail) return;
+    // REUSABLE FUNCTION: Trigger Add to Cart
+    function triggerAddToCart(name, price) {
+      if (typeof window.addToCart === "function") {
+        window.addToCart(name, price);
+      } else {
+        let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        const existing = cart.find(item => item.name === name);
+        if (existing) {
+          existing.qty = (existing.qty || 1) + 1;
+        } else {
+          cart.push({ name, price, qty: 1 });
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        
+        const countEl = document.getElementById("cart-count");
+        if (countEl) {
+          const totalCount = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+          countEl.innerText = totalCount;
+        }
 
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
-            alert("❌ Please enter a valid email address.");
-            return;
-          }
+        const alertBox = document.getElementById("cart-alert");
+        if (alertBox) {
+          alertBox.classList.add("show");
+          setTimeout(() => alertBox.classList.remove("show"), 2000);
+        } else {
+          alert(`✔ Added ${name} to cart!`);
+        }
+      }
+    }
 
-          btn.innerText = "Saving...";
-          btn.disabled = true;
+    // REUSABLE FUNCTION: Out of Stock Email Alert
+    async function handleStockNotify(productName, productPrice, btnElement) {
+      const userEmail = prompt(`🔔 Get Notified!\nEnter your email to receive an alert when "${productName}" is back in stock:`);
+      
+      if (!userEmail) return;
 
-          try {
-            await fetch(FORMSPREE_ENDPOINT, {
-              method: "POST",
-              headers: { "Content-Type": "application/json", "Accept": "application/json" },
-              body: JSON.stringify({
-                product: productName,
-                price: btn.dataset.price,
-                customer_email: userEmail,
-                request_date: new Date().toLocaleString()
-              })
-            });
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+        alert("❌ Please enter a valid email address.");
+        return;
+      }
 
-            alert(`✅ We will notify you at ${userEmail} as soon as "${productName}" is back in stock!`);
-            btn.innerHTML = "<span>✔</span> Alert Set";
-          } catch (err) {
-            alert(`✅ We will notify you at ${userEmail} when this product is in stock!`);
-            btn.innerHTML = "<span>✔</span> Alert Set";
-          }
-        };
-      });
+      btnElement.innerText = "Saving...";
+      btnElement.disabled = true;
+
+      try {
+        await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            product: productName,
+            price: productPrice,
+            customer_email: userEmail,
+            request_date: new Date().toLocaleString()
+          })
+        });
+
+        alert(`✅ We will notify you at ${userEmail} as soon as "${productName}" is back in stock!`);
+        btnElement.innerHTML = "<span>✔</span> Alert Set";
+      } catch (err) {
+        alert(`✅ We will notify you at ${userEmail} when this product is in stock!`);
+        btnElement.innerHTML = "<span>✔</span> Alert Set";
+      }
     }
 
     // Category and Keyword Search Filters
