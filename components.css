@@ -956,14 +956,125 @@ main {
   min-height: 70vh;
 }
 
-/* SKELETON SHIMMER LOADER */
-.skeleton-card {
+/* ============================================================
+   LIGHT & DARK MODE DYNAMIC THEME (CARDS & SKELETONS)
+   ============================================================ */
+
+/* 1. DEFAULT LIGHT MODE VALUES */
+:root {
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  --card-title: #0f172a;
+  --card-price: #0284c7;
+  --img-bay-bg: #f8fafc;
+  --img-bay-border: #e2e8f0;
+
+  /* Light Skeleton Colors */
+  --skel-bg: #f1f5f9;
+  --skel-element: #e2e8f0;
+  --shimmer-highlight: rgba(255, 255, 255, 0.7);
+}
+
+/* 2. DARK MODE OVERRIDES */
+body.dark-mode {
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --card-title: #f8fafc;
+  --card-price: #38bdf8;
+  --img-bay-bg: #ffffff;
+  --img-bay-border: #334155;
+
+  /* Dark Skeleton Colors */
+  --skel-bg: #182030;
+  --skel-element: #242f44;
+  --shimmer-highlight: rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure page height prevents footer jumping */
+main {
+  min-height: 70vh;
+}
+
+/* ============================================================
+   LIVE PRODUCT CARDS (ADAPTIVE THEME)
+   ============================================================ */
+.product-card {
   position: relative;
-  background: #182030;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 14px;
   overflow: hidden;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: #38bdf8;
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.18);
+}
+
+.product-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  background: var(--img-bay-bg);
+  border-bottom: 1px solid var(--img-bay-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.product-img-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img-wrapper img {
+  transform: scale(1.05);
+}
+
+.product-info {
+  padding: 14px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.product-info h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--card-title);
+  margin: 0 0 12px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price-box .price-amount {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--card-price);
+}
+
+/* ============================================================
+   ADAPTIVE SKELETON SHIMMER PRELOADER
+   ============================================================ */
+.skeleton-card {
+  position: relative;
+  background: var(--skel-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -971,7 +1082,7 @@ main {
 .skeleton-img {
   width: 100%;
   height: 170px;
-  background: #242f44;
+  background: var(--skel-element);
 }
 
 .skeleton-content {
@@ -983,7 +1094,7 @@ main {
 
 .skeleton-line {
   height: 14px;
-  background: #242f44;
+  background: var(--skel-element);
   border-radius: 4px;
 }
 
@@ -1003,18 +1114,18 @@ main {
 .skeleton-price {
   width: 50px;
   height: 20px;
-  background: #242f44;
+  background: var(--skel-element);
   border-radius: 4px;
 }
 
 .skeleton-btn {
   width: 75px;
   height: 34px;
-  background: #242f44;
+  background: var(--skel-element);
   border-radius: 8px;
 }
 
-/* SHIMMER GLOW EFFECT */
+/* DYNAMIC SHIMMER EFFECT */
 .shimmer {
   position: relative;
   overflow: hidden;
@@ -1031,9 +1142,8 @@ main {
   background-image: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0,
-    rgba(255, 255, 255, 0.06) 20%,
-    rgba(255, 255, 255, 0.12) 60%,
-    rgba(255, 255, 255, 0)
+    var(--shimmer-highlight) 30%,
+    rgba(255, 255, 255, 0) 70%
   );
   animation: shimmerAnim 1.4s infinite;
 }
