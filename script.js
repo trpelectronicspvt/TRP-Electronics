@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         const productCard = btn.closest('.product-card');
         const imgUrl = productCard?.querySelector('img')?.src || document.getElementById("modalImg")?.src || 'images/all.png';
-        cart.push({ name, price, qty: 1, img: imgUrl });
+        cart.push({ name, price, qty: 1, image: imgUrl, img: imgUrl });
       }
       
       saveCart();
@@ -236,8 +236,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const row = document.createElement("div");
           row.className = "cart-row";
           row.innerHTML = `
-            <img src="${it.img || 'images/all.png'}" alt="" style="width:50px; height:50px;">
-            <div class="info">
+          <img src="${it.image || it.img || ''}" alt="${it.name}" style="width:50px; height:50px; object-fit:contain; background:#fff; border-radius:6px; padding:2px;">
+          <div class="info">
               <h4>${it.name}</h4>
               <p>₹${it.price} each</p>
             </div>
