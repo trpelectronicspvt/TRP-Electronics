@@ -211,7 +211,7 @@
           container.appendChild(card);
         });
 
-        // 2. Expand Modal Binding
+// 2. Expand Modal Binding
         container.querySelectorAll(".expand-btn").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -254,7 +254,7 @@
                   modalCartBtn.innerHTML = "<span>🛒</span> Pick";
                   modalCartBtn.onclick = (event) => {
                     event.stopPropagation();
-                    triggerAddToCart(title, parseFloat(price));
+                    triggerAddToCart(title, parseFloat(price), img); // 👉 Exact modal image passed
                   };
                 }
               }
@@ -289,11 +289,13 @@
         container.querySelectorAll(".add-cart").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
-            const name = btn.getAttribute("data-name") || btn.closest(".product-card")?.getAttribute("data-name");
-            const price = parseFloat(btn.getAttribute("data-price") || btn.closest(".product-card")?.getAttribute("data-price") || 0);
+            const card = btn.closest(".product-card");
+            const name = btn.getAttribute("data-name") || card?.getAttribute("data-name");
+            const price = parseFloat(btn.getAttribute("data-price") || card?.getAttribute("data-price") || 0);
+            const image = card?.getAttribute("data-image") || card?.querySelector("img")?.src || "images/all.png";
 
             if (!name) return;
-            triggerAddToCart(name, price);
+            triggerAddToCart(name, price, image); // 👉 Exact card image passed
           };
         });
 
@@ -321,33 +323,30 @@
       }
     }
 
-    // REUSABLE FUNCTION: Trigger Add to Cart
-    function triggerAddToCart(name, price) {
-      if (typeof window.addToCart === "function") {
-        window.addToCart(name, price);
-      } else {
-        let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        const existing = cart.find(item => item.name === name);
-        if (existing) {
-          existing.qty = (existing.qty || 1) + 1;
-        } else {
-          cart.push({ name, price, qty: 1 });
-        }
-        localStorage.setItem("cart", JSON.stringify(cart));
-        
-        const countEl = document.getElementById("cart-count");
-        if (countEl) {
-          const totalCount = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
-          countEl.innerText = totalCount;
-        }
+function triggerAddToCart(name, price, image) {
+      const finalImage = image || "images/all.png";
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const existing = cart.find(item => item.name === name);
 
-        const alertBox = document.getElementById("cart-alert");
-        if (alertBox) {
-          alertBox.classList.add("show");
-          setTimeout(() => alertBox.classList.remove("show"), 2000);
-        } else {
-          alert(`✔ Added ${name} to cart!`);
-        }
+      if (existing) {
+        existing.qty = (existing.qty || 1) + 1;
+        existing.image = finalImage;
+      } else {
+        cart.push({ name, price, image: finalImage, qty: 1 });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      const countEl = document.getElementById("cart-count");
+      if (countEl) {
+        countEl.innerText = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      }
+
+      const alertBox = document.getElementById("cart-alert");
+      if (alertBox) {
+        alertBox.classList.add("show");
+        setTimeout(() => alertBox.classList.remove("show"), 2000);
+      } else {
+        alert(`✔ Added ${name} to cart!`);
       }
     }
 
