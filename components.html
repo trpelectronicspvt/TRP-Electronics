@@ -141,7 +141,8 @@
           card.setAttribute("data-price", p.price || "0");
           card.setAttribute("data-name", p.name || "");
           card.setAttribute("data-image", p.image || "images/all.png");
-
+          card.setAttribute("data-datasheet", p.datasheet || "");
+          
           card.innerHTML = `
             <div class="product-img-wrapper">
               ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
@@ -198,6 +199,19 @@
                 modalCartBtn.setAttribute("data-price", price);
               }
 
+              const datasheet = card.getAttribute("data-datasheet") || "";
+const modalPdfBtn = document.getElementById("modalDatasheet");
+
+if (modalPdfBtn) {
+  if (datasheet) {
+    modalPdfBtn.href = datasheet;
+    modalPdfBtn.style.display = "inline-flex";
+    modalPdfBtn.innerText = "📥 Download Datasheet";
+    modalPdfBtn.removeAttribute("disabled");
+  } else {
+    modalPdfBtn.style.display = "none"; // Ya disabled state
+  }
+}
               modal.style.display = "flex";
             }
           };
