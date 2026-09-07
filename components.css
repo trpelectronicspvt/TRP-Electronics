@@ -3,7 +3,7 @@
 /* GENERAL */
 body.components-page {
   font-family: "Segoe UI", Arial, sans-serif;
-  background-color: #f4f7fb;
+  background-color: #ffffff;
   margin: 0;
   padding: 0;
   color: #333;
@@ -226,7 +226,7 @@ body.components-page {
 /* 1. SOLID CARD CONTAINER */
 .product-card {
   position: relative;
-  background: #1e293b; /* Clean Navy Slate */
+  background: #ffffff; /* Clean Navy Slate */
   border: 1px solid #334155;
   border-radius: 14px;
   overflow: hidden;
@@ -317,7 +317,7 @@ body.components-page {
 .product-info h3 {
   font-size: 15px;
   font-weight: 700;
-  color: #f8fafc;
+  color: #000000;
   margin: 0 0 12px 0;
   white-space: nowrap;
   overflow: hidden;
@@ -355,7 +355,7 @@ body.components-page {
 .cart-action-btn {
   height: 36px;
   padding: 0 14px;
-  border-radius: 8px;
+  border-radius: 20px;
   border: none;
   font-size: 13px;
   font-weight: 700;
