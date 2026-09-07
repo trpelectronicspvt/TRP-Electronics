@@ -75,7 +75,6 @@
         </p>
       </div>
 
-      <!-- ✅ ID & Structure Fixed -->
       <div id="product-grid" class="product-grid">
         <p style="text-align:center; width:100%; color:#888;">Loading components from store...</p>
       </div>
@@ -113,171 +112,253 @@
   <script src="script.js"></script>
 
   <!-- FIREBASE DYNAMIC CARDS LOADER WITH SMART NOTIFY -->
-<script type="module">
-  import { db, collection, getDocs } from "./firebase-config.js";
+  <script type="module">
+    import { db, collection, getDocs } from "./firebase-config.js";
 
-  // Formspree Free Endpoint (Apna Formspree Form ID yahan replace karein)
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljewbda";
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljewbda";
 
-  async function fetchLiveComponents() {
-    const container = document.getElementById("product-grid");
-    if (!container) return;
+    async function fetchLiveComponents() {
+      const container = document.getElementById("product-grid");
+      if (!container) return;
 
-    try {
-      const snap = await getDocs(collection(db, "products"));
-      if (snap.empty) {
-        container.innerHTML = "<p style='text-align:center; width:100%; color:#888;'>No products available right now.</p>";
-        return;
-      }
-
-      container.innerHTML = "";
-      snap.forEach(docSnap => {
-        const p = docSnap.data();
-        const card = document.createElement("div");
-        card.className = "product-card";
-        card.setAttribute("data-category", p.category || "More");
-        card.setAttribute("data-keywords", p.keywords || "");
-        card.setAttribute("data-desc", p.desc || "");
-
-card.innerHTML = `
-  <div class="product-img-wrapper">
-    ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
-    <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
-    <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
-  </div>
-
-  <div class="product-info">
-    <h3>${p.name}</h3>
-    <div class="product-bottom-bar">
-      <div class="price-box">
-        <span class="price-title">Price</span>
-        <span class="price-amount">₹${p.price}</span>
-      </div>
-
-      ${p.outOfStock 
-        ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
-             <span>🔔</span> Out
-           </button>`
-        : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
-             <span>🛒</span> Add
-           </button>`
-      }
-    </div>
-  </div>
-`;
-        container.appendChild(card);
-      });
-
-      // Lazy load transitions trigger[cite: 1]
-      container.querySelectorAll("img").forEach(img => {
-        if (img.complete) img.classList.add("loaded");
-        else img.addEventListener("load", () => img.classList.add("loaded"));
-      });
-
-      initShopFilters();
-      initStockNotify();
-
-    } catch (err) {
-      console.error("Firestore Error:", err);
-      container.innerHTML = `<p style="color:red; text-align:center; width:100%;">Error loading items: ${err.message}</p>`;
-    }
-  }
-
-  // Handle Out of Stock Email Notification
-  function initStockNotify() {
-    document.querySelectorAll(".notify-stock-btn").forEach(btn => {
-      btn.onclick = async () => {
-        const productName = btn.dataset.name;
-        const userEmail = prompt(`🔔 Get Notified!\nEnter your email to receive an alert when "${productName}" is back in stock:`);
-        
-        if (!userEmail) return;
-
-        // Simple Email Format Validation
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
-          alert("❌ Please enter a valid email address.");
+      try {
+        const snap = await getDocs(collection(db, "products"));
+        if (snap.empty) {
+          container.innerHTML = "<p style='text-align:center; width:100%; color:#888;'>No products available right now.</p>";
           return;
         }
 
-        btn.innerText = "Saving...";
-        btn.disabled = true;
+        container.innerHTML = "";
 
-        try {
-          // Secretly Send to Admin Email via Background POST
-          await fetch(FORMSPREE_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "Accept": "application/json" },
-            body: JSON.stringify({
-              product: productName,
-              price: btn.dataset.price,
-              customer_email: userEmail,
-              request_date: new Date().toLocaleString()
-            })
-          });
+        // 1. Generate Product Cards
+        snap.forEach(docSnap => {
+          const p = docSnap.data();
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.setAttribute("data-category", p.category || "More");
+          card.setAttribute("data-keywords", p.keywords || "");
+          card.setAttribute("data-desc", p.desc || "High quality electronic component for DIY projects.");
+          card.setAttribute("data-price", p.price || "0");
+          card.setAttribute("data-name", p.name || "");
+          card.setAttribute("data-image", p.image || "images/all.png");
 
-          alert(`✅ We will notify you at ${userEmail} as soon as "${productName}" is back in stock!`);
-          btn.innerText = "Alert Set ✔";
-        } catch (e) {
-          // Even on offline/fallback, give user assurance
-          alert(`✅ We will notify you at ${userEmail} when this product is in stock!`);
-          btn.innerText = "Alert Set ✔";
+          card.innerHTML = `
+            <div class="product-img-wrapper">
+              ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
+              <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
+              <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
+            </div>
+
+            <div class="product-info">
+              <h3>${p.name}</h3>
+              <div class="product-bottom-bar">
+                <div class="price-box">
+                  <span class="price-title">Price</span>
+                  <span class="price-amount">₹${p.price}</span>
+                </div>
+
+                ${p.outOfStock 
+                  ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
+                       <span>🔔</span> Out
+                     </button>`
+                  : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
+                       <span>🛒</span> Add
+                     </button>`
+                }
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        // 2. Expand Modal Binding
+        container.querySelectorAll(".expand-btn").forEach(btn => {
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            const card = btn.closest(".product-card");
+            const title = card.getAttribute("data-name") || card.querySelector("h3")?.innerText || "";
+            const price = card.getAttribute("data-price") || card.querySelector(".price-amount")?.innerText.replace("₹", "").trim() || "0";
+            const img = card.getAttribute("data-image") || card.querySelector("img")?.src || "images/all.png";
+            const desc = card.getAttribute("data-desc") || "High quality electronic component for DIY projects.";
+
+            const modal = document.getElementById("product-modal");
+            if (modal) {
+              const modalImg = document.getElementById("modalImg");
+              const modalTitle = document.getElementById("modalTitle");
+              const modalPrice = document.getElementById("modalPrice");
+              const modalDesc = document.getElementById("modalDesc");
+              const modalCartBtn = document.getElementById("modalAddCart");
+
+              if (modalImg) modalImg.src = img;
+              if (modalTitle) modalTitle.innerText = title;
+              if (modalPrice) modalPrice.innerText = `₹${price}`;
+              if (modalDesc) modalDesc.innerHTML = `<strong>Description:</strong> ${desc}`;
+              if (modalCartBtn) {
+                modalCartBtn.setAttribute("data-name", title);
+                modalCartBtn.setAttribute("data-price", price);
+              }
+
+              modal.style.display = "flex";
+            }
+          };
+        });
+
+        // Close Modal Handler
+        const modal = document.getElementById("product-modal");
+        const closeModalBtn = document.getElementById("closeModal");
+        if (closeModalBtn && modal) {
+          closeModalBtn.onclick = () => { modal.style.display = "none"; };
+          modal.onclick = (e) => {
+            if (e.target === modal) modal.style.display = "none";
+          };
         }
-      };
-    });
-  }
 
-  function initShopFilters() {
-    const searchInput = document.getElementById("componentSearch");
-    const searchClearBtn = document.getElementById("searchClearBtn");
-    const dynamicCards = Array.from(document.querySelectorAll("#product-grid .product-card"));
-    let activeShopCat = "all";
+        // 3. Add to Cart Binding (Cards + Modal Button)
+        document.querySelectorAll(".add-cart").forEach(btn => {
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            const name = btn.getAttribute("data-name") || btn.closest(".product-card")?.getAttribute("data-name");
+            const price = parseFloat(btn.getAttribute("data-price") || btn.closest(".product-card")?.getAttribute("data-price") || 0);
 
-    function runFilter() {
-      const q = (searchInput?.value || "").toLowerCase().trim();
+            if (!name) return;
 
-      if (searchInput) {
-        if (q.length > 0) {
-          searchInput.classList.add("has-text");
-          if (searchClearBtn) searchClearBtn.style.display = "block";
-        } else {
-          if (document.activeElement !== searchInput) searchInput.classList.remove("has-text");
-          if (searchClearBtn) searchClearBtn.style.display = "none";
-        }
+            if (typeof window.addToCart === "function") {
+              window.addToCart(name, price);
+            } else {
+              let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+              const existing = cart.find(item => item.name === name);
+              if (existing) {
+                existing.qty = (existing.qty || 1) + 1;
+              } else {
+                cart.push({ name, price, qty: 1 });
+              }
+              localStorage.setItem("cart", JSON.stringify(cart));
+              
+              const countEl = document.getElementById("cart-count");
+              if (countEl) {
+                const totalCount = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+                countEl.innerText = totalCount;
+              }
+
+              const alertBox = document.getElementById("cart-alert");
+              if (alertBox) {
+                alertBox.classList.add("show");
+                setTimeout(() => alertBox.classList.remove("show"), 2000);
+              } else {
+                alert(`✔ Added ${name} to cart!`);
+              }
+            }
+          };
+        });
+
+        // 4. Image Transitions Trigger
+        container.querySelectorAll("img").forEach(img => {
+          if (img.complete) img.classList.add("loaded");
+          else img.addEventListener("load", () => img.classList.add("loaded"));
+        });
+
+        initShopFilters();
+        initStockNotify();
+
+      } catch (err) {
+        console.error("Firestore Error:", err);
+        container.innerHTML = `<p style="color:red; text-align:center; width:100%;">Error loading items: ${err.message}</p>`;
       }
+    }
 
-      dynamicCards.forEach(card => {
-        const cat = (card.getAttribute("data-category") || "").toLowerCase().trim();
-        const target = activeShopCat.toLowerCase().trim();
-        const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
-        const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
+    // Out of Stock Email Alert
+    function initStockNotify() {
+      document.querySelectorAll(".notify-stock-btn").forEach(btn => {
+        btn.onclick = async (e) => {
+          e.stopPropagation();
+          const productName = btn.dataset.name;
+          const userEmail = prompt(`🔔 Get Notified!\nEnter your email to receive an alert when "${productName}" is back in stock:`);
+          
+          if (!userEmail) return;
 
-        const matchesCategory = (target === "all" || cat === target);
-        const matchesSearch = !q || name.includes(q) || keywords.includes(q);
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+            alert("❌ Please enter a valid email address.");
+            return;
+          }
 
-        card.style.display = (matchesCategory && matchesSearch) ? "flex" : "none";
+          btn.innerText = "Saving...";
+          btn.disabled = true;
+
+          try {
+            await fetch(FORMSPREE_ENDPOINT, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Accept": "application/json" },
+              body: JSON.stringify({
+                product: productName,
+                price: btn.dataset.price,
+                customer_email: userEmail,
+                request_date: new Date().toLocaleString()
+              })
+            });
+
+            alert(`✅ We will notify you at ${userEmail} as soon as "${productName}" is back in stock!`);
+            btn.innerHTML = "<span>✔</span> Alert Set";
+          } catch (err) {
+            alert(`✅ We will notify you at ${userEmail} when this product is in stock!`);
+            btn.innerHTML = "<span>✔</span> Alert Set";
+          }
+        };
       });
     }
 
-    searchInput?.addEventListener("input", runFilter);
-    searchClearBtn?.addEventListener("click", () => {
-      if (searchInput) {
-        searchInput.value = "";
-        runFilter();
-        searchInput.focus();
+    // Category and Keyword Search Filters
+    function initShopFilters() {
+      const searchInput = document.getElementById("componentSearch");
+      const searchClearBtn = document.getElementById("searchClearBtn");
+      const dynamicCards = Array.from(document.querySelectorAll("#product-grid .product-card"));
+      let activeShopCat = "all";
+
+      function runFilter() {
+        const q = (searchInput?.value || "").toLowerCase().trim();
+
+        if (searchInput) {
+          if (q.length > 0) {
+            searchInput.classList.add("has-text");
+            if (searchClearBtn) searchClearBtn.style.display = "block";
+          } else {
+            if (document.activeElement !== searchInput) searchInput.classList.remove("has-text");
+            if (searchClearBtn) searchClearBtn.style.display = "none";
+          }
+        }
+
+        dynamicCards.forEach(card => {
+          const cat = (card.getAttribute("data-category") || "").toLowerCase().trim();
+          const target = activeShopCat.toLowerCase().trim();
+          const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
+          const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
+
+          const matchesCategory = (target === "all" || cat === target);
+          const matchesSearch = !q || name.includes(q) || keywords.includes(q);
+
+          card.style.display = (matchesCategory && matchesSearch) ? "flex" : "none";
+        });
       }
-    });
 
-    document.querySelectorAll(".second-center .cat-item").forEach(li => {
-      li.addEventListener("click", () => {
-        document.querySelectorAll(".second-center .cat-item").forEach(x => x.classList.remove("active"));
-        li.classList.add("active");
-        activeShopCat = li.getAttribute("data-cat") || "all";
-        runFilter();
+      searchInput?.addEventListener("input", runFilter);
+      searchClearBtn?.addEventListener("click", () => {
+        if (searchInput) {
+          searchInput.value = "";
+          runFilter();
+          searchInput.focus();
+        }
       });
-    });
-  }
 
-  fetchLiveComponents();
-</script>
-  
+      document.querySelectorAll(".second-center .cat-item").forEach(li => {
+        li.addEventListener("click", () => {
+          document.querySelectorAll(".second-center .cat-item").forEach(x => x.classList.remove("active"));
+          li.classList.add("active");
+          activeShopCat = li.getAttribute("data-cat") || "all";
+          runFilter();
+        });
+      });
+    }
+
+    fetchLiveComponents();
+  </script>
 </body>
 </html>
