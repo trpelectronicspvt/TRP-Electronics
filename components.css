@@ -933,13 +933,12 @@ body.dark-mode .close-modal {
 
 /* 3. Red Out of Stock Action Button */
 .notify-stock-btn {
-  width: 100%;
   background: #dc2626 !important; /* Crimson Red */
   color: #ffffff !important;
   font-weight: 700;
   border: none;
-  padding: 9px 12px;
-  border-radius: 6px;
+  padding: 0px 14px;
+  border-radius: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
