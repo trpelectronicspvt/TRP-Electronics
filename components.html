@@ -67,7 +67,7 @@
 
   <main>
     <section class="store">
-      <h2 class="section-title2">BUY COMPONENTS IN BEST PRICE</h2>
+<h2 id="shopHeading" class="section-title2">BUY COMPONENTS IN BEST PRICE</h2>
 
       <div id="product-grid" class="product-grid">
         <!-- Skeleton Preloaders -->
@@ -409,11 +409,17 @@
     function initShopFilters() {
       const searchInput = document.getElementById("componentSearch");
       const searchClearBtn = document.getElementById("searchClearBtn");
+      const shopHeading = document.getElementById("shopHeading");
       const strips = document.querySelectorAll(".category-row-strip");
       let activeShopCat = "all";
 
       function runFilter() {
         const q = (searchInput?.value || "").toLowerCase().trim();
+
+        // 👉 Heading visibility: Sirf "All" category aur empty search par show hogi
+        if (shopHeading) {
+          shopHeading.style.display = (activeShopCat.toLowerCase() === "all" && !q) ? "block" : "none";
+        }
 
         if (searchInput) {
           if (q.length > 0) {
