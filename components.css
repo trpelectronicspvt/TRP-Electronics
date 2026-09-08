@@ -1174,90 +1174,31 @@ main {
   }
 }
 
-
-/* CATEGORY SECTION WRAPPER */
-.category-shelf {
-  margin-bottom: 28px;
-  width: 100%;
-}
-
-.shelf-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--card-title, #0f172a);
-  margin-bottom: 12px;
-  padding-left: 4px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.shelf-title::before {
-  content: "";
-  display: inline-block;
-  width: 4px;
-  height: 18px;
-  background: #0284c7;
-  border-radius: 2px;
-}
-
-/* DESKTOP LAYOUT (STANDARD GRID) */
-.shelf-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-/* ============================================================
-   MOBILE-ONLY: 2-ROW HORIZONTAL SCROLL CAROUSEL
-   ============================================================ */
+/* MOBILE-ONLY: Horizontal swipe rail, no headers, simple card strip */
 @media (max-width: 768px) {
-  .category-shelf {
-    margin-bottom: 22px;
-  }
-
-  .shelf-title {
-    font-size: 16px;
-  }
-
-  .shelf-grid {
-    display: grid;
-    /* Exactly 2 rows locked in height */
-    grid-template-rows: repeat(2, auto);
-    /* Horizontal auto-flow: naye cards right side aage badhenge */
-    grid-auto-flow: column;
-    /* Har column ka card width mobile screen ke mutabiq fixed */
-    grid-auto-columns: minmax(160px, 175px);
-    gap: 12px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-bottom: 12px;
-    padding-left: 4px;
-    padding-right: 16px;
+  .product-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 12px !important;
+    padding: 10px 4px 20px 4px !important;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
   }
 
-  /* Smooth scrollbar styling */
-  .shelf-grid::-webkit-scrollbar {
+  .product-grid .product-card {
+    flex: 0 0 165px !important;
+    width: 165px !important;
+    scroll-snap-align: start;
+  }
+
+  /* Custom subtle scrollbar for mobile */
+  .product-grid::-webkit-scrollbar {
     height: 4px;
   }
-  .shelf-grid::-webkit-scrollbar-thumb {
-    background: rgba(2, 132, 199, 0.3);
+  .product-grid::-webkit-scrollbar-thumb {
+    background: #0284c7;
     border-radius: 4px;
-  }
-
-  .shelf-grid .product-card {
-    scroll-snap-align: start;
-    width: 100%;
-  }
-
-  .shelf-grid .product-card .product-img-wrapper {
-    height: 125px;
-    padding: 8px;
-  }
-
-  .shelf-grid .product-card .product-info h3 {
-    font-size: 13.5px;
   }
 }
