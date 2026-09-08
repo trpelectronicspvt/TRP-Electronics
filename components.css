@@ -1241,58 +1241,127 @@ main {
 }
 }
 
-/* VARIANT DROPDOWN TITLE STYLING */
-.variant-title-wrapper {
+/* CUSTOM VARIANT DROPDOWN */
+.custom-variant-wrap {
   position: relative;
-  display: flex;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.custom-variant-trigger {
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 10px;
+  gap: 6px; /* Text aur Arrow ke beech halka space */
+  cursor: pointer;
+  user-select: none;
   width: 100%;
 }
 
-.variant-dropdown-select {
-  width: 100%;
+.custom-variant-title {
   font-size: 15px;
   font-weight: 700;
   color: var(--card-title, #0f172a);
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding-right: 22px;
-  text-overflow: ellipsis;
+  margin: 0;
   white-space: nowrap;
-  appearance: none; /* Default arrow hide */
-  -webkit-appearance: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Arrow Icon */
-.variant-arrow-icon {
+/* Exact Custom Bold Chevron Arrow */
+.custom-variant-arrow {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+.custom-variant-arrow svg {
+  width: 100%;
+  height: 100%;
+  stroke: #0f172a;
+  stroke-width: 3.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+body.dark-mode .custom-variant-arrow svg {
+  stroke: #f8fafc;
+}
+
+/* Open state: arrow flips up */
+.custom-variant-wrap.active .custom-variant-arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu (Floating list) */
+.custom-variant-menu {
+  display: none;
   position: absolute;
-  right: 2px;
-  pointer-events: none;
-  font-size: 11px;
-  color: #64748b;
-  transition: transform 0.2s ease;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.06);
+  z-index: 100;
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 4px 0;
 }
 
-/* Out of stock line-through in dropdown options */
-.variant-dropdown-select option.opt-out {
-  color: #94a3b8;
+body.dark-mode .custom-variant-menu {
+  background: #1e293b;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5), 0 0 0 1px #334155;
+}
+
+.custom-variant-wrap.active .custom-variant-menu {
+  display: block;
+}
+
+/* Dropdown Item */
+.custom-variant-item {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.15s ease;
+}
+
+body.dark-mode .custom-variant-item {
+  color: #f8fafc;
+}
+
+.custom-variant-item:hover {
+  background: #f1f5f9;
+}
+
+body.dark-mode .custom-variant-item:hover {
+  background: #334155;
+}
+
+/* Selected item active state */
+.custom-variant-item.selected {
+  color: #0284c7;
+  background: #e0f2fe;
+}
+
+body.dark-mode .custom-variant-item.selected {
+  color: #38bdf8;
+  background: #0c4a6e;
+}
+
+/* Out of Stock Cut-Line Styling */
+.custom-variant-item.out-item {
+  color: #94a3b8 !important;
   text-decoration: line-through;
-  background: #f8fafc;
-}
-
-body.dark-mode .variant-dropdown-select option.opt-out {
-  color: #64748b;
-  background: #1e293b;
-}
-
-body.dark-mode .variant-dropdown-select {
-  color: #f8fafc;
-}
-
-body.dark-mode .variant-dropdown-select option {
-  background: #1e293b;
-  color: #f8fafc;
+  opacity: 0.75;
 }
