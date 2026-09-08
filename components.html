@@ -70,7 +70,7 @@
       <h2 class="section-title2">BUY COMPONENTS IN BEST PRICE</h2>
 
       <div id="product-grid" class="product-grid">
-        <!-- SKELETON PRELOADERS (Replaced automatically when Firebase loads) -->
+        <!-- Skeleton Preloaders -->
         <div class="skeleton-card shimmer">
           <div class="skeleton-img"></div>
           <div class="skeleton-content">
@@ -111,7 +111,7 @@
             </div>
           </div>
         </div>
-        <div class="skeleton-card shimmer">
+         <div class="skeleton-card shimmer">
           <div class="skeleton-img"></div>
           <div class="skeleton-content">
             <div class="skeleton-line title"></div>
@@ -152,10 +152,9 @@
 
   <button id="darkModeToggle">🌙 Dark Mode</button>
 
-  <!-- Base UI/Cart/Modal Script -->
   <script src="script.js"></script>
 
-  <!-- FIREBASE DYNAMIC CARDS LOADER WITH SMART NOTIFY -->
+  <!-- FIREBASE SCRIPT -->
   <script type="module">
     import { db, collection, getDocs } from "./firebase-config.js";
 
@@ -174,80 +173,57 @@
 
         container.innerHTML = "";
 
-        // 1. Group Products by Category
-        const categories = {};
+        // Render plain flat cards directly (Desktop = Grid, Mobile = Horizontal Strip)
         snap.forEach(docSnap => {
           const p = docSnap.data();
-          const cat = p.category || "More";
-          if (!categories[cat]) categories[cat] = [];
-          categories[cat].push(p);
-        });
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.setAttribute("data-category", p.category || "More");
+          card.setAttribute("data-keywords", p.keywords || "");
+          card.setAttribute("data-desc", p.desc || "High quality electronic component for DIY projects.");
+          card.setAttribute("data-price", p.price || "0");
+          card.setAttribute("data-name", p.name || "");
+          card.setAttribute("data-image", p.image || "images/logo.png");
+          card.setAttribute("data-datasheet", p.datasheet || "");
+          card.setAttribute("data-out-of-stock", p.outOfStock ? "true" : "false");
 
-        // 2. Render Each Category Shelf with its Horizontal Rail
-        Object.keys(categories).forEach(catName => {
-          const shelf = document.createElement("div");
-          shelf.className = "category-shelf";
-          shelf.setAttribute("data-shelf-category", catName.toLowerCase());
+          card.innerHTML = `
+            <div class="product-img-wrapper">
+              ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
+              <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
+              <img src="${p.image || 'images/logo.png'}" alt="${p.name}" loading="lazy">
+            </div>
 
-          shelf.innerHTML = `
-            <div class="shelf-title">${catName}</div>
-            <div class="shelf-grid"></div>
-          `;
-
-          const grid = shelf.querySelector(".shelf-grid");
-
-          categories[catName].forEach(p => {
-            const card = document.createElement("div");
-            card.className = "product-card";
-            card.setAttribute("data-category", p.category || "More");
-            card.setAttribute("data-keywords", p.keywords || "");
-            card.setAttribute("data-desc", p.desc || "High quality electronic component for DIY projects.");
-            card.setAttribute("data-price", p.price || "0");
-            card.setAttribute("data-name", p.name || "");
-            card.setAttribute("data-image", p.image || "images/all.png");
-            card.setAttribute("data-datasheet", p.datasheet || "");
-            card.setAttribute("data-out-of-stock", p.outOfStock ? "true" : "false");
-
-            card.innerHTML = `
-              <div class="product-img-wrapper">
-                ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
-                <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
-                <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
-              </div>
-
-              <div class="product-info">
-                <h3>${p.name}</h3>
-                <div class="product-bottom-bar">
-                  <div class="price-box">
-                    <span class="price-title">Price</span>
-                    <span class="price-amount">₹${p.price}</span>
-                  </div>
-
-                  ${p.outOfStock 
-                    ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
-                         <span>🔔</span> Notify
-                       </button>`
-                    : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
-                         <span>🛒</span> Pick
-                       </button>`
-                  }
+            <div class="product-info">
+              <h3>${p.name}</h3>
+              <div class="product-bottom-bar">
+                <div class="price-box">
+                  <span class="price-title">Price</span>
+                  <span class="price-amount">₹${p.price}</span>
                 </div>
-              </div>
-            `;
-            grid.appendChild(card);
-          });
 
-          container.appendChild(shelf);
+                ${p.outOfStock 
+                  ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
+                       <span>🔔</span> Notify
+                     </button>`
+                  : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
+                       <span>🛒</span> Pick
+                     </button>`
+                }
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
         });
 
-        // 3. Expand Modal Binding
+        // 2. Expand Modal Binding
         container.querySelectorAll(".expand-btn").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
             const card = btn.closest(".product-card");
             const title = card.getAttribute("data-name") || card.querySelector("h3")?.innerText || "";
             const price = card.getAttribute("data-price") || card.querySelector(".price-amount")?.innerText.replace("₹", "").trim() || "0";
-            const img = card.getAttribute("data-image") || card.querySelector("img")?.src || "images/all.png";
+            const img = card.getAttribute("data-image") || card.querySelector("img")?.src || "images/logo.png";
             const desc = card.getAttribute("data-desc") || "High quality electronic component for DIY projects.";
             const isOut = card.getAttribute("data-out-of-stock") === "true";
             const datasheet = card.getAttribute("data-datasheet") || "";
@@ -266,7 +242,6 @@
               if (modalPrice) modalPrice.innerText = `₹${price}`;
               if (modalDesc) modalDesc.innerHTML = `<strong>Description:</strong> ${desc}`;
 
-              // --- OUT OF STOCK vs ADD TO CART BUTTON SYNC ---
               if (modalCartBtn) {
                 modalCartBtn.setAttribute("data-name", title);
                 modalCartBtn.setAttribute("data-price", price);
@@ -288,7 +263,6 @@
                 }
               }
 
-              // Datasheet visibility
               if (modalPdfBtn) {
                 if (datasheet) {
                   modalPdfBtn.href = datasheet;
@@ -314,21 +288,21 @@
           };
         }
 
-        // 4. Add to Cart Binding for Cards Grid
+        // 3. Add to Cart Binding for Cards Grid
         container.querySelectorAll(".add-cart").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
             const card = btn.closest(".product-card");
             const name = btn.getAttribute("data-name") || card?.getAttribute("data-name");
             const price = parseFloat(btn.getAttribute("data-price") || card?.getAttribute("data-price") || 0);
-            const image = card?.getAttribute("data-image") || card?.querySelector("img")?.src || "images/all.png";
+            const image = card?.getAttribute("data-image") || card?.querySelector("img")?.src || "images/logo.png";
 
             if (!name) return;
             triggerAddToCart(name, price, image);
           };
         });
 
-        // 5. Out of Stock Button Binding for Cards Grid
+        // 4. Out of Stock Button Binding for Cards Grid
         container.querySelectorAll(".notify-stock-btn").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -338,7 +312,7 @@
           };
         });
 
-        // 6. Image Transitions Trigger
+        // 5. Image Transitions Trigger
         container.querySelectorAll("img").forEach(img => {
           if (img.complete) img.classList.add("loaded");
           else img.addEventListener("load", () => img.classList.add("loaded"));
@@ -353,7 +327,7 @@
     }
 
     function triggerAddToCart(name, price, image) {
-      const finalImage = image || "images/all.png";
+      const finalImage = image || "images/logo.png";
       let cart = JSON.parse(localStorage.getItem("cart") || "[]");
       const existing = cart.find(item => item.name === name);
 
@@ -379,10 +353,8 @@
       }
     }
 
-    // REUSABLE FUNCTION: Out of Stock Email Alert
     async function handleStockNotify(productName, productPrice, btnElement) {
       const userEmail = prompt(`🔔 Get Notified!\nEnter your email to receive an alert when "${productName}" is back in stock:`);
-      
       if (!userEmail) return;
 
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
@@ -404,7 +376,6 @@
             request_date: new Date().toLocaleString()
           })
         });
-
         alert(`✅ We will notify you at ${userEmail} as soon as "${productName}" is back in stock!`);
         btnElement.innerHTML = "<span>✔</span> Alert Set";
       } catch (err) {
@@ -413,11 +384,10 @@
       }
     }
 
-    // Category and Keyword Search Filters
     function initShopFilters() {
       const searchInput = document.getElementById("componentSearch");
       const searchClearBtn = document.getElementById("searchClearBtn");
-      const shelves = document.querySelectorAll(".category-shelf");
+      const dynamicCards = Array.from(document.querySelectorAll("#product-grid .product-card"));
       let activeShopCat = "all";
 
       function runFilter() {
@@ -433,27 +403,16 @@
           }
         }
 
-        shelves.forEach(shelf => {
-          const shelfCat = (shelf.getAttribute("data-shelf-category") || "").toLowerCase();
-          const cards = shelf.querySelectorAll(".product-card");
-          let visibleCardsCount = 0;
+        dynamicCards.forEach(card => {
+          const cat = (card.getAttribute("data-category") || "").toLowerCase().trim();
+          const target = activeShopCat.toLowerCase().trim();
+          const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
+          const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
 
-          const catMatches = (activeShopCat === "all" || shelfCat === activeShopCat.toLowerCase());
+          const matchesCategory = (target === "all" || cat === target);
+          const matchesSearch = !q || name.includes(q) || keywords.includes(q);
 
-          cards.forEach(card => {
-            const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
-            const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
-            const searchMatches = !q || name.includes(q) || keywords.includes(q);
-
-            if (catMatches && searchMatches) {
-              card.style.display = "flex";
-              visibleCardsCount++;
-            } else {
-              card.style.display = "none";
-            }
-          });
-
-          shelf.style.display = visibleCardsCount > 0 ? "block" : "none";
+          card.style.display = (matchesCategory && matchesSearch) ? "flex" : "none";
         });
       }
 
