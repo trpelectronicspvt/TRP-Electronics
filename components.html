@@ -154,7 +154,7 @@
 
   <script src="script.js"></script>
 
-  <!-- FIREBASE SCRIPT -->
+<!-- FIREBASE DYNAMIC CARDS LOADER WITH SMART NOTIFY -->
   <script type="module">
     import { db, collection, getDocs } from "./firebase-config.js";
 
@@ -173,50 +173,72 @@
 
         container.innerHTML = "";
 
-        // Render plain flat cards directly (Desktop = Grid, Mobile = Horizontal Strip)
+        // 1. Group items by Category
+        const categories = {};
         snap.forEach(docSnap => {
           const p = docSnap.data();
-          const card = document.createElement("div");
-          card.className = "product-card";
-          card.setAttribute("data-category", p.category || "More");
-          card.setAttribute("data-keywords", p.keywords || "");
-          card.setAttribute("data-desc", p.desc || "High quality electronic component for DIY projects.");
-          card.setAttribute("data-price", p.price || "0");
-          card.setAttribute("data-name", p.name || "");
-          card.setAttribute("data-image", p.image || "images/logo.png");
-          card.setAttribute("data-datasheet", p.datasheet || "");
-          card.setAttribute("data-out-of-stock", p.outOfStock ? "true" : "false");
-
-          card.innerHTML = `
-            <div class="product-img-wrapper">
-              ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
-              <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
-              <img src="${p.image || 'images/logo.png'}" alt="${p.name}" loading="lazy">
-            </div>
-
-            <div class="product-info">
-              <h3>${p.name}</h3>
-              <div class="product-bottom-bar">
-                <div class="price-box">
-                  <span class="price-title">Price</span>
-                  <span class="price-amount">₹${p.price}</span>
-                </div>
-
-                ${p.outOfStock 
-                  ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
-                       <span>🔔</span> Notify
-                     </button>`
-                  : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
-                       <span>🛒</span> Pick
-                     </button>`
-                }
-              </div>
-            </div>
-          `;
-          container.appendChild(card);
+          const cat = p.category || "More";
+          if (!categories[cat]) categories[cat] = [];
+          categories[cat].push(p);
         });
 
-        // 2. Expand Modal Binding
+        // 2. Render each category as a clean horizontal swipe row (No titles)
+        Object.keys(categories).forEach(catName => {
+          const items = categories[catName];
+          const chunkSize = 30; // 30+ components hone par agli row banegi
+
+          for (let i = 0; i < items.length; i += chunkSize) {
+            const chunk = items.slice(i, i + chunkSize);
+            const rowStrip = document.createElement("div");
+            rowStrip.className = "category-row-strip";
+            rowStrip.setAttribute("data-category", catName.toLowerCase());
+
+            chunk.forEach(p => {
+              const card = document.createElement("div");
+              card.className = "product-card";
+              card.setAttribute("data-category", p.category || "More");
+              card.setAttribute("data-keywords", p.keywords || "");
+              card.setAttribute("data-desc", p.desc || "High quality electronic component for DIY projects.");
+              card.setAttribute("data-price", p.price || "0");
+              card.setAttribute("data-name", p.name || "");
+              card.setAttribute("data-image", p.image || "images/logo.png");
+              card.setAttribute("data-datasheet", p.datasheet || "");
+              card.setAttribute("data-out-of-stock", p.outOfStock ? "true" : "false");
+
+              card.innerHTML = `
+                <div class="product-img-wrapper">
+                  ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
+                  <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
+                  <img src="${p.image || 'images/logo.png'}" alt="${p.name}" loading="lazy">
+                </div>
+
+                <div class="product-info">
+                  <h3>${p.name}</h3>
+                  <div class="product-bottom-bar">
+                    <div class="price-box">
+                      <span class="price-title">Price</span>
+                      <span class="price-amount">₹${p.price}</span>
+                    </div>
+
+                    ${p.outOfStock 
+                      ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
+                           <span>🔔</span> Notify
+                         </button>`
+                      : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
+                           <span>🛒</span> Pick
+                         </button>`
+                    }
+                  </div>
+                </div>
+              `;
+              rowStrip.appendChild(card);
+            });
+
+            container.appendChild(rowStrip);
+          }
+        });
+
+        // 3. Expand Modal Binding
         container.querySelectorAll(".expand-btn").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -288,7 +310,7 @@
           };
         }
 
-        // 3. Add to Cart Binding for Cards Grid
+        // 4. Add to Cart Binding
         container.querySelectorAll(".add-cart").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -302,7 +324,7 @@
           };
         });
 
-        // 4. Out of Stock Button Binding for Cards Grid
+        // 5. Out of Stock Button Binding
         container.querySelectorAll(".notify-stock-btn").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -312,7 +334,7 @@
           };
         });
 
-        // 5. Image Transitions Trigger
+        // 6. Image Transitions
         container.querySelectorAll("img").forEach(img => {
           if (img.complete) img.classList.add("loaded");
           else img.addEventListener("load", () => img.classList.add("loaded"));
@@ -387,7 +409,7 @@
     function initShopFilters() {
       const searchInput = document.getElementById("componentSearch");
       const searchClearBtn = document.getElementById("searchClearBtn");
-      const dynamicCards = Array.from(document.querySelectorAll("#product-grid .product-card"));
+      const strips = document.querySelectorAll(".category-row-strip");
       let activeShopCat = "all";
 
       function runFilter() {
@@ -403,16 +425,27 @@
           }
         }
 
-        dynamicCards.forEach(card => {
-          const cat = (card.getAttribute("data-category") || "").toLowerCase().trim();
-          const target = activeShopCat.toLowerCase().trim();
-          const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
-          const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
+        strips.forEach(strip => {
+          const stripCat = (strip.getAttribute("data-category") || "").toLowerCase();
+          const cards = strip.querySelectorAll(".product-card");
+          let visibleInStrip = 0;
 
-          const matchesCategory = (target === "all" || cat === target);
-          const matchesSearch = !q || name.includes(q) || keywords.includes(q);
+          const catMatches = (activeShopCat === "all" || stripCat === activeShopCat.toLowerCase());
 
-          card.style.display = (matchesCategory && matchesSearch) ? "flex" : "none";
+          cards.forEach(card => {
+            const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
+            const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
+            const searchMatches = !q || name.includes(q) || keywords.includes(q);
+
+            if (catMatches && searchMatches) {
+              card.style.display = "flex";
+              visibleInStrip++;
+            } else {
+              card.style.display = "none";
+            }
+          });
+
+          strip.style.display = visibleInStrip > 0 ? "flex" : "none";
         });
       }
 
