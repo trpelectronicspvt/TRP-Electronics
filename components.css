@@ -1483,3 +1483,23 @@ body.dark-mode .modal-desc {
 .modal-desc li {
   margin-bottom: 4px;
 }
+
+/* ONE-TIME ROW AUTO-NUDGE ANIMATION (MOBILE ONLY) */
+@keyframes rowNudgeHint {
+  0% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(-48px); /* 48px left slide hoga (right wale cards dikhenge) */
+  }
+  70% {
+    transform: translateX(6px);   /* Gentle elastic return */
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.row-nudge-active {
+  animation: rowNudgeHint 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
