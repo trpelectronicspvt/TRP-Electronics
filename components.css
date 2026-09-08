@@ -1174,14 +1174,51 @@ main {
   }
 }
 
-/* MOBILE-ONLY: Horizontal swipe rail, no headers, simple card strip */
+/* DESKTOP (DEFAULT): Standard Grid 100% Untouched */
+.category-row-strip {
+  display: contents; /* Desktop par flat grid maintain karega */
+}
+
+/* MOBILE ONLY */
 @media (max-width: 768px) {
-  /* Custom subtle scrollbar for mobile */
-  .product-grid::-webkit-scrollbar {
-    height: 4px;
+  #product-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
   }
-  .product-grid::-webkit-scrollbar-thumb {
-    background: #0284c7;
-    border-radius: 4px;
+
+  /* Har category ki horizontal strip */
+  .category-row-strip {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 10px !important;
+    padding: 4px 2px 8px 2px !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    width: 100% !important;
+    
+    /* Scroll bar ko completely hide karne ke liye */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
   }
+
+  .category-row-strip::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Android */
+    width: 0;
+    height: 0;
+  }
+
+  /* Card ka exact original size: Screen par aamne-saamne 2 cards */
+  .category-row-strip .product-card {
+    flex: 0 0 calc(50% - 6px) !important;
+    min-width: calc(50% - 6px) !important;
+    max-width: calc(50% - 6px) !important;
+    scroll-snap-align: start;
+    margin: 0 !important;
+  }
+}
 }
