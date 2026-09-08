@@ -474,6 +474,21 @@
 
         initShopFilters();
 
+
+        // 👉 ONE-TIME SCROLL HINT NUDGE (Only on mobile screens)
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            const firstStrip = container.querySelector(".category-row-strip");
+            // Agar strip me 2 se zyada cards hain tabhi nudge karega
+            if (firstStrip && firstStrip.children.length > 2) {
+              firstStrip.classList.add("row-nudge-active");
+              firstStrip.addEventListener("animationend", () => {
+                firstStrip.classList.remove("row-nudge-active");
+              }, { once: true });
+            }
+          }, 700); // 700ms delay taaki page pehle theek se load ho jaye
+        }
+        
       } catch (err) {
         console.error("Firestore Error:", err);
         container.innerHTML = `<p style="color:red; text-align:center; width:100%;">Error loading items: ${err.message}</p>`;
