@@ -30,6 +30,7 @@
     .row-img { width: 50px; height: 50px; border-radius: 6px; object-fit: contain; background: #fff; padding: 2px; }
     .badge { background: #16a34a; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 6px; }
     .pdf-badge { background: #3b82f6; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+    .variant-pill { background: #8b5cf6; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
     
     .row-actions { display: flex; align-items: center; gap: 10px; }
     .edit-btn { background: #eab308; color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; }
@@ -39,11 +40,17 @@
     /* Modal Form */
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; justify-content: center; align-items: center; padding: 16px; }
     .modal.active { display: flex; }
-    .modal-content { background: #1e293b; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 24px; border-radius: 12px; border: 1px solid #475569; position: relative; }
+    .modal-content { background: #1e293b; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 24px; border-radius: 12px; border: 1px solid #475569; position: relative; }
     .close-modal { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; }
     
     .preview-frame { width: 100%; height: 130px; background: #0b1120; border: 2px dashed #334155; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; overflow: hidden; }
     .preview-frame img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    /* Multi-Variant Box */
+    .variants-section { background: #0b1120; border: 1px dashed #38bdf8; border-radius: 10px; padding: 14px; margin: 14px 0; }
+    .variant-row-item { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; background: #1e293b; padding: 8px; border-radius: 6px; border: 1px solid #334155; }
+    .variant-row-item input { margin: 0 !important; }
+    .del-var-btn { background: #ef4444; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -98,12 +105,12 @@
       <form id="productForm">
         <input type="hidden" id="editDocId" value="" />
 
-        <label style="font-size:12px; color:#94a3b8;">Component Name:</label>
-        <input type="text" id="pName" placeholder="e.g. NE555 Timer IC" required />
+        <label style="font-size:12px; color:#94a3b8;">Component / Group Name:</label>
+        <input type="text" id="pName" placeholder="e.g. 1/4W Resistor Set or NE555 Timer IC" required />
 
         <div style="display: flex; gap: 10px;">
           <div style="flex: 1;">
-            <label style="font-size:12px; color:#94a3b8;">Price (₹):</label>
+            <label style="font-size:12px; color:#94a3b8;">Default Price (₹):</label>
             <input type="number" id="pPrice" placeholder="Price in ₹" required />
           </div>
           <div style="flex: 1;">
@@ -129,8 +136,26 @@
           <option value="More">More</option>
         </select>
 
+        <!-- MULTI-VARIANTS ACCORDION BOX -->
+        <div class="variants-section">
+          <label style="font-weight: bold; cursor: pointer; color: #38bdf8; display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="hasVariantsCheck" style="width: auto; margin: 0;"> 
+            Enable Multiple Variants / Values in this 1 Card (Dropdown)
+          </label>
+          <p style="font-size: 11px; color: #94a3b8; margin: 4px 0 10px 0;">
+            Check this if this card contains multiple values (e.g. 120Ω, 330Ω, 1KΩ). Each will have its own price & image.
+          </p>
+
+          <div id="variantsWrap" style="display: none;">
+            <div id="variantsList"></div>
+            <button type="button" id="addVariantRowBtn" style="background: #0284c7; color: white; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">
+              ➕ Add Another Value / Variant
+            </button>
+          </div>
+        </div>
+
         <!-- Image Options -->
-        <label style="font-size:12px; color:#94a3b8;">Image: Upload File OR Link</label>
+        <label style="font-size:12px; color:#94a3b8;">Default Image: Upload File OR Link</label>
         <input type="file" id="pFile" accept="image/*" />
         <input type="text" id="pUrl" placeholder="Or enter URL: images/ne555.png / https://..." />
 
@@ -167,10 +192,48 @@
     const pPdfUrl = document.getElementById("pPdfUrl");
     const pdfNotice = document.getElementById("pdfNotice");
     const imagePreview = document.getElementById("imagePreview");
+
+    // Variants UI Elements
+    const hasVariantsCheck = document.getElementById("hasVariantsCheck");
+    const variantsWrap = document.getElementById("variantsWrap");
+    const variantsList = document.getElementById("variantsList");
+    const addVariantRowBtn = document.getElementById("addVariantRowBtn");
     
     let currentImageBase64 = "";
     let currentPdfBase64 = "";
     let cachedProducts = [];
+
+    // --- Dynamic Variant Row Helper ---
+    function addVariantRow(name = "", price = "", image = "", outOfStock = false) {
+      const row = document.createElement("div");
+      row.className = "variant-row-item";
+      row.innerHTML = `
+        <input type="text" placeholder="Value Name (e.g. 120 OHM Resistor)" class="v-name" value="${name}" style="flex: 2; min-width: 160px;" required />
+        <input type="number" placeholder="Price (₹)" class="v-price" value="${price}" style="flex: 1; min-width: 90px;" required />
+        <input type="text" placeholder="Image URL (optional)" class="v-img" value="${image}" style="flex: 2; min-width: 150px;" />
+        <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #ef4444; cursor: pointer; white-space: nowrap;">
+          <input type="checkbox" class="v-out" ${outOfStock ? 'checked' : ''} style="width: auto; margin:0;" /> Out
+        </label>
+        <button type="button" class="del-var-btn" title="Remove Variant">✕</button>
+      `;
+
+      row.querySelector(".del-var-btn").onclick = () => row.remove();
+      variantsList.appendChild(row);
+    }
+
+    hasVariantsCheck.addEventListener("change", () => {
+      variantsWrap.style.display = hasVariantsCheck.checked ? "block" : "none";
+      if (hasVariantsCheck.checked && variantsList.children.length === 0) {
+        const defaultName = document.getElementById("pName").value.trim() || "";
+        const defaultPrice = document.getElementById("pPrice").value.trim() || "";
+        const defaultImg = pUrl.value.trim() || "";
+        addVariantRow(defaultName, defaultPrice, defaultImg, false);
+      }
+    });
+
+    addVariantRowBtn.addEventListener("click", () => {
+      addVariantRow();
+    });
 
     // Auth Login
     document.getElementById("loginBtn").addEventListener("click", async () => {
@@ -205,6 +268,11 @@
       currentImageBase64 = "";
       currentPdfBase64 = "";
       pdfNotice.textContent = "";
+
+      hasVariantsCheck.checked = false;
+      variantsWrap.style.display = "none";
+      variantsList.innerHTML = "";
+
       productModal.classList.add("active");
     });
     document.getElementById("closeFormBtn").addEventListener("click", () => productModal.classList.remove("active"));
@@ -233,7 +301,7 @@
     pPdfFile.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (file) {
-        if (file.size > 1048576) { // 1MB limit for firestore document safety
+        if (file.size > 1048576) {
           alert("⚠️ PDF file is too large for direct upload. Please keep under 1MB or use a URL link.");
           pPdfFile.value = "";
           return;
@@ -286,6 +354,7 @@
       }
 
       filtered.forEach(item => {
+        const hasVars = Array.isArray(item.variants) && item.variants.length > 0;
         const row = document.createElement("div");
         row.className = "product-row";
         row.innerHTML = `
@@ -295,6 +364,7 @@
               <strong>${item.name}</strong>
               ${item.offer ? `<span class="badge">${item.offer}</span>` : ''}
               ${(item.datasheet) ? `<span class="pdf-badge">PDF 📄</span>` : ''}
+              ${hasVars ? `<span class="variant-pill">${item.variants.length} Variants ▾</span>` : ''}
               <div style="font-size:13px; color:#94a3b8;">
                 ₹${item.price} | Stock: <strong>${item.qty ?? 'N/A'}</strong> | Cat: ${item.category}
               </div>
@@ -356,6 +426,19 @@
             currentPdfBase64 = data.datasheet?.startsWith("data:") ? data.datasheet : "";
             pdfNotice.textContent = data.datasheet ? "✔ Existing Datasheet attached" : "No Datasheet attached";
 
+            // Multi-variants populate
+            variantsList.innerHTML = "";
+            if (Array.isArray(data.variants) && data.variants.length > 0) {
+              hasVariantsCheck.checked = true;
+              variantsWrap.style.display = "block";
+              data.variants.forEach(v => {
+                addVariantRow(v.name, v.price, v.image || "", v.outOfStock || false);
+              });
+            } else {
+              hasVariantsCheck.checked = false;
+              variantsWrap.style.display = "none";
+            }
+
             document.getElementById("formTitle").textContent = "Edit Component";
             productModal.classList.add("active");
           }
@@ -377,9 +460,34 @@
       const finalImage = currentImageBase64 || pUrl.value.trim() || "images/all.png";
       const finalPdf = currentPdfBase64 || pPdfUrl.value.trim() || "";
 
+      // Collect Variants Array
+      let variants = [];
+      if (hasVariantsCheck.checked) {
+        const rows = variantsList.querySelectorAll(".variant-row-item");
+        rows.forEach(r => {
+          const vName = r.querySelector(".v-name").value.trim();
+          const vPrice = parseFloat(r.querySelector(".v-price").value) || 0;
+          const vImg = r.querySelector(".v-img").value.trim() || finalImage;
+          const vOut = r.querySelector(".v-out").checked;
+          if (vName) {
+            variants.push({
+              name: vName,
+              price: vPrice,
+              image: vImg,
+              outOfStock: vOut
+            });
+          }
+        });
+      }
+
+      // If variants exist, default top card syncs with first variant
+      const defaultName = (variants.length > 0) ? variants[0].name : document.getElementById("pName").value.trim();
+      const defaultPrice = (variants.length > 0) ? variants[0].price : parseFloat(document.getElementById("pPrice").value);
+      const defaultOut = (variants.length > 0) ? variants[0].outOfStock : false;
+
       const payload = {
-        name: document.getElementById("pName").value.trim(),
-        price: parseFloat(document.getElementById("pPrice").value),
+        name: defaultName,
+        price: defaultPrice,
         qty: parseInt(document.getElementById("pQty").value) || 0,
         offer: document.getElementById("pOffer").value.trim(),
         category: document.getElementById("pCategory").value,
@@ -387,13 +495,14 @@
         datasheet: finalPdf,
         keywords: document.getElementById("pKeywords").value.trim(),
         desc: document.getElementById("pDesc").value.trim(),
+        variants: variants // 👉 Array stored for Shop page dropdown
       };
 
       try {
         if (editId) {
           await updateDoc(doc(db, "products", editId), payload);
         } else {
-          payload.outOfStock = false;
+          payload.outOfStock = defaultOut;
           payload.timestamp = Date.now();
           await addDoc(collection(db, "products"), payload);
         }
