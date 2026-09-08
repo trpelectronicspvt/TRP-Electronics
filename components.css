@@ -1174,6 +1174,24 @@ main {
   }
 }
 
+@media (max-width: 768px) {
+  /* Skeleton cards loading ke waqt bhi bilkul live cards ki tarah 2-row layout mein dikhein */
+  #product-grid:has(.skeleton-card) {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: space-between !important;
+  }
+
+  .skeleton-card {
+    width: calc(50% - 5px) !important;
+    min-width: calc(50% - 5px) !important;
+    max-width: calc(50% - 5px) !important;
+    box-sizing: border-box !important;
+  }
+}
+
 /* DESKTOP (DEFAULT): Standard Grid 100% Untouched */
 .category-row-strip {
   display: contents; /* Desktop par flat grid maintain karega */
