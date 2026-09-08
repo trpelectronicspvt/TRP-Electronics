@@ -1240,3 +1240,59 @@ main {
   }
 }
 }
+
+/* VARIANT DROPDOWN TITLE STYLING */
+.variant-title-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.variant-dropdown-select {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--card-title, #0f172a);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding-right: 22px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  appearance: none; /* Default arrow hide */
+  -webkit-appearance: none;
+}
+
+/* Arrow Icon */
+.variant-arrow-icon {
+  position: absolute;
+  right: 2px;
+  pointer-events: none;
+  font-size: 11px;
+  color: #64748b;
+  transition: transform 0.2s ease;
+}
+
+/* Out of stock line-through in dropdown options */
+.variant-dropdown-select option.opt-out {
+  color: #94a3b8;
+  text-decoration: line-through;
+  background: #f8fafc;
+}
+
+body.dark-mode .variant-dropdown-select option.opt-out {
+  color: #64748b;
+  background: #1e293b;
+}
+
+body.dark-mode .variant-dropdown-select {
+  color: #f8fafc;
+}
+
+body.dark-mode .variant-dropdown-select option {
+  background: #1e293b;
+  color: #f8fafc;
+}
