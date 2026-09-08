@@ -153,328 +153,414 @@
   <button id="darkModeToggle">🌙 Dark Mode</button>
 
   <script src="script.js"></script>
+<!-- FIREBASE DYNAMIC CARDS LOADER WITH SMART NOTIFY & MULTI-VARIANTS -->
+<script type="module">
+  import { db, collection, getDocs } from "./firebase-config.js";
 
-<!-- FIREBASE DYNAMIC CARDS LOADER WITH SMART NOTIFY -->
-  <script type="module">
-    import { db, collection, getDocs } from "./firebase-config.js";
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljewbda";
 
-    const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljewbda";
+  async function fetchLiveComponents() {
+    const container = document.getElementById("product-grid");
+    if (!container) return;
 
-    async function fetchLiveComponents() {
-      const container = document.getElementById("product-grid");
-      if (!container) return;
+    try {
+      const snap = await getDocs(collection(db, "products"));
+      if (snap.empty) {
+        container.innerHTML = "<p style='text-align:center; width:100%; color:#888;'>No products available right now.</p>";
+        return;
+      }
 
-      try {
-        const snap = await getDocs(collection(db, "products"));
-        if (snap.empty) {
-          container.innerHTML = "<p style='text-align:center; width:100%; color:#888;'>No products available right now.</p>";
-          return;
-        }
+      container.innerHTML = "";
 
-        container.innerHTML = "";
+      // 1. Group items by Category
+      const categories = {};
+      snap.forEach(docSnap => {
+        const p = docSnap.data();
+        const cat = p.category || "More";
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(p);
+      });
 
-        // 1. Group items by Category
-        const categories = {};
-        snap.forEach(docSnap => {
-          const p = docSnap.data();
-          const cat = p.category || "More";
-          if (!categories[cat]) categories[cat] = [];
-          categories[cat].push(p);
-        });
+      // 2. Render each category as a clean horizontal swipe row (No titles)
+      Object.keys(categories).forEach(catName => {
+        const items = categories[catName];
+        const chunkSize = 30; // 30+ components hone par agli row banegi
 
-        // 2. Render each category as a clean horizontal swipe row (No titles)
-        Object.keys(categories).forEach(catName => {
-          const items = categories[catName];
-          const chunkSize = 30; // 30+ components hone par agli row banegi
+        for (let i = 0; i < items.length; i += chunkSize) {
+          const chunk = items.slice(i, i + chunkSize);
+          const rowStrip = document.createElement("div");
+          rowStrip.className = "category-row-strip";
+          rowStrip.setAttribute("data-category", catName.toLowerCase());
 
-          for (let i = 0; i < items.length; i += chunkSize) {
-            const chunk = items.slice(i, i + chunkSize);
-            const rowStrip = document.createElement("div");
-            rowStrip.className = "category-row-strip";
-            rowStrip.setAttribute("data-category", catName.toLowerCase());
+          chunk.forEach(p => {
+            const card = document.createElement("div");
+            card.className = "product-card";
 
-            chunk.forEach(p => {
-              const card = document.createElement("div");
-              card.className = "product-card";
-              card.setAttribute("data-category", p.category || "More");
-              card.setAttribute("data-keywords", p.keywords || "");
-              card.setAttribute("data-desc", p.desc || "High quality electronic component for DIY projects.");
-              card.setAttribute("data-price", p.price || "0");
-              card.setAttribute("data-name", p.name || "");
-              card.setAttribute("data-image", p.image || "images/logo.png");
-              card.setAttribute("data-datasheet", p.datasheet || "");
-              card.setAttribute("data-out-of-stock", p.outOfStock ? "true" : "false");
+            // Check if product has multi-variants (Multiple options in 1 card)
+            const hasVariants = Array.isArray(p.variants) && p.variants.length > 0;
+            const currentItem = hasVariants ? p.variants[0] : p;
 
-              card.innerHTML = `
-                <div class="product-img-wrapper">
-                  ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
-                  <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
-                  <img src="${p.image || 'images/logo.png'}" alt="${p.name}" loading="lazy">
+            card.setAttribute("data-category", p.category || "More");
+            card.setAttribute("data-keywords", p.keywords || "");
+            card.setAttribute("data-desc", p.desc || "High quality electronic component for DIY projects.");
+            card.setAttribute("data-price", currentItem.price || "0");
+            card.setAttribute("data-name", currentItem.name || p.name || "");
+            card.setAttribute("data-image", currentItem.image || p.image || "images/logo.png");
+            card.setAttribute("data-datasheet", p.datasheet || "");
+            card.setAttribute("data-out-of-stock", currentItem.outOfStock ? "true" : "false");
+
+            if (hasVariants) {
+              card._variantsData = p.variants;
+            }
+
+            // Title Area: Dropdown with Arrow if variants exist, else simple <h3>
+            let titleHTML = "";
+            if (hasVariants) {
+              const optionsHTML = p.variants.map((v, idx) => `
+                <option value="${idx}" class="${v.outOfStock ? 'opt-out' : ''}">
+                  ${v.name}${v.outOfStock ? ' (Out of Stock)' : ''}
+                </option>
+              `).join("");
+
+              titleHTML = `
+                <div class="variant-title-wrapper">
+                  <select class="variant-dropdown-select">
+                    ${optionsHTML}
+                  </select>
+                  <span class="variant-arrow-icon">▼</span>
                 </div>
+              `;
+            } else {
+              titleHTML = `<h3>${p.name}</h3>`;
+            }
 
-                <div class="product-info">
-                  <h3>${p.name}</h3>
-                  <div class="product-bottom-bar">
-                    <div class="price-box">
-                      <span class="price-title">Price</span>
-                      <span class="price-amount">₹${p.price}</span>
-                    </div>
+            card.innerHTML = `
+              <div class="product-img-wrapper">
+                ${(currentItem.offer || p.offer) ? `<span class="discount-badge">${currentItem.offer || p.offer}</span>` : ''}
+                <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
+                <img src="${currentItem.image || p.image || 'images/logo.png'}" alt="${currentItem.name || p.name}" loading="lazy">
+              </div>
 
-                    ${p.outOfStock 
-                      ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
+              <div class="product-info">
+                ${titleHTML}
+                <div class="product-bottom-bar">
+                  <div class="price-box">
+                    <span class="price-title">Price</span>
+                    <span class="price-amount">₹${currentItem.price}</span>
+                  </div>
+
+                  <div class="action-btn-container">
+                    ${currentItem.outOfStock 
+                      ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${currentItem.name || p.name}" data-price="${currentItem.price}">
                            <span>🔔</span> Notify
                          </button>`
-                      : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
+                      : `<button class="cart-action-btn add-cart" data-name="${currentItem.name || p.name}" data-price="${currentItem.price}">
                            <span>🛒</span> Pick
                          </button>`
                     }
                   </div>
                 </div>
-              `;
-              rowStrip.appendChild(card);
-            });
-
-            container.appendChild(rowStrip);
-          }
-        });
-
-        // 3. Expand Modal Binding
-        container.querySelectorAll(".expand-btn").forEach(btn => {
-          btn.onclick = (e) => {
-            e.stopPropagation();
-            const card = btn.closest(".product-card");
-            const title = card.getAttribute("data-name") || card.querySelector("h3")?.innerText || "";
-            const price = card.getAttribute("data-price") || card.querySelector(".price-amount")?.innerText.replace("₹", "").trim() || "0";
-            const img = card.getAttribute("data-image") || card.querySelector("img")?.src || "images/logo.png";
-            const desc = card.getAttribute("data-desc") || "High quality electronic component for DIY projects.";
-            const isOut = card.getAttribute("data-out-of-stock") === "true";
-            const datasheet = card.getAttribute("data-datasheet") || "";
-
-            const modal = document.getElementById("product-modal");
-            if (modal) {
-              const modalImg = document.getElementById("modalImg");
-              const modalTitle = document.getElementById("modalTitle");
-              const modalPrice = document.getElementById("modalPrice");
-              const modalDesc = document.getElementById("modalDesc");
-              const modalCartBtn = document.getElementById("modalAddCart");
-              const modalPdfBtn = document.getElementById("modalDatasheet");
-
-              if (modalImg) modalImg.src = img;
-              if (modalTitle) modalTitle.innerText = title;
-              if (modalPrice) modalPrice.innerText = `₹${price}`;
-              if (modalDesc) modalDesc.innerHTML = `<strong>Description:</strong> ${desc}`;
-
-              if (modalCartBtn) {
-                modalCartBtn.setAttribute("data-name", title);
-                modalCartBtn.setAttribute("data-price", price);
-
-                if (isOut) {
-                  modalCartBtn.className = "cart-action-btn stock-notify-btn notify-stock-btn";
-                  modalCartBtn.innerHTML = "<span>🔔</span> Notify";
-                  modalCartBtn.onclick = (event) => {
-                    event.stopPropagation();
-                    handleStockNotify(title, price, modalCartBtn);
-                  };
-                } else {
-                  modalCartBtn.className = "cart-action-btn add-cart";
-                  modalCartBtn.innerHTML = "<span>🛒</span> Pick";
-                  modalCartBtn.onclick = (event) => {
-                    event.stopPropagation();
-                    triggerAddToCart(title, parseFloat(price), img);
-                  };
-                }
-              }
-
-              if (modalPdfBtn) {
-                if (datasheet) {
-                  modalPdfBtn.href = datasheet;
-                  modalPdfBtn.style.display = "inline-flex";
-                  modalPdfBtn.innerText = "📥 Download Datasheet";
-                } else {
-                  modalPdfBtn.style.display = "none";
-                }
-              }
-
-              modal.style.display = "flex";
-            }
-          };
-        });
-
-        // Close Modal Handler
-        const modal = document.getElementById("product-modal");
-        const closeModalBtn = document.getElementById("closeModal");
-        if (closeModalBtn && modal) {
-          closeModalBtn.onclick = () => { modal.style.display = "none"; };
-          modal.onclick = (e) => {
-            if (e.target === modal) modal.style.display = "none";
-          };
-        }
-
-        // 4. Add to Cart Binding
-        container.querySelectorAll(".add-cart").forEach(btn => {
-          btn.onclick = (e) => {
-            e.stopPropagation();
-            const card = btn.closest(".product-card");
-            const name = btn.getAttribute("data-name") || card?.getAttribute("data-name");
-            const price = parseFloat(btn.getAttribute("data-price") || card?.getAttribute("data-price") || 0);
-            const image = card?.getAttribute("data-image") || card?.querySelector("img")?.src || "images/logo.png";
-
-            if (!name) return;
-            triggerAddToCart(name, price, image);
-          };
-        });
-
-        // 5. Out of Stock Button Binding
-        container.querySelectorAll(".notify-stock-btn").forEach(btn => {
-          btn.onclick = (e) => {
-            e.stopPropagation();
-            const name = btn.getAttribute("data-name");
-            const price = btn.getAttribute("data-price");
-            handleStockNotify(name, price, btn);
-          };
-        });
-
-        // 6. Image Transitions
-        container.querySelectorAll("img").forEach(img => {
-          if (img.complete) img.classList.add("loaded");
-          else img.addEventListener("load", () => img.classList.add("loaded"));
-        });
-
-        initShopFilters();
-
-      } catch (err) {
-        console.error("Firestore Error:", err);
-        container.innerHTML = `<p style="color:red; text-align:center; width:100%;">Error loading items: ${err.message}</p>`;
-      }
-    }
-
-    function triggerAddToCart(name, price, image) {
-      const finalImage = image || "images/logo.png";
-      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      const existing = cart.find(item => item.name === name);
-
-      if (existing) {
-        existing.qty = (existing.qty || 1) + 1;
-        existing.image = finalImage;
-      } else {
-        cart.push({ name, price, image: finalImage, qty: 1 });
-      }
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      const countEl = document.getElementById("cart-count");
-      if (countEl) {
-        countEl.innerText = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
-      }
-
-      const alertBox = document.getElementById("cart-alert");
-      if (alertBox) {
-        alertBox.classList.add("show");
-        setTimeout(() => alertBox.classList.remove("show"), 2000);
-      } else {
-        alert(`✔ Added ${name} to cart!`);
-      }
-    }
-
-    async function handleStockNotify(productName, productPrice, btnElement) {
-      const userEmail = prompt(`🔔 Get Notified!\nEnter your email to receive an alert when "${productName}" is back in stock:`);
-      if (!userEmail) return;
-
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
-        alert("❌ Please enter a valid email address.");
-        return;
-      }
-
-      btnElement.innerText = "Saving...";
-      btnElement.disabled = true;
-
-      try {
-        await fetch(FORMSPREE_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify({
-            product: productName,
-            price: productPrice,
-            customer_email: userEmail,
-            request_date: new Date().toLocaleString()
-          })
-        });
-        alert(`✅ We will notify you at ${userEmail} as soon as "${productName}" is back in stock!`);
-        btnElement.innerHTML = "<span>✔</span> Alert Set";
-      } catch (err) {
-        alert(`✅ We will notify you at ${userEmail} when this product is in stock!`);
-        btnElement.innerHTML = "<span>✔</span> Alert Set";
-      }
-    }
-
-    function initShopFilters() {
-      const searchInput = document.getElementById("componentSearch");
-      const searchClearBtn = document.getElementById("searchClearBtn");
-      const shopHeading = document.getElementById("shopHeading");
-      const strips = document.querySelectorAll(".category-row-strip");
-      let activeShopCat = "all";
-
-      function runFilter() {
-        const q = (searchInput?.value || "").toLowerCase().trim();
-
-        // 👉 Heading visibility: Sirf "All" category aur empty search par show hogi
-        if (shopHeading) {
-          shopHeading.style.display = (activeShopCat.toLowerCase() === "all" && !q) ? "block" : "none";
-        }
-
-        if (searchInput) {
-          if (q.length > 0) {
-            searchInput.classList.add("has-text");
-            if (searchClearBtn) searchClearBtn.style.display = "block";
-          } else {
-            if (document.activeElement !== searchInput) searchInput.classList.remove("has-text");
-            if (searchClearBtn) searchClearBtn.style.display = "none";
-          }
-        }
-
-        strips.forEach(strip => {
-          const stripCat = (strip.getAttribute("data-category") || "").toLowerCase();
-          const cards = strip.querySelectorAll(".product-card");
-          let visibleInStrip = 0;
-
-          const catMatches = (activeShopCat === "all" || stripCat === activeShopCat.toLowerCase());
-
-          cards.forEach(card => {
-            const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
-            const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
-            const searchMatches = !q || name.includes(q) || keywords.includes(q);
-
-            if (catMatches && searchMatches) {
-              card.style.display = "";
-              visibleInStrip++;
-            } else {
-              card.style.display = "none";
-            }
+              </div>
+            `;
+            rowStrip.appendChild(card);
           });
 
-          strip.style.display = visibleInStrip > 0 ? "" : "none";
-        });
-      }
-
-      searchInput?.addEventListener("input", runFilter);
-      searchClearBtn?.addEventListener("click", () => {
-        if (searchInput) {
-          searchInput.value = "";
-          runFilter();
-          searchInput.focus();
+          container.appendChild(rowStrip);
         }
       });
 
-      document.querySelectorAll(".second-center .cat-item").forEach(li => {
-        li.addEventListener("click", () => {
-          document.querySelectorAll(".second-center .cat-item").forEach(x => x.classList.remove("active"));
-          li.classList.add("active");
-          activeShopCat = li.getAttribute("data-cat") || "all";
-          runFilter();
+      // 3. Variant Dropdown Live Change Handler
+      container.querySelectorAll(".variant-dropdown-select").forEach(select => {
+        select.onchange = (e) => {
+          e.stopPropagation();
+          const card = select.closest(".product-card");
+          const variants = card._variantsData;
+          if (!variants) return;
+
+          const chosen = variants[select.value];
+
+          // Update card internal attributes
+          card.setAttribute("data-name", chosen.name);
+          card.setAttribute("data-price", chosen.price);
+          card.setAttribute("data-image", chosen.image || "images/logo.png");
+          card.setAttribute("data-out-of-stock", chosen.outOfStock ? "true" : "false");
+
+          // Update UI: Image & Price
+          const imgEl = card.querySelector(".product-img-wrapper img");
+          if (imgEl) imgEl.src = chosen.image || "images/logo.png";
+
+          const priceEl = card.querySelector(".price-amount");
+          if (priceEl) priceEl.innerText = `₹${chosen.price}`;
+
+          // Update UI: Pick vs Notify Button
+          const btnBox = card.querySelector(".action-btn-container");
+          if (btnBox) {
+            if (chosen.outOfStock) {
+              btnBox.innerHTML = `
+                <button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${chosen.name}" data-price="${chosen.price}">
+                  <span>🔔</span> Notify
+                </button>
+              `;
+              const nBtn = btnBox.querySelector(".notify-stock-btn");
+              nBtn.onclick = (ev) => {
+                ev.stopPropagation();
+                handleStockNotify(chosen.name, chosen.price, nBtn);
+              };
+            } else {
+              btnBox.innerHTML = `
+                <button class="cart-action-btn add-cart" data-name="${chosen.name}" data-price="${chosen.price}">
+                  <span>🛒</span> Pick
+                </button>
+              `;
+              const aBtn = btnBox.querySelector(".add-cart");
+              aBtn.onclick = (ev) => {
+                ev.stopPropagation();
+                triggerAddToCart(chosen.name, parseFloat(chosen.price), chosen.image || "images/logo.png");
+              };
+            }
+          }
+        };
+      });
+
+      // 4. Expand Modal Binding
+      container.querySelectorAll(".expand-btn").forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const card = btn.closest(".product-card");
+          const title = card.getAttribute("data-name") || card.querySelector("h3")?.innerText || "";
+          const price = card.getAttribute("data-price") || card.querySelector(".price-amount")?.innerText.replace("₹", "").trim() || "0";
+          const img = card.getAttribute("data-image") || card.querySelector("img")?.src || "images/logo.png";
+          const desc = card.getAttribute("data-desc") || "High quality electronic component for DIY projects.";
+          const isOut = card.getAttribute("data-out-of-stock") === "true";
+          const datasheet = card.getAttribute("data-datasheet") || "";
+
+          const modal = document.getElementById("product-modal");
+          if (modal) {
+            const modalImg = document.getElementById("modalImg");
+            const modalTitle = document.getElementById("modalTitle");
+            const modalPrice = document.getElementById("modalPrice");
+            const modalDesc = document.getElementById("modalDesc");
+            const modalCartBtn = document.getElementById("modalAddCart");
+            const modalPdfBtn = document.getElementById("modalDatasheet");
+
+            if (modalImg) modalImg.src = img;
+            if (modalTitle) modalTitle.innerText = title;
+            if (modalPrice) modalPrice.innerText = `₹${price}`;
+            if (modalDesc) modalDesc.innerHTML = `<strong>Description:</strong> ${desc}`;
+
+            if (modalCartBtn) {
+              modalCartBtn.setAttribute("data-name", title);
+              modalCartBtn.setAttribute("data-price", price);
+
+              if (isOut) {
+                modalCartBtn.className = "cart-action-btn stock-notify-btn notify-stock-btn";
+                modalCartBtn.innerHTML = "<span>🔔</span> Notify";
+                modalCartBtn.onclick = (event) => {
+                  event.stopPropagation();
+                  handleStockNotify(title, price, modalCartBtn);
+                };
+              } else {
+                modalCartBtn.className = "cart-action-btn add-cart";
+                modalCartBtn.innerHTML = "<span>🛒</span> Pick";
+                modalCartBtn.onclick = (event) => {
+                  event.stopPropagation();
+                  triggerAddToCart(title, parseFloat(price), img);
+                };
+              }
+            }
+
+            if (modalPdfBtn) {
+              if (datasheet) {
+                modalPdfBtn.href = datasheet;
+                modalPdfBtn.style.display = "inline-flex";
+                modalPdfBtn.innerText = "📥 Download Datasheet";
+              } else {
+                modalPdfBtn.style.display = "none";
+              }
+            }
+
+            modal.style.display = "flex";
+          }
+        };
+      });
+
+      // Close Modal Handler
+      const modal = document.getElementById("product-modal");
+      const closeModalBtn = document.getElementById("closeModal");
+      if (closeModalBtn && modal) {
+        closeModalBtn.onclick = () => { modal.style.display = "none"; };
+        modal.onclick = (e) => {
+          if (e.target === modal) modal.style.display = "none";
+        };
+      }
+
+      // 5. Add to Cart Binding (Cards Grid)
+      container.querySelectorAll(".add-cart").forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const card = btn.closest(".product-card");
+          const name = card.getAttribute("data-name") || btn.getAttribute("data-name");
+          const price = parseFloat(card.getAttribute("data-price") || btn.getAttribute("data-price") || 0);
+          const image = card.getAttribute("data-image") || card.querySelector("img")?.src || "images/logo.png";
+
+          if (!name) return;
+          triggerAddToCart(name, price, image);
+        };
+      });
+
+      // 6. Out of Stock Button Binding (Cards Grid)
+      container.querySelectorAll(".notify-stock-btn").forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const card = btn.closest(".product-card");
+          const name = card.getAttribute("data-name") || btn.getAttribute("data-name");
+          const price = card.getAttribute("data-price") || btn.getAttribute("data-price");
+          handleStockNotify(name, price, btn);
+        };
+      });
+
+      // 7. Image Transitions
+      container.querySelectorAll("img").forEach(img => {
+        if (img.complete) img.classList.add("loaded");
+        else img.addEventListener("load", () => img.classList.add("loaded"));
+      });
+
+      initShopFilters();
+
+    } catch (err) {
+      console.error("Firestore Error:", err);
+      container.innerHTML = `<p style="color:red; text-align:center; width:100%;">Error loading items: ${err.message}</p>`;
+    }
+  }
+
+  function triggerAddToCart(name, price, image) {
+    const finalImage = image || "images/logo.png";
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const existing = cart.find(item => item.name === name);
+
+    if (existing) {
+      existing.qty = (existing.qty || 1) + 1;
+      existing.image = finalImage;
+    } else {
+      cart.push({ name, price, image: finalImage, qty: 1 });
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    const countEl = document.getElementById("cart-count");
+    if (countEl) {
+      countEl.innerText = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+    }
+
+    const alertBox = document.getElementById("cart-alert");
+    if (alertBox) {
+      alertBox.classList.add("show");
+      setTimeout(() => alertBox.classList.remove("show"), 2000);
+    } else {
+      alert(`✔ Added ${name} to cart!`);
+    }
+  }
+
+  async function handleStockNotify(productName, productPrice, btnElement) {
+    const userEmail = prompt(`🔔 Get Notified!\nEnter your email to receive an alert when "${productName}" is back in stock:`);
+    if (!userEmail) return;
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+      alert("❌ Please enter a valid email address.");
+      return;
+    }
+
+    btnElement.innerText = "Saving...";
+    btnElement.disabled = true;
+
+    try {
+      await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          product: productName,
+          price: productPrice,
+          customer_email: userEmail,
+          request_date: new Date().toLocaleString()
+        })
+      });
+      alert(`✅ We will notify you at ${userEmail} as soon as "${productName}" is back in stock!`);
+      btnElement.innerHTML = "<span>✔</span> Alert Set";
+    } catch (err) {
+      alert(`✅ We will notify you at ${userEmail} when this product is in stock!`);
+      btnElement.innerHTML = "<span>✔</span> Alert Set";
+    }
+  }
+
+  function initShopFilters() {
+    const searchInput = document.getElementById("componentSearch");
+    const searchClearBtn = document.getElementById("searchClearBtn");
+    const shopHeading = document.getElementById("shopHeading");
+    const strips = document.querySelectorAll(".category-row-strip");
+    let activeShopCat = "all";
+
+    function runFilter() {
+      const q = (searchInput?.value || "").toLowerCase().trim();
+
+      // Heading visibility: Sirf "All" category aur empty search par show hogi
+      if (shopHeading) {
+        shopHeading.style.display = (activeShopCat.toLowerCase() === "all" && !q) ? "block" : "none";
+      }
+
+      if (searchInput) {
+        if (q.length > 0) {
+          searchInput.classList.add("has-text");
+          if (searchClearBtn) searchClearBtn.style.display = "block";
+        } else {
+          if (document.activeElement !== searchInput) searchInput.classList.remove("has-text");
+          if (searchClearBtn) searchClearBtn.style.display = "none";
+        }
+      }
+
+      strips.forEach(strip => {
+        const stripCat = (strip.getAttribute("data-category") || "").toLowerCase();
+        const cards = strip.querySelectorAll(".product-card");
+        let visibleInStrip = 0;
+
+        const catMatches = (activeShopCat === "all" || stripCat === activeShopCat.toLowerCase());
+
+        cards.forEach(card => {
+          const name = (card.querySelector("h3, .variant-dropdown-select")?.textContent || card.getAttribute("data-name") || "").toLowerCase();
+          const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
+          const searchMatches = !q || name.includes(q) || keywords.includes(q);
+
+          if (catMatches && searchMatches) {
+            card.style.display = "";
+            visibleInStrip++;
+          } else {
+            card.style.display = "none";
+          }
         });
+
+        strip.style.display = visibleInStrip > 0 ? "" : "none";
       });
     }
 
-    fetchLiveComponents();
-  </script>
+    searchInput?.addEventListener("input", runFilter);
+    searchClearBtn?.addEventListener("click", () => {
+      if (searchInput) {
+        searchInput.value = "";
+        runFilter();
+        searchInput.focus();
+      }
+    });
+
+    document.querySelectorAll(".second-center .cat-item").forEach(li => {
+      li.addEventListener("click", () => {
+        document.querySelectorAll(".second-center .cat-item").forEach(x => x.classList.remove("active"));
+        li.classList.add("active");
+        activeShopCat = li.getAttribute("data-cat") || "all";
+        runFilter();
+      });
+    });
+  }
+
+  fetchLiveComponents();
+</script>
+
 </body>
 </html>
