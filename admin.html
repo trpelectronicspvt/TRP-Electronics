@@ -48,9 +48,8 @@
 
     /* Multi-Variant Box */
     .variants-section { background: #0b1120; border: 1px dashed #38bdf8; border-radius: 10px; padding: 14px; margin: 14px 0; }
-    .variant-row-item { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; background: #1e293b; padding: 8px; border-radius: 6px; border: 1px solid #334155; }
-    .variant-row-item input { margin: 0 !important; }
-    .del-var-btn { background: #ef4444; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: bold; }
+    .variant-row-item { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155; }
+    .del-var-btn { background: #ef4444; color: #fff; border: none; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -106,7 +105,7 @@
         <input type="hidden" id="editDocId" value="" />
 
         <label style="font-size:12px; color:#94a3b8;">Component / Group Name:</label>
-        <input type="text" id="pName" placeholder="e.g. 1/4W Resistor Set or NE555 Timer IC" required />
+        <input type="text" id="pName" placeholder="e.g. Resistor Set or NE555 Timer IC" required />
 
         <div style="display: flex; gap: 10px;">
           <div style="flex: 1;">
@@ -136,14 +135,14 @@
           <option value="More">More</option>
         </select>
 
-        <!-- MULTI-VARIANTS ACCORDION BOX -->
+        <!-- MULTI-VARIANTS SECTION -->
         <div class="variants-section">
           <label style="font-weight: bold; cursor: pointer; color: #38bdf8; display: flex; align-items: center; gap: 8px;">
             <input type="checkbox" id="hasVariantsCheck" style="width: auto; margin: 0;"> 
             Enable Multiple Variants / Values in this 1 Card (Dropdown)
           </label>
           <p style="font-size: 11px; color: #94a3b8; margin: 4px 0 10px 0;">
-            Check this if this card contains multiple values (e.g. 120Ω, 330Ω, 1KΩ). Each will have its own price & image.
+            Check this if this card contains multiple values (e.g. 120Ω, 330Ω, 1KΩ). Har variant ka alag price, image aur specs/description add kar sakte hain.
           </p>
 
           <div id="variantsWrap" style="display: none;">
@@ -172,8 +171,8 @@
         <label style="font-size:12px; color:#94a3b8;">Search Keywords:</label>
         <input type="text" id="pKeywords" placeholder="ne555 timer 8pin ic dip" />
 
-        <label style="font-size:12px; color:#94a3b8;">Description:</label>
-        <textarea id="pDesc" rows="3" placeholder="Enter specifications..."></textarea>
+        <label style="font-size:12px; color:#94a3b8;">Main Description (Enter press karke har line me alag point likhein):</label>
+        <textarea id="pDesc" rows="3" placeholder="• Tolerance: 5%&#10;• Wattage: 1/4 Watt&#10;• High Reliability"></textarea>
 
         <button type="submit" id="saveBtn" class="add-btn" style="width: 100%; justify-content: center; padding: 12px;">Save Component</button>
       </form>
@@ -193,7 +192,6 @@
     const pdfNotice = document.getElementById("pdfNotice");
     const imagePreview = document.getElementById("imagePreview");
 
-    // Variants UI Elements
     const hasVariantsCheck = document.getElementById("hasVariantsCheck");
     const variantsWrap = document.getElementById("variantsWrap");
     const variantsList = document.getElementById("variantsList");
@@ -203,18 +201,23 @@
     let currentPdfBase64 = "";
     let cachedProducts = [];
 
-    // --- Dynamic Variant Row Helper ---
-    function addVariantRow(name = "", price = "", image = "", outOfStock = false) {
+    // Variant Row Builder (includes variant-level description)
+    function addVariantRow(name = "", price = "", image = "", outOfStock = false, desc = "") {
       const row = document.createElement("div");
       row.className = "variant-row-item";
       row.innerHTML = `
-        <input type="text" placeholder="Value Name (e.g. 120 OHM Resistor)" class="v-name" value="${name}" style="flex: 2; min-width: 160px;" required />
-        <input type="number" placeholder="Price (₹)" class="v-price" value="${price}" style="flex: 1; min-width: 90px;" required />
-        <input type="text" placeholder="Image URL (optional)" class="v-img" value="${image}" style="flex: 2; min-width: 150px;" />
-        <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #ef4444; cursor: pointer; white-space: nowrap;">
-          <input type="checkbox" class="v-out" ${outOfStock ? 'checked' : ''} style="width: auto; margin:0;" /> Out
-        </label>
-        <button type="button" class="del-var-btn" title="Remove Variant">✕</button>
+        <div style="display: flex; gap: 8px; align-items: center; width: 100%; flex-wrap: wrap;">
+          <input type="text" placeholder="Value (e.g. 120 OHM)" class="v-name" value="${name}" style="flex: 2; min-width: 130px; margin:0;" required />
+          <input type="number" placeholder="Price (₹)" class="v-price" value="${price}" style="flex: 1; min-width: 70px; margin:0;" required />
+          <input type="text" placeholder="Image URL (optional)" class="v-img" value="${image}" style="flex: 2; min-width: 120px; margin:0;" />
+          <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #ef4444; cursor: pointer; white-space: nowrap;">
+            <input type="checkbox" class="v-out" ${outOfStock ? 'checked' : ''} style="width: auto; margin:0;" /> Out
+          </label>
+          <button type="button" class="del-var-btn" title="Remove Variant">✕</button>
+        </div>
+        <div>
+          <textarea placeholder="Variant Specs (Har line me Enter dabakar point likhein):&#10;• Resistance: 120 Ohm&#10;• Power: 0.25W" class="v-desc" rows="2" style="width: 100%; margin: 0; font-size: 12px; background: #0f172a; color: #fff; border: 1px solid #334155; border-radius: 6px; padding: 6px;">${desc}</textarea>
+        </div>
       `;
 
       row.querySelector(".del-var-btn").onclick = () => row.remove();
@@ -227,7 +230,8 @@
         const defaultName = document.getElementById("pName").value.trim() || "";
         const defaultPrice = document.getElementById("pPrice").value.trim() || "";
         const defaultImg = pUrl.value.trim() || "";
-        addVariantRow(defaultName, defaultPrice, defaultImg, false);
+        const defaultDesc = document.getElementById("pDesc").value.trim() || "";
+        addVariantRow(defaultName, defaultPrice, defaultImg, false, defaultDesc);
       }
     });
 
@@ -297,7 +301,7 @@
       }
     });
 
-    // PDF Datasheet File Reader
+    // PDF Reader
     pPdfFile.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (file) {
@@ -382,7 +386,7 @@
         liveList.appendChild(row);
       });
 
-      // Bind Listeners
+      // Stock Toggle
       document.querySelectorAll(".outStockCheck").forEach(chk => {
         chk.onchange = async (e) => {
           await updateDoc(doc(db, "products", e.target.dataset.id), {
@@ -393,6 +397,7 @@
         };
       });
 
+      // Delete Product
       document.querySelectorAll(".del-btn").forEach(btn => {
         btn.onclick = async () => {
           if (confirm("Delete this component permanently?")) {
@@ -402,6 +407,7 @@
         };
       });
 
+      // Edit Product
       document.querySelectorAll(".edit-btn").forEach(btn => {
         btn.onclick = () => {
           const docId = btn.dataset.id;
@@ -432,7 +438,7 @@
               hasVariantsCheck.checked = true;
               variantsWrap.style.display = "block";
               data.variants.forEach(v => {
-                addVariantRow(v.name, v.price, v.image || "", v.outOfStock || false);
+                addVariantRow(v.name, v.price, v.image || "", v.outOfStock || false, v.desc || "");
               });
             } else {
               hasVariantsCheck.checked = false;
@@ -469,21 +475,23 @@
           const vPrice = parseFloat(r.querySelector(".v-price").value) || 0;
           const vImg = r.querySelector(".v-img").value.trim() || finalImage;
           const vOut = r.querySelector(".v-out").checked;
+          const vDesc = r.querySelector(".v-desc").value.trim();
           if (vName) {
             variants.push({
               name: vName,
               price: vPrice,
               image: vImg,
-              outOfStock: vOut
+              outOfStock: vOut,
+              desc: vDesc
             });
           }
         });
       }
 
-      // If variants exist, default top card syncs with first variant
       const defaultName = (variants.length > 0) ? variants[0].name : document.getElementById("pName").value.trim();
       const defaultPrice = (variants.length > 0) ? variants[0].price : parseFloat(document.getElementById("pPrice").value);
       const defaultOut = (variants.length > 0) ? variants[0].outOfStock : false;
+      const defaultDesc = (variants.length > 0 && variants[0].desc) ? variants[0].desc : document.getElementById("pDesc").value.trim();
 
       const payload = {
         name: defaultName,
@@ -494,8 +502,8 @@
         image: finalImage,
         datasheet: finalPdf,
         keywords: document.getElementById("pKeywords").value.trim(),
-        desc: document.getElementById("pDesc").value.trim(),
-        variants: variants // 👉 Array stored for Shop page dropdown
+        desc: defaultDesc,
+        variants: variants
       };
 
       try {
