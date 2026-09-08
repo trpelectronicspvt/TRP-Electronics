@@ -438,7 +438,7 @@
             const searchMatches = !q || name.includes(q) || keywords.includes(q);
 
             if (catMatches && searchMatches) {
-              card.style.display = "flex";
+              card.style.display = "";
               visibleInStrip++;
             } else {
               card.style.display = "none";
