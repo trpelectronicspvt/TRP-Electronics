@@ -1387,3 +1387,34 @@ body.dark-mode .custom-variant-item.selected {
   text-decoration: line-through;
   opacity: 0.75;
 }
+/* Card aur uske containers ko list clip karne se rokein */
+.product-card,
+.product-info,
+.category-row-strip {
+  overflow: visible !important;
+}
+
+/* Image wrapper par overflow hidden rakhein taaki border-radius intact rahe */
+.product-img-wrapper {
+  overflow: hidden !important;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+/* Dropdown open hone par poora card agle sabhi cards aur buttons ke upar layein */
+.product-card:has(.custom-variant-wrap.active) {
+  z-index: 9999 !important;
+  position: relative;
+}
+
+/* Floating menu styling */
+.custom-variant-menu {
+  position: absolute !important;
+  top: calc(100% + 4px) !important;
+  left: 0 !important;
+  min-width: 170px !important;
+  width: max-content !important;
+  max-width: 230px !important;
+  z-index: 100000 !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22), 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+}
