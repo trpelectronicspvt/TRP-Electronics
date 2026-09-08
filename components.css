@@ -1241,6 +1241,16 @@ main {
 }
 }
 
+/* 1. Card overflow unclip (Taaki menu bahar float ho sake) */
+.product-card {
+  overflow: visible !important;
+}
+
+.product-info {
+  position: relative;
+  overflow: visible !important;
+}
+
 /* CUSTOM VARIANT DROPDOWN */
 .custom-variant-wrap {
   position: relative;
@@ -1250,33 +1260,40 @@ main {
 }
 
 .custom-variant-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px; /* Text aur Arrow ke beech halka space */
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle;
+  gap: 6px;
   cursor: pointer;
   user-select: none;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
 }
 
 .custom-variant-title {
   font-size: 15px;
   font-weight: 700;
   color: var(--card-title, #0f172a);
-  margin: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: inline-block;
 }
 
-/* Exact Custom Bold Chevron Arrow */
+/* Exact Custom Bold Chevron Arrow - Perfect Center */
 .custom-variant-arrow {
-  width: 14px;
-  height: 14px;
-  min-width: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   transition: transform 0.25s ease;
+  position: relative;
+  top: 1px; /* Optical center balance */
 }
 
 .custom-variant-arrow svg {
@@ -1304,11 +1321,14 @@ body.dark-mode .custom-variant-arrow svg {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
-  width: 100%;
+  min-width: 140px;
+  width: max-content;
+  max-width: 200px;
   background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.06);
-  z-index: 100;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  z-index: 99999 !important;
   max-height: 160px;
   overflow-y: auto;
   padding: 4px 0;
@@ -1316,11 +1336,12 @@ body.dark-mode .custom-variant-arrow svg {
 
 body.dark-mode .custom-variant-menu {
   background: #1e293b;
-  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5), 0 0 0 1px #334155;
+  border-color: #334155;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
 }
 
 .custom-variant-wrap.active .custom-variant-menu {
-  display: block;
+  display: block !important;
 }
 
 /* Dropdown Item */
@@ -1333,6 +1354,7 @@ body.dark-mode .custom-variant-menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
   transition: background 0.15s ease;
 }
 
