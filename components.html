@@ -10,9 +10,9 @@
 </head>
 <body class="components-page">
   <div id="product-container"></div>
- <div id="cart-alert" class="cart-alert">
-  ✅ Added to cart!
-</div>
+  <div id="cart-alert" class="cart-alert">
+    ✅ Added to cart!
+  </div>
 
   <header>
     <a href="index.html" id="logo">TRP Electronics</a>
@@ -69,59 +69,61 @@
     <section class="store">
       <h2 class="section-title2">BUY COMPONENTS IN BEST PRICE</h2>
 
-<div id="product-grid" class="product-grid">
-  <!-- SKELETON PRELOADERS (Replaced automatically when Firebase loads) -->
-  <div class="skeleton-card shimmer">
-    <div class="skeleton-img"></div>
-    <div class="skeleton-content">
-      <div class="skeleton-line title"></div>
-      <div class="skeleton-line btn-bar">
-        <div class="skeleton-price"></div>
-        <div class="skeleton-btn"></div>
+      <div id="product-grid" class="product-grid">
+        <!-- SKELETON PRELOADERS (Replaced automatically when Firebase loads) -->
+        <div class="skeleton-card shimmer">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line title"></div>
+            <div class="skeleton-line btn-bar">
+              <div class="skeleton-price"></div>
+              <div class="skeleton-btn"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skeleton-card shimmer">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line title"></div>
+            <div class="skeleton-line btn-bar">
+              <div class="skeleton-price"></div>
+              <div class="skeleton-btn"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skeleton-card shimmer">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line title"></div>
+            <div class="skeleton-line btn-bar">
+              <div class="skeleton-price"></div>
+              <div class="skeleton-btn"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skeleton-card shimmer">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line title"></div>
+            <div class="skeleton-line btn-bar">
+              <div class="skeleton-price"></div>
+              <div class="skeleton-btn"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skeleton-card shimmer">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line title"></div>
+            <div class="skeleton-line btn-bar">
+              <div class="skeleton-price"></div>
+              <div class="skeleton-btn"></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="skeleton-card shimmer">
-    <div class="skeleton-img"></div>
-    <div class="skeleton-content">
-      <div class="skeleton-line title"></div>
-      <div class="skeleton-line btn-bar">
-        <div class="skeleton-price"></div>
-        <div class="skeleton-btn"></div>
-      </div>
-    </div>
-  </div>
-  <div class="skeleton-card shimmer">
-    <div class="skeleton-img"></div>
-    <div class="skeleton-content">
-      <div class="skeleton-line title"></div>
-      <div class="skeleton-line btn-bar">
-        <div class="skeleton-price"></div>
-        <div class="skeleton-btn"></div>
-      </div>
-    </div>
-  </div>
-  <div class="skeleton-card shimmer">
-    <div class="skeleton-img"></div>
-    <div class="skeleton-content">
-      <div class="skeleton-line title"></div>
-      <div class="skeleton-line btn-bar">
-        <div class="skeleton-price"></div>
-        <div class="skeleton-btn"></div>
-      </div>
-    </div>
-  </div>
-   <div class="skeleton-card shimmer">
-    <div class="skeleton-img"></div>
-    <div class="skeleton-content">
-      <div class="skeleton-line title"></div>
-      <div class="skeleton-line btn-bar">
-        <div class="skeleton-price"></div>
-        <div class="skeleton-btn"></div>
-      </div>
-    </div>
-  </div>
-</div>
+    </section>
+  </main>
 
   <!-- POPUP MODAL FOR EXPANDED PRODUCT DETAILS -->
   <div id="product-modal" class="modal-overlay">
@@ -172,50 +174,73 @@
 
         container.innerHTML = "";
 
-        // 1. Generate Product Cards
+        // 1. Group Products by Category
+        const categories = {};
         snap.forEach(docSnap => {
           const p = docSnap.data();
-          const card = document.createElement("div");
-          card.className = "product-card";
-          card.setAttribute("data-category", p.category || "More");
-          card.setAttribute("data-keywords", p.keywords || "");
-          card.setAttribute("data-desc", p.desc || "High quality electronic component for DIY projects.");
-          card.setAttribute("data-price", p.price || "0");
-          card.setAttribute("data-name", p.name || "");
-          card.setAttribute("data-image", p.image || "images/all.png");
-          card.setAttribute("data-datasheet", p.datasheet || "");
-          card.setAttribute("data-out-of-stock", p.outOfStock ? "true" : "false");
-          
-          card.innerHTML = `
-            <div class="product-img-wrapper">
-              ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
-              <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
-              <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
-            </div>
-
-            <div class="product-info">
-              <h3>${p.name}</h3>
-              <div class="product-bottom-bar">
-                <div class="price-box">
-                  <span class="price-title">Price</span>
-                  <span class="price-amount">₹${p.price}</span>
-                </div>
-
-                ${p.outOfStock 
-                  ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
-                       <span>🔔</span> Notify
-                     </button>`
-                  : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
-                       <span>🛒</span> Pick
-                     </button>`
-                }
-              </div>
-            </div>
-          `;
-          container.appendChild(card);
+          const cat = p.category || "More";
+          if (!categories[cat]) categories[cat] = [];
+          categories[cat].push(p);
         });
 
-// 2. Expand Modal Binding
+        // 2. Render Each Category Shelf with its Horizontal Rail
+        Object.keys(categories).forEach(catName => {
+          const shelf = document.createElement("div");
+          shelf.className = "category-shelf";
+          shelf.setAttribute("data-shelf-category", catName.toLowerCase());
+
+          shelf.innerHTML = `
+            <div class="shelf-title">${catName}</div>
+            <div class="shelf-grid"></div>
+          `;
+
+          const grid = shelf.querySelector(".shelf-grid");
+
+          categories[catName].forEach(p => {
+            const card = document.createElement("div");
+            card.className = "product-card";
+            card.setAttribute("data-category", p.category || "More");
+            card.setAttribute("data-keywords", p.keywords || "");
+            card.setAttribute("data-desc", p.desc || "High quality electronic component for DIY projects.");
+            card.setAttribute("data-price", p.price || "0");
+            card.setAttribute("data-name", p.name || "");
+            card.setAttribute("data-image", p.image || "images/all.png");
+            card.setAttribute("data-datasheet", p.datasheet || "");
+            card.setAttribute("data-out-of-stock", p.outOfStock ? "true" : "false");
+
+            card.innerHTML = `
+              <div class="product-img-wrapper">
+                ${p.offer ? `<span class="discount-badge">${p.offer}</span>` : ''}
+                <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
+                <img src="${p.image || 'images/all.png'}" alt="${p.name}" loading="lazy">
+              </div>
+
+              <div class="product-info">
+                <h3>${p.name}</h3>
+                <div class="product-bottom-bar">
+                  <div class="price-box">
+                    <span class="price-title">Price</span>
+                    <span class="price-amount">₹${p.price}</span>
+                  </div>
+
+                  ${p.outOfStock 
+                    ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${p.name}" data-price="${p.price}">
+                         <span>🔔</span> Notify
+                       </button>`
+                    : `<button class="cart-action-btn add-cart" data-name="${p.name}" data-price="${p.price}">
+                         <span>🛒</span> Pick
+                       </button>`
+                  }
+                </div>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+
+          container.appendChild(shelf);
+        });
+
+        // 3. Expand Modal Binding
         container.querySelectorAll(".expand-btn").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -258,7 +283,7 @@
                   modalCartBtn.innerHTML = "<span>🛒</span> Pick";
                   modalCartBtn.onclick = (event) => {
                     event.stopPropagation();
-                    triggerAddToCart(title, parseFloat(price), img); // 👉 Exact modal image passed
+                    triggerAddToCart(title, parseFloat(price), img);
                   };
                 }
               }
@@ -289,7 +314,7 @@
           };
         }
 
-        // 3. Add to Cart Binding for Cards Grid
+        // 4. Add to Cart Binding for Cards Grid
         container.querySelectorAll(".add-cart").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -299,11 +324,11 @@
             const image = card?.getAttribute("data-image") || card?.querySelector("img")?.src || "images/all.png";
 
             if (!name) return;
-            triggerAddToCart(name, price, image); // 👉 Exact card image passed
+            triggerAddToCart(name, price, image);
           };
         });
 
-        // 4. Out of Stock Button Binding for Cards Grid
+        // 5. Out of Stock Button Binding for Cards Grid
         container.querySelectorAll(".notify-stock-btn").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -313,7 +338,7 @@
           };
         });
 
-        // 5. Image Transitions Trigger
+        // 6. Image Transitions Trigger
         container.querySelectorAll("img").forEach(img => {
           if (img.complete) img.classList.add("loaded");
           else img.addEventListener("load", () => img.classList.add("loaded"));
@@ -327,7 +352,7 @@
       }
     }
 
-function triggerAddToCart(name, price, image) {
+    function triggerAddToCart(name, price, image) {
       const finalImage = image || "images/all.png";
       let cart = JSON.parse(localStorage.getItem("cart") || "[]");
       const existing = cart.find(item => item.name === name);
@@ -392,7 +417,7 @@ function triggerAddToCart(name, price, image) {
     function initShopFilters() {
       const searchInput = document.getElementById("componentSearch");
       const searchClearBtn = document.getElementById("searchClearBtn");
-      const dynamicCards = Array.from(document.querySelectorAll("#product-grid .product-card"));
+      const shelves = document.querySelectorAll(".category-shelf");
       let activeShopCat = "all";
 
       function runFilter() {
@@ -408,16 +433,27 @@ function triggerAddToCart(name, price, image) {
           }
         }
 
-        dynamicCards.forEach(card => {
-          const cat = (card.getAttribute("data-category") || "").toLowerCase().trim();
-          const target = activeShopCat.toLowerCase().trim();
-          const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
-          const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
+        shelves.forEach(shelf => {
+          const shelfCat = (shelf.getAttribute("data-shelf-category") || "").toLowerCase();
+          const cards = shelf.querySelectorAll(".product-card");
+          let visibleCardsCount = 0;
 
-          const matchesCategory = (target === "all" || cat === target);
-          const matchesSearch = !q || name.includes(q) || keywords.includes(q);
+          const catMatches = (activeShopCat === "all" || shelfCat === activeShopCat.toLowerCase());
 
-          card.style.display = (matchesCategory && matchesSearch) ? "flex" : "none";
+          cards.forEach(card => {
+            const name = (card.querySelector("h3")?.textContent || "").toLowerCase();
+            const keywords = (card.getAttribute("data-keywords") || "").toLowerCase();
+            const searchMatches = !q || name.includes(q) || keywords.includes(q);
+
+            if (catMatches && searchMatches) {
+              card.style.display = "flex";
+              visibleCardsCount++;
+            } else {
+              card.style.display = "none";
+            }
+          });
+
+          shelf.style.display = visibleCardsCount > 0 ? "block" : "none";
         });
       }
 
