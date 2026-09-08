@@ -112,7 +112,7 @@ header {
   top: 28px;
   background: #fff;
   border-radius: 12px;
-  padding: 18px;
+  padding: 80px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.06);
   text-align: center;
   cursor: default;
@@ -236,7 +236,7 @@ body.dark-mode .secondary-btn {
 /* NOTICE RIBBON */
 .notice-line {
   display: inline-block; 
-  background: linear-gradient(to right, #0044cc, #0066ff); 
+  background: linear-gradient(to right, #5f0cdd, #ff1313); 
   color: white !important;
   font-weight: bold; 
   padding: 12px 25px; 
