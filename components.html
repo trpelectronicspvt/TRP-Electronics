@@ -196,7 +196,7 @@
             const card = document.createElement("div");
             card.className = "product-card";
 
-            // Check if product has multi-variants (Multiple options in 1 card)
+// Check if product has multi-variants
             const hasVariants = Array.isArray(p.variants) && p.variants.length > 0;
             const currentItem = hasVariants ? p.variants[0] : p;
 
@@ -213,21 +213,27 @@
               card._variantsData = p.variants;
             }
 
-            // Title Area: Dropdown with Arrow if variants exist, else simple <h3>
+            // Title Area: Custom Inline Arrow Dropdown
             let titleHTML = "";
             if (hasVariants) {
-              const optionsHTML = p.variants.map((v, idx) => `
-                <option value="${idx}" class="${v.outOfStock ? 'opt-out' : ''}">
-                  ${v.name}${v.outOfStock ? ' (Out of Stock)' : ''}
-                </option>
+              const itemsHTML = p.variants.map((v, idx) => `
+                <div class="custom-variant-item ${idx === 0 ? 'selected' : ''} ${v.outOfStock ? 'out-item' : ''}" data-index="${idx}">
+                  <span>${v.name}</span>
+                  ${v.outOfStock ? '<span style="font-size:10px; color:#ef4444;">Out</span>' : ''}
+                </div>
               `).join("");
 
               titleHTML = `
-                <div class="variant-title-wrapper">
-                  <select class="variant-dropdown-select">
-                    ${optionsHTML}
-                  </select>
-                  <span class="variant-arrow-icon">▼</span>
+                <div class="custom-variant-wrap">
+                  <div class="custom-variant-trigger">
+                    <h3 class="custom-variant-title">${currentItem.name}</h3>
+                    <span class="custom-variant-arrow">
+                      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                  </div>
+                  <div class="custom-variant-menu">
+                    ${itemsHTML}
+                  </div>
                 </div>
               `;
             } else {
@@ -263,65 +269,98 @@
               </div>
             `;
             rowStrip.appendChild(card);
-          });
+              });
 
           container.appendChild(rowStrip);
         }
       });
 
-      // 3. Variant Dropdown Live Change Handler
-      container.querySelectorAll(".variant-dropdown-select").forEach(select => {
-        select.onchange = (e) => {
+      // 3. Custom Variant Dropdown Interactions & Mouseleave Auto-Close
+      container.querySelectorAll(".custom-variant-wrap").forEach(wrap => {
+        const trigger = wrap.querySelector(".custom-variant-trigger");
+        const card = wrap.closest(".product-card");
+        const titleEl = wrap.querySelector(".custom-variant-title");
+        const menu = wrap.querySelector(".custom-variant-menu");
+
+        // Toggle on click
+        trigger.onclick = (e) => {
           e.stopPropagation();
-          const card = select.closest(".product-card");
-          const variants = card._variantsData;
-          if (!variants) return;
-
-          const chosen = variants[select.value];
-
-          // Update card internal attributes
-          card.setAttribute("data-name", chosen.name);
-          card.setAttribute("data-price", chosen.price);
-          card.setAttribute("data-image", chosen.image || "images/logo.png");
-          card.setAttribute("data-out-of-stock", chosen.outOfStock ? "true" : "false");
-
-          // Update UI: Image & Price
-          const imgEl = card.querySelector(".product-img-wrapper img");
-          if (imgEl) imgEl.src = chosen.image || "images/logo.png";
-
-          const priceEl = card.querySelector(".price-amount");
-          if (priceEl) priceEl.innerText = `₹${chosen.price}`;
-
-          // Update UI: Pick vs Notify Button
-          const btnBox = card.querySelector(".action-btn-container");
-          if (btnBox) {
-            if (chosen.outOfStock) {
-              btnBox.innerHTML = `
-                <button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${chosen.name}" data-price="${chosen.price}">
-                  <span>🔔</span> Notify
-                </button>
-              `;
-              const nBtn = btnBox.querySelector(".notify-stock-btn");
-              nBtn.onclick = (ev) => {
-                ev.stopPropagation();
-                handleStockNotify(chosen.name, chosen.price, nBtn);
-              };
-            } else {
-              btnBox.innerHTML = `
-                <button class="cart-action-btn add-cart" data-name="${chosen.name}" data-price="${chosen.price}">
-                  <span>🛒</span> Pick
-                </button>
-              `;
-              const aBtn = btnBox.querySelector(".add-cart");
-              aBtn.onclick = (ev) => {
-                ev.stopPropagation();
-                triggerAddToCart(chosen.name, parseFloat(chosen.price), chosen.image || "images/logo.png");
-              };
-            }
-          }
+          // Close other open dropdowns
+          document.querySelectorAll(".custom-variant-wrap.active").forEach(other => {
+            if (other !== wrap) other.classList.remove("active");
+          });
+          wrap.classList.toggle("active");
         };
+
+        // Select Variant Item
+        wrap.querySelectorAll(".custom-variant-item").forEach(item => {
+          item.onclick = (e) => {
+            e.stopPropagation();
+            const idx = parseInt(item.getAttribute("data-index"), 10);
+            const variants = card._variantsData;
+            const chosen = variants[idx];
+
+            // UI active indicator
+            wrap.querySelectorAll(".custom-variant-item").forEach(el => el.classList.remove("selected"));
+            item.classList.add("selected");
+
+            // Update title text
+            titleEl.textContent = chosen.name;
+            wrap.classList.remove("active");
+
+            // Update Card State
+            card.setAttribute("data-name", chosen.name);
+            card.setAttribute("data-price", chosen.price);
+            card.setAttribute("data-image", chosen.image || "images/logo.png");
+            card.setAttribute("data-out-of-stock", chosen.outOfStock ? "true" : "false");
+
+            // Update Live Image & Price
+            const imgEl = card.querySelector(".product-img-wrapper img");
+            if (imgEl) imgEl.src = chosen.image || "images/logo.png";
+
+            const priceEl = card.querySelector(".price-amount");
+            if (priceEl) priceEl.innerText = `₹${chosen.price}`;
+
+            // Update Button
+            const btnBox = card.querySelector(".action-btn-container");
+            if (btnBox) {
+              if (chosen.outOfStock) {
+                btnBox.innerHTML = `
+                  <button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${chosen.name}" data-price="${chosen.price}">
+                    <span>🔔</span> Notify
+                  </button>
+                `;
+                const nBtn = btnBox.querySelector(".notify-stock-btn");
+                nBtn.onclick = (ev) => {
+                  ev.stopPropagation();
+                  handleStockNotify(chosen.name, chosen.price, nBtn);
+                };
+              } else {
+                btnBox.innerHTML = `
+                  <button class="cart-action-btn add-cart" data-name="${chosen.name}" data-price="${chosen.price}">
+                    <span>🛒</span> Pick
+                  </button>
+                `;
+                const aBtn = btnBox.querySelector(".add-cart");
+                aBtn.onclick = (ev) => {
+                  ev.stopPropagation();
+                  triggerAddToCart(chosen.name, parseFloat(chosen.price), chosen.image || "images/logo.png");
+                };
+              }
+            }
+          };
+        });
+
+        // 👉 Requirement: Card se cursor bahar jaate hi menu band ho jaye
+        card.addEventListener("mouseleave", () => {
+          wrap.classList.remove("active");
+        });
       });
 
+      // Mobile / Window Outside Click Close
+      window.addEventListener("click", () => {
+        document.querySelectorAll(".custom-variant-wrap.active").forEach(w => w.classList.remove("active"));
+      });
       // 4. Expand Modal Binding
       container.querySelectorAll(".expand-btn").forEach(btn => {
         btn.onclick = (e) => {
