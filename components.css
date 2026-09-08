@@ -1418,3 +1418,52 @@ body.dark-mode .custom-variant-item.selected {
   z-index: 100000 !important;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22), 0 4px 10px rgba(0, 0, 0, 0.1) !important;
 }
+
+/* =======================================================
+   MOBILE HORIZONTAL SWIPE / SCROLL RESTORE FIX
+   ======================================================= */
+@media (max-width: 768px) {
+  /* 1. Main Grid mobile wrapper */
+  #product-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  /* 2. Har Category ki row mein swipe/scroll force activate karein */
+  .category-row-strip {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important; /* 👉 Scroll wapas chalu */
+    overflow-y: visible !important; /* 👉 Dropdown menu na kate */
+    -webkit-overflow-scrolling: touch !important; /* iOS & Android smooth swipe */
+    touch-action: pan-x pan-y !important; /* Touch gestures allow karega */
+    scroll-snap-type: x mandatory !important;
+    width: 100% !important;
+    gap: 10px !important;
+    padding: 6px 2px 14px 2px !important;
+
+    /* Scrollbar hide */
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .category-row-strip::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* 3. Card size mobile ke hisaab se locked rahe */
+  .category-row-strip .product-card {
+    flex: 0 0 calc(50% - 6px) !important;
+    min-width: calc(50% - 6px) !important;
+    max-width: calc(50% - 6px) !important;
+    scroll-snap-align: start !important;
+    margin: 0 !important;
+    position: relative !important;
+  }
+}
