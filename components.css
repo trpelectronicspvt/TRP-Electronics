@@ -1461,3 +1461,25 @@ body.dark-mode .custom-variant-item.selected {
     position: relative !important;
   }
 }
+/* MODAL DESCRIPTION FORMATTING */
+.modal-desc {
+  white-space: pre-line; /* Enter key aur new lines preserve karega */
+  line-height: 1.6;
+  margin: 12px 0 16px 0;
+  font-size: 14px;
+  color: #334155;
+}
+
+body.dark-mode .modal-desc {
+  color: #cbd5e1;
+}
+
+.modal-desc ul {
+  margin: 6px 0 0 18px;
+  padding: 0;
+  list-style-type: disc;
+}
+
+.modal-desc li {
+  margin-bottom: 4px;
+}
