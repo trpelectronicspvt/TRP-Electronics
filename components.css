@@ -1413,54 +1413,6 @@ body.dark-mode .custom-variant-item.selected {
   opacity: 0.75;
 }
 
-/* =======================================================
-   MOBILE HORIZONTAL SWIPE / SCROLL RESTORE FIX
-   ======================================================= */
-@media (max-width: 768px) {
-  /* 1. Main Grid mobile wrapper */
-  #product-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 16px !important;
-    width: 100% !important;
-    overflow: visible !important;
-  }
-
-  /* 2. Har Category ki row mein swipe/scroll force activate karein */
-  .category-row-strip {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important; /* 👉 Scroll wapas chalu */
-    overflow-y: visible !important; /* 👉 Dropdown menu na kate */
-    -webkit-overflow-scrolling: touch !important; /* iOS & Android smooth swipe */
-    touch-action: pan-x pan-y !important; /* Touch gestures allow karega */
-    scroll-snap-type: x mandatory !important;
-    width: 100% !important;
-    gap: 10px !important;
-    padding: 6px 2px 14px 2px !important;
-
-    /* Scrollbar hide */
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-  }
-
-  .category-row-strip::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-  }
-
-  /* 3. Card size mobile ke hisaab se locked rahe */
-  .category-row-strip .product-card {
-    flex: 0 0 calc(50% - 6px) !important;
-    min-width: calc(50% - 6px) !important;
-    max-width: calc(50% - 6px) !important;
-    scroll-snap-align: start !important;
-    margin: 0 !important;
-    position: relative !important;
-  }
-}
 /* MODAL DESCRIPTION FORMATTING */
 .modal-desc {
   white-space: pre-line; /* Enter key aur new lines preserve karega */
@@ -1485,36 +1437,18 @@ body.dark-mode .modal-desc {
 }
 
 /* =======================================================
-   REVEAL FROM BEHIND: NUDGE + UNDER-CARD ARROW (MOBILE)
+   1. 3RD CARD HALF-PEEK NUDGE KEYFRAME (NO ARROW)
    ======================================================= */
-
-/* Row container relative aur overflow allow kare */
-.row-strip-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-/* Cards layer upar rahegi taaki arrow normal state me peeche chupa rahe */
-.category-row-strip .product-card {
-  position: relative;
-  z-index: 2 !important; /* Cards arrow ke upar rahenge */
-  background: #ffffff;   /* Solid color taaki neeche ka arrow na jhaanke */
-}
-
-body.dark-mode .category-row-strip .product-card {
-  background: #1e293b;
-}
-
-/* 1. Row Nudge Animation (Left side slide hokar wapas aana) */
-@keyframes rowNudgeReveal {
+@keyframes peekThirdCard {
   0% {
     transform: translateX(0);
   }
-  40% {
-    transform: translateX(-70px); /* 70px left slide hoga taaki peeche ka arrow poora khul kar dikhe */
+  38% {
+    /* -140px slide hone par 3rd card adha screen me saaf dikhega */
+    transform: translateX(-140px);
   }
-  75% {
-    transform: translateX(6px);
+  70% {
+    transform: translateX(8px); /* Smooth gentle bounce back */
   }
   100% {
     transform: translateX(0);
@@ -1522,49 +1456,65 @@ body.dark-mode .category-row-strip .product-card {
 }
 
 .row-nudge-active {
-  animation: rowNudgeReveal 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: peekThirdCard 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* 2. Arrow Behind The Card (Cards ke theek neeche wali layer) */
-.swipe-hint-behind {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 42px;
-  height: 42px;
-  background: #0284c7; /* Brand Blue */
-  color: #ffffff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
-  z-index: 1 !important; /* Card (z-index: 2) ke peeche/underneath */
-  pointer-events: none;
-  opacity: 0;
-}
+/* =======================================================
+   2. MOBILE HORIZONTAL SWIPE & CARD SHADOW FIX
+   ======================================================= */
+@media (max-width: 768px) {
+  /* 1. Main Grid mobile wrapper */
+  #product-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
 
-/* 3. Jab card aage khiskega aur wapas lautne wala hoga tab arrow aage jump karega */
-@keyframes arrowPopAndFade {
-  0% {
-    opacity: 0;
-    transform: translateY(-50%) scale(0.6) translateX(-15px);
-  }
-  30% {
-    opacity: 1; /* Card khisakte hi peeche reveal ho gaya */
-    transform: translateY(-50%) scale(1) translateX(0);
-  }
-  70% {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.08) translateX(12px); /* Card lautne se pehle thoda aage nikalna */
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-50%) scale(0.8) translateX(20px); /* Smooth fade out */
-  }
-}
+  /* 2. Har Category ki row mein swipe/scroll force activate */
+  .category-row-strip {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x pan-y !important;
+    scroll-snap-type: x mandatory !important;
+    width: 100% !important;
+    gap: 10px !important;
+    /* Bottom padding badhayi hai taaki card shadow cut na ho */
+    padding: 6px 4px 16px 4px !important;
+    margin-bottom: 8px !important;
 
-.swipe-hint-behind.play-anim {
-  animation: arrowPopAndFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    /* Scrollbar hide */
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .category-row-strip::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* 3. Card size mobile ke hisaab se locked */
+  .category-row-strip .product-card {
+    flex: 0 0 calc(50% - 6px) !important;
+    min-width: calc(50% - 6px) !important;
+    max-width: calc(50% - 6px) !important;
+    scroll-snap-align: start !important;
+    margin: 0 !important;
+    position: relative !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  /* 4. 👉 SHADOW FIX: Touch/Tap/Click hote hi card sabhi niche wale cards ke upar float kare */
+  .category-row-strip .product-card:active,
+  .category-row-strip .product-card:focus-within,
+  .category-row-strip .product-card:hover {
+    z-index: 50 !important;
+    position: relative !important;
+  }
 }
