@@ -472,45 +472,23 @@
           else img.addEventListener("load", () => img.classList.add("loaded"));
         });
 
-        initShopFilters();
+initShopFilters();
 
-        // 👉 ONE-TIME UNDER-CARD ARROW REVEAL (Mobile only)
+        // 👉 ONE-TIME 3RD CARD HALF PEEK NUDGE (Mobile only, No arrows)
         if (window.innerWidth <= 768) {
           setTimeout(() => {
             const firstStrip = container.querySelector(".category-row-strip");
-            
+            // Agar row me 2 se zyada cards hon tabhi 3rd card peek karega
             if (firstStrip && firstStrip.children.length > 2) {
-              // 1. Agar row ka parent relative wrapper nahi hai toh wrapper setup karein
-              let wrapper = firstStrip.parentElement;
-              if (!wrapper.classList.contains("row-strip-wrapper")) {
-                wrapper.style.position = "relative";
-              }
-
-              // 2. Arrow Element jo card ke theek peeche (Underneath) baithega
-              const underArrow = document.createElement("div");
-              underArrow.className = "swipe-hint-behind";
-              underArrow.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h14"></path>
-                  <path d="M12 5l7 7-7 7"></path>
-                </svg>
-              `;
-
-              // Arrow ko row wrapper ke andar inject karein (Row ke peeche)
-              wrapper.appendChild(underArrow);
-
-              // 3. Card bounce aur peeche ke arrow ka sync animation start
               firstStrip.classList.add("row-nudge-active");
-              underArrow.classList.add("play-anim");
-
-              // 4. 1.2 second baad jab cards apni jagah wapas aa jayein toh arrow remove ho jaye
-              setTimeout(() => {
-                underArrow.remove();
+              firstStrip.addEventListener("animationend", () => {
                 firstStrip.classList.remove("row-nudge-active");
-              }, 1250);
+              }, { once: true });
             }
-          }, 700);
+          }, 650);
         }
+
+
         
       } catch (err) {
         console.error("Firestore Error:", err);
