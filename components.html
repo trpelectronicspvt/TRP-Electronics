@@ -474,18 +474,20 @@
 
 initShopFilters();
 
-        // 👉 ONE-TIME 3RD CARD HALF PEEK NUDGE (Mobile only, No arrows)
+        // 👉 REAL NATIVE SCROLL TO PEEK 3RD CARD (No blank space)
         if (window.innerWidth <= 768) {
           setTimeout(() => {
             const firstStrip = container.querySelector(".category-row-strip");
-            // Agar row me 2 se zyada cards hon tabhi 3rd card peek karega
             if (firstStrip && firstStrip.children.length > 2) {
-              firstStrip.classList.add("row-nudge-active");
-              firstStrip.addEventListener("animationend", () => {
-                firstStrip.classList.remove("row-nudge-active");
-              }, { once: true });
+              // 1. Smoothly scroll forward taaki 3rd card adha andar aaye
+              firstStrip.scrollTo({ left: 110, behavior: "smooth" });
+
+              // 2. 700ms baad wapas shuruat par scroll karein
+              setTimeout(() => {
+                firstStrip.scrollTo({ left: 0, behavior: "smooth" });
+              }, 700);
             }
-          }, 650);
+          }, 600);
         }
 
 
