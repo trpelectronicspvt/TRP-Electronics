@@ -473,20 +473,42 @@
         });
 
         initShopFilters();
-
-
-        // 👉 ONE-TIME SCROLL HINT NUDGE (Only on mobile screens)
+        
+        // 👉 ONE-TIME SCROLL NUDGE + CIRCULAR ARROW HINT (Mobile only)
         if (window.innerWidth <= 768) {
           setTimeout(() => {
             const firstStrip = container.querySelector(".category-row-strip");
-            // Agar strip me 2 se zyada cards hain tabhi nudge karega
+            
+            // Sirf tab trigger hoga agar row me 2 se zyada cards ho
             if (firstStrip && firstStrip.children.length > 2) {
+              // 1. Create Circular Arrow Element
+              const hintArrow = document.createElement("div");
+              hintArrow.className = "swipe-hint-badge";
+              hintArrow.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>`;
+              
+              firstStrip.parentElement.style.position = "relative";
+              firstStrip.appendChild(hintArrow);
+
+              // 2. Start Row Bounce
               firstStrip.classList.add("row-nudge-active");
+
+              // 3. Right side khali jagah aate hi arrow dikhana (200ms baad)
+              setTimeout(() => {
+                hintArrow.classList.add("show");
+              }, 200);
+
+              // 4. Exactly 1 sec baad arrow smoothly fade out ho jaye aur DOM se remove ho jaye
+              setTimeout(() => {
+                hintArrow.classList.remove("show");
+                setTimeout(() => hintArrow.remove(), 350);
+              }, 1200);
+
+              // Row animation clean up
               firstStrip.addEventListener("animationend", () => {
                 firstStrip.classList.remove("row-nudge-active");
               }, { once: true });
             }
-          }, 700); // 700ms delay taaki page pehle theek se load ho jaye
+          }, 700);
         }
         
       } catch (err) {
