@@ -1460,7 +1460,7 @@ body.dark-mode .modal-desc {
 }
 
 /* =======================================================
-   2. MOBILE HORIZONTAL SWIPE & CARD SHADOW FIX
+   MOBILE HORIZONTAL SWIPE / SCROLL RESTORE FIX
    ======================================================= */
 @media (max-width: 768px) {
   /* 1. Main Grid mobile wrapper */
@@ -1472,7 +1472,7 @@ body.dark-mode .modal-desc {
     overflow: visible !important;
   }
 
-  /* 2. Har Category ki row mein swipe/scroll force activate */
+  /* 2. Har Category ki row mein swipe/scroll (Exact original padding/gap) */
   .category-row-strip {
     display: flex !important;
     flex-direction: row !important;
@@ -1484,9 +1484,7 @@ body.dark-mode .modal-desc {
     scroll-snap-type: x mandatory !important;
     width: 100% !important;
     gap: 10px !important;
-    /* Bottom padding badhayi hai taaki card shadow cut na ho */
-    padding: 6px 4px 16px 4px !important;
-    margin-bottom: 8px !important;
+    padding: 6px 2px 14px 2px !important; /* 👉 Aapka original exact padding */
 
     /* Scrollbar hide */
     scrollbar-width: none !important;
@@ -1499,7 +1497,7 @@ body.dark-mode .modal-desc {
     height: 0 !important;
   }
 
-  /* 3. Card size mobile ke hisaab se locked */
+  /* 3. Card size mobile ke hisaab se locked rahe */
   .category-row-strip .product-card {
     flex: 0 0 calc(50% - 6px) !important;
     min-width: calc(50% - 6px) !important;
@@ -1507,14 +1505,11 @@ body.dark-mode .modal-desc {
     scroll-snap-align: start !important;
     margin: 0 !important;
     position: relative !important;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
 
-  /* 4. 👉 SHADOW FIX: Touch/Tap/Click hote hi card sabhi niche wale cards ke upar float kare */
+  /* 4. Shadow cut fix (Click/tap par shadow upar dikhe) */
   .category-row-strip .product-card:active,
-  .category-row-strip .product-card:focus-within,
-  .category-row-strip .product-card:hover {
-    z-index: 50 !important;
-    position: relative !important;
+  .category-row-strip .product-card:focus-within {
+    z-index: 10 !important;
   }
 }
