@@ -1081,7 +1081,7 @@ main {
 }
 
 /* ============================================================
-   ADAPTIVE SKELETON SHIMMER PRELOADER
+   ADAPTIVE SKELETON SHIMMER PRELOADER (DESKTOP UNTOUCHED)
    ============================================================ */
 .skeleton-card {
   position: relative;
@@ -1168,30 +1168,59 @@ main {
   }
 }
 
-@media (max-width: 600px) {
-  .skeleton-img {
-    height: 125px;
-  }
-}
-
+/* ============================================================
+   MOBILE-ONLY SKELETON CARD EXACT MATCH
+   ============================================================ */
 @media (max-width: 768px) {
-  /* Skeleton cards loading ke waqt bhi bilkul live cards ki tarah 2-row layout mein dikhein */
+  /* Container layout exactly live cards jaisa */
   #product-grid:has(.skeleton-card) {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: wrap !important;
     gap: 10px !important;
-    justify-content: space-between !important;
+    padding: 6px 2px 14px 2px !important;
+    justify-content: flex-start !important;
   }
 
+  /* Card Width exact original card ke barabar */
   .skeleton-card {
-    width: calc(50% - 5px) !important;
-    min-width: calc(50% - 5px) !important;
-    max-width: calc(50% - 5px) !important;
+    flex: 0 0 calc(50% - 6px) !important;
+    min-width: calc(50% - 6px) !important;
+    max-width: calc(50% - 6px) !important;
+    width: calc(50% - 6px) !important;
+    border-radius: 12px !important;
     box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+
+  /* Image height ko 125px fixed rakhne ke bajaye square ratio diya taaki card chhota na bane */
+  .skeleton-img {
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    width: 100% !important;
+  }
+
+  .skeleton-content {
+    padding: 10px 10px 12px 10px !important;
+    gap: 8px !important;
+  }
+
+  .skeleton-line.title {
+    height: 15px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .skeleton-price {
+    width: 44px !important;
+    height: 18px !important;
+  }
+
+  .skeleton-btn {
+    width: 65px !important;
+    height: 32px !important;
+    border-radius: 18px !important; /* Button ki rounded-pill shape match karne ke liye */
   }
 }
-
 /* DESKTOP (DEFAULT): Standard Grid 100% Untouched */
 .category-row-strip {
   display: contents; /* Desktop par flat grid maintain karega */
