@@ -1484,15 +1484,24 @@ body.dark-mode .modal-desc {
   margin-bottom: 4px;
 }
 
-/* ONE-TIME ROW AUTO-NUDGE ANIMATION (MOBILE ONLY) */
+/* =======================================================
+   ONE-TIME NUDGE + FLOATING CIRCULAR ARROW HINT (MOBILE)
+   ======================================================= */
+
+/* Row container relative taaki arrow theek row ke right edge par aaye */
+.category-row-strip {
+  position: relative;
+}
+
+/* Nudge Animation */
 @keyframes rowNudgeHint {
   0% {
     transform: translateX(0);
   }
   40% {
-    transform: translateX(-48px); /* 48px left slide hoga (right wale cards dikhenge) */
+    transform: translateX(-55px); /* Row thoda left khiskegi */
   }
-  70% {
+  75% {
     transform: translateX(6px);   /* Gentle elastic return */
   }
   100% {
@@ -1501,5 +1510,34 @@ body.dark-mode .modal-desc {
 }
 
 .row-nudge-active {
-  animation: rowNudgeHint 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: rowNudgeHint 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Circular Swipe Hint Arrow (Jo row ke right end par khali space me dikhega) */
+.swipe-hint-badge {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%) scale(0.6);
+  width: 38px;
+  height: 38px;
+  background: rgba(2, 132, 199, 0.92); /* Primary brand blue */
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45);
+  pointer-events: none; /* User tap block na kare */
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Arrow appearance state */
+.swipe-hint-badge.show {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
 }
