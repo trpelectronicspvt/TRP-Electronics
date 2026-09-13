@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- 4. SHARED CART STORAGE GLOBAL LOGIC ---------- */
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const deliveryCharge = 49;
+  const deliveryCharge = 89;
   const freeDeliveryLimit = 699;
 
   function saveCart() {
