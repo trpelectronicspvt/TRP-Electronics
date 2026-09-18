@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@700&family=Fredoka:wght@600;700&display=swap');
-/* 🚫 PREVENT HORIZONTAL SCROLL / SIDE OVERFLOW ON MOBILE */
+/* 🚫 PREVENT SIDE OVERFLOW WITHOUT BREAKING STICKY HEADERS */
 html, body {
   max-width: 100% !important;
-  overflow-x: hidden !important;
+  overflow-x: clip !important; /* 'hidden' sticky ko disable kar deta hai, 'clip' safe rakhta hai */
   position: relative;
 }
 
@@ -54,8 +54,11 @@ a {
   color: #fff;
 }
 
-/* ===== Navbar ===== */
+/* ===== Sticky Main Navbar ===== */
 header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
   background: #0037ff;
   color: #fff;
   display: flex;
@@ -63,6 +66,7 @@ header {
   align-items: center;
   padding: 12px 20px;
   flex-wrap: wrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 header #logo {
   font-size: 22px;
@@ -1117,8 +1121,12 @@ body.dark-mode .instagram-btn:active { border-color: #e1306c; }
 /* ========================================================
    🌟 SECOND NAV & CATEGORY BAR STYLES (PROJECTS PAGE)
    ======================================================== */
+/* ===== Sticky Category Second Nav (Projects & Components) ===== */
 .second-nav {
-  width: auto;
+  position: sticky !important;
+  top: 56px !important; /* Header ke theek niche lock hoga */
+  z-index: 995 !important;
+  width: 100%;
   background: #ffffff;
   border-bottom: 1px solid #dcdcdc;
   padding: 8px 12px;
@@ -1126,6 +1134,12 @@ body.dark-mode .instagram-btn:active { border-color: #e1306c; }
   flex-wrap: nowrap;
   align-items: center;
   gap: 15px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .second-nav {
+  background: #000000;
+  border-bottom: 1px solid #333333;
 }
 
 .second-left {
