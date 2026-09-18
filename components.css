@@ -22,7 +22,10 @@ body.components-page {
    SECOND NAV BAR
 -----------------------------------*/
 .second-nav {
-  width: auto;
+  position: sticky !important;
+  top: 56px !important;
+  z-index: 995 !important;
+  width: 100% !important;
   background: #ffffff;
   border-bottom: 1px solid #dcdcdc;
   padding: 8px 12px;
@@ -30,6 +33,7 @@ body.components-page {
   flex-wrap: nowrap;
   align-items: center;
   gap: 15px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 /* LEFT / CENTER / RIGHT ALIGNMENT */
@@ -54,6 +58,17 @@ body.components-page {
   justify-content: flex-end;
 }
 
+@media (max-width: 700px) {
+  header {
+    padding: 10px 14px !important;
+  }
+  
+  .second-nav {
+    top: 50px !important; /* Mobile header height ke hisab se offset */
+    gap: 8px;
+    padding: 8px 10px;
+  }
+}
 /* ---------------------------------
    🔍 EXPANDING SEARCH BOX
 -----------------------------------*/
