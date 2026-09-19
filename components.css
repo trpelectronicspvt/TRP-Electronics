@@ -21,9 +21,17 @@ body.components-page {
 /* ---------------------------------
    SECOND NAV BAR
 -----------------------------------*/
+
+header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  margin: 0 !important;
+}
 .second-nav {
   position: sticky !important;
-  top: 56px !important;
+  /* Header ke bottom se chipakne ke liye exact height match (gap = 0px) */
+  top: 48px !important;
   z-index: 995 !important;
   width: 100% !important;
   background: #ffffff;
@@ -35,7 +43,6 @@ body.components-page {
   gap: 15px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
-
 /* LEFT / CENTER / RIGHT ALIGNMENT */
 .second-left {
   flex: 0 0 auto;
@@ -58,15 +65,32 @@ body.components-page {
   justify-content: flex-end;
 }
 
+/* Mobile adjustments */
 @media (max-width: 700px) {
   header {
+    height: 52px !important;
     padding: 10px 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    position: sticky !important;
+    top: 0 !important;
   }
-  
+
+  /* Gap zero karne ke liye exact mobile header height */
   .second-nav {
-    top: 50px !important; /* Mobile header height ke hisab se offset */
+    top: 52px !important;
     gap: 8px;
     padding: 8px 10px;
+  }
+
+  /* 👉 Mobile Cart Icon Fix: Absolute coordinate ko header ke andar lock karein */
+  .cart-box-new {
+    position: fixed !important;
+    top: 13px !important;
+    right: 58px !important; /* Hamburger ☰ ke theek bagal mein */
+    z-index: 10002 !important; /* Header aur ☰ icon ke barabar layer par */
+    background: transparent !important;
+    color: #ffffff !important;
   }
 }
 /* ---------------------------------
