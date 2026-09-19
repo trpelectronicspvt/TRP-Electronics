@@ -65,9 +65,10 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
-  flex-wrap: wrap;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  margin: 0 !important;
 }
+
 header #logo {
   font-size: 22px;
   font-weight: bold;
@@ -1118,15 +1119,21 @@ body.dark-mode .whatsapp-btn:active { border-color: #25d366; }
 body.dark-mode .youtube-btn:active { border-color: #ff0000; }
 body.dark-mode .instagram-btn:active { border-color: #e1306c; }
 
+@media (max-width: 700px) {
+  .second-nav {
+    top: 52px !important;
+  }
+}
+
 /* ========================================================
    🌟 SECOND NAV & CATEGORY BAR STYLES (PROJECTS PAGE)
    ======================================================== */
 /* ===== Sticky Category Second Nav (Projects & Components) ===== */
 .second-nav {
   position: sticky !important;
-  top: 56px !important; /* Header ke theek niche lock hoga */
+  top: 48px !important; /* Header ke theek border par lock (Zero Gap) */
   z-index: 995 !important;
-  width: 100%;
+  width: 100% !important;
   background: #ffffff;
   border-bottom: 1px solid #dcdcdc;
   padding: 8px 12px;
@@ -1136,7 +1143,6 @@ body.dark-mode .instagram-btn:active { border-color: #e1306c; }
   gap: 15px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
-
 body.dark-mode .second-nav {
   background: #000000;
   border-bottom: 1px solid #333333;
