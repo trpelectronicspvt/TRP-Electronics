@@ -73,17 +73,6 @@
       <h2 id="shopHeading" class="section-title2">BUY COMPONENTS IN BEST PRICE</h2>
 
       <div id="product-grid" class="product-grid">
-        <!-- Skeleton Preloaders -->
-        <div class="skeleton-card shimmer">
-          <div class="skeleton-img"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-line title"></div>
-            <div class="skeleton-line btn-bar">
-              <div class="skeleton-price"></div>
-              <div class="skeleton-btn"></div>
-            </div>
-          </div>
-        </div>
         <div class="skeleton-card shimmer">
           <div class="skeleton-img"></div>
           <div class="skeleton-content">
@@ -128,7 +117,7 @@
     </section>
   </main>
 
-  <!-- POPUP MODAL FOR EXPANDED PRODUCT DETAILS -->
+  <!-- POPUP MODAL -->
   <div id="product-modal" class="modal-overlay">
     <div class="modal-content">
       <button id="closeModal" class="close-modal">✕</button>
@@ -158,13 +147,13 @@
 
   <script src="../script.js"></script>
 
-  <!-- FIREBASE DYNAMIC CARDS LOADER -->
+  <!-- JAVASCRIPT LOGIC -->
   <script type="module">
     import { db, collection, getDocs } from "../firebase-config.js";
 
     const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljewbda";
 
-    // Helper: Local images ke aage '../' lagata hai aur Firebase/Cloudinary URLs ko direct return karta hai
+    // Helper: Local images ko ../ dega aur online images ko waise hi rakhega
     function resolveImg(url) {
       if (!url) return "../images/logo.png";
       if (url.startsWith("http://") || url.startsWith("https://")) return url;
@@ -173,10 +162,8 @@
       return "../" + url;
     }
 
-    // Format multiline description into clean bullet points list
     function formatDescription(descText) {
       if (!descText) return "<strong>Description:</strong> High quality electronic component for DIY projects.";
-      
       const lines = descText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
       if (lines.length > 1) {
         return `<strong>Description:</strong><ul style="margin: 6px 0 0 18px; padding: 0;">${lines.map(line => `<li style="margin-bottom: 4px;">${line.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>`;
@@ -197,7 +184,6 @@
 
         container.innerHTML = "";
 
-        // 1. Group items category-wise
         const categories = {};
         snap.forEach(docSnap => {
           const p = docSnap.data();
@@ -206,7 +192,6 @@
           categories[cat].push(p);
         });
 
-        // 2. Render each category as a clean horizontal swipe row
         Object.keys(categories).forEach(catName => {
           const items = categories[catName];
           const chunkSize = 30;
@@ -221,7 +206,6 @@
               const card = document.createElement("div");
               card.className = "product-card";
 
-              // Check if product has multi-variants
               const hasVariants = Array.isArray(p.variants) && p.variants.length > 0;
               const currentItem = hasVariants ? p.variants[0] : p;
               const cardImg = resolveImg(currentItem.image || p.image);
@@ -240,7 +224,6 @@
                 card._defaultDesc = p.desc || "";
               }
 
-              // Title Area: Custom Inline Arrow Dropdown
               let titleHTML = "";
               if (hasVariants) {
                 const itemsHTML = p.variants.map((v, idx) => `
@@ -267,9 +250,27 @@
                 titleHTML = `<h3>${p.name}</h3>`;
               }
 
+              const offerVal = currentItem.offer || p.offer || "";
+              const badgeHTML = offerVal ? `<span class="discount-badge">${offerVal}</span>` : "";
+
+              let actionBtnHTML = "";
+              if (currentItem.outOfStock) {
+                actionBtnHTML = `
+                  <button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${currentItem.name || p.name}" data-price="${currentItem.price}">
+                    <span>🔔</span> Notify
+                  </button>
+                `;
+              } else {
+                actionBtnHTML = `
+                  <button class="cart-action-btn add-cart" data-name="${currentItem.name || p.name}" data-price="${currentItem.price}">
+                    <span>🛒</span> Pick
+                  </button>
+                `;
+              }
+
               card.innerHTML = `
                 <div class="product-img-wrapper">
-                  ${(currentItem.offer || p.offer) ? `<span class="discount-badge">${currentItem.offer || p.offer}</span>` : ''}
+                  ${badgeHTML}
                   <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
                   <img src="${cardImg}" alt="${currentItem.name || p.name}" loading="lazy">
                 </div>
@@ -283,14 +284,7 @@
                     </div>
 
                     <div class="action-btn-container">
-                      ${currentItem.outOfStock 
-                        ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${currentItem.name \vert{}\vert{} p.name}" data-price="${currentItem.price}">
-                             <span>🔔</span> Notify
-                           </button>`
-                        : `<button class="cart-action-btn add-cart" data-name="${currentItem.name \vert{}\vert{} p.name}" data-price="${currentItem.price}">
-                             <span>🛒</span> Pick
-                           </button>`
-                      }
+                      ${actionBtnHTML}
                     </div>
                   </div>
                 </div>
@@ -302,7 +296,7 @@
           }
         });
 
-        // 3. Custom Variant Dropdown Interactions
+        // Variant interactions
         container.querySelectorAll(".custom-variant-wrap").forEach(wrap => {
           const trigger = wrap.querySelector(".custom-variant-trigger");
           const card = wrap.closest(".product-card");
@@ -330,21 +324,18 @@
               titleEl.textContent = chosen.name;
               wrap.classList.remove("active");
 
-              // Update Card State
               card.setAttribute("data-name", chosen.name);
               card.setAttribute("data-price", chosen.price);
               card.setAttribute("data-image", variantImg);
               card.setAttribute("data-out-of-stock", chosen.outOfStock ? "true" : "false");
               card.setAttribute("data-desc", chosen.desc || card._defaultDesc || "High quality electronic component for DIY projects.");
 
-              // Update Live Image & Price
               const imgEl = card.querySelector(".product-img-wrapper img");
               if (imgEl) imgEl.src = variantImg;
 
               const priceEl = card.querySelector(".price-amount");
               if (priceEl) priceEl.innerText = `₹${chosen.price}`;
 
-              // Update Button
               const btnBox = card.querySelector(".action-btn-container");
               if (btnBox) {
                 if (chosen.outOfStock) {
@@ -374,18 +365,16 @@
             };
           });
 
-          // Mouse leave auto-close
           card.addEventListener("mouseleave", () => {
             wrap.classList.remove("active");
           });
         });
 
-        // Outside Click Close
         window.addEventListener("click", () => {
           document.querySelectorAll(".custom-variant-wrap.active").forEach(w => w.classList.remove("active"));
         });
 
-        // 4. Modal Expand Binding with Bullet Points Formatter
+        // Modal Specs
         container.querySelectorAll(".expand-btn").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -409,8 +398,6 @@
               if (modalImg) modalImg.src = img;
               if (modalTitle) modalTitle.innerText = title;
               if (modalPrice) modalPrice.innerText = `₹${price}`;
-              
-              // Bullet Points Display
               if (modalDesc) modalDesc.innerHTML = formatDescription(desc);
 
               if (modalCartBtn) {
@@ -449,7 +436,6 @@
           };
         });
 
-        // Close Modal
         const modal = document.getElementById("product-modal");
         const closeModalBtn = document.getElementById("closeModal");
         if (closeModalBtn && modal) {
@@ -457,7 +443,7 @@
           modal.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
         }
 
-        // 5. Add to Cart Binding
+        // Add to Cart
         container.querySelectorAll(".add-cart").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -470,7 +456,7 @@
           };
         });
 
-        // 6. Out of Stock Button Binding
+        // Notify
         container.querySelectorAll(".notify-stock-btn").forEach(btn => {
           btn.onclick = (e) => {
             e.stopPropagation();
@@ -481,7 +467,6 @@
           };
         });
 
-        // 7. Image Transitions
         container.querySelectorAll("img").forEach(img => {
           if (img.complete) img.classList.add("loaded");
           else img.addEventListener("load", () => img.classList.add("loaded"));
@@ -489,7 +474,6 @@
 
         initShopFilters();
 
-        // Native scroll preview 3rd card on mobile
         if (window.innerWidth <= 768) {
           setTimeout(() => {
             const firstStrip = container.querySelector(".category-row-strip");
