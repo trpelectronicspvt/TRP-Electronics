@@ -2,18 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Components - TRP Electronics</title>
   <link rel="icon" type="image/png" href="../images/favicon-32x32.png">
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../components.css" />
 </head>
 <body class="components-page">
+
   <div id="product-container"></div>
   <div id="cart-alert" class="cart-alert">
     ✅ Added to cart!
   </div>
 
+  <!-- HEADER -->
   <header>
     <a href="../index.html" id="logo">TRP Electronics</a>
     <nav>
@@ -65,6 +67,7 @@
     </div>
   </div>
 
+  <!-- MAIN STORE CONTENT -->
   <main>
     <section class="store">
       <h2 id="shopHeading" class="section-title2">BUY COMPONENTS IN BEST PRICE</h2>
@@ -111,7 +114,7 @@
             </div>
           </div>
         </div>
-                <div class="skeleton-card shimmer">
+        <div class="skeleton-card shimmer">
           <div class="skeleton-img"></div>
           <div class="skeleton-content">
             <div class="skeleton-line title"></div>
@@ -146,6 +149,7 @@
     </div>
   </div>
 
+  <!-- FOOTER -->
   <footer>
     <p>© 2025 TRP Electronics | Made with ❤️</p>
   </footer>
@@ -154,11 +158,20 @@
 
   <script src="../script.js"></script>
 
-  <!-- FIREBASE DYNAMIC CARDS LOADER WITH SMART NOTIFY & MULTI-VARIANTS -->
+  <!-- FIREBASE DYNAMIC CARDS LOADER -->
   <script type="module">
     import { db, collection, getDocs } from "../firebase-config.js";
 
     const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljewbda";
+
+    // Helper: Local images ke aage '../' lagata hai aur Firebase/Cloudinary URLs ko direct return karta hai
+    function resolveImg(url) {
+      if (!url) return "../images/logo.png";
+      if (url.startsWith("http://") || url.startsWith("https://")) return url;
+      if (url.startsWith("/")) return url;
+      if (url.startsWith("../")) return url;
+      return "../" + url;
+    }
 
     // Format multiline description into clean bullet points list
     function formatDescription(descText) {
@@ -211,13 +224,14 @@
               // Check if product has multi-variants
               const hasVariants = Array.isArray(p.variants) && p.variants.length > 0;
               const currentItem = hasVariants ? p.variants[0] : p;
+              const cardImg = resolveImg(currentItem.image || p.image);
 
               card.setAttribute("data-category", p.category || "More");
               card.setAttribute("data-keywords", p.keywords || "");
               card.setAttribute("data-desc", currentItem.desc || p.desc || "High quality electronic component for DIY projects.");
               card.setAttribute("data-price", currentItem.price || "0");
               card.setAttribute("data-name", currentItem.name || p.name || "");
-              card.setAttribute("data-image", currentItem.image || p.image || "images/logo.png");
+              card.setAttribute("data-image", cardImg);
               card.setAttribute("data-datasheet", p.datasheet || "");
               card.setAttribute("data-out-of-stock", currentItem.outOfStock ? "true" : "false");
 
@@ -257,7 +271,7 @@
                 <div class="product-img-wrapper">
                   ${(currentItem.offer || p.offer) ? `<span class="discount-badge">${currentItem.offer || p.offer}</span>` : ''}
                   <button class="expand-icon-btn expand-btn" title="View Full Specs">⛶</button>
-                  <img src="${currentItem.image || p.image || 'images/logo.png'}" alt="${currentItem.name || p.name}" loading="lazy">
+                  <img src="${cardImg}" alt="${currentItem.name || p.name}" loading="lazy">
                 </div>
 
                 <div class="product-info">
@@ -270,10 +284,10 @@
 
                     <div class="action-btn-container">
                       ${currentItem.outOfStock 
-                        ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${currentItem.name || p.name}" data-price="${currentItem.price}">
+                        ? `<button class="cart-action-btn stock-notify-btn notify-stock-btn" data-name="${currentItem.name \vert{}\vert{} p.name}" data-price="${currentItem.price}">
                              <span>🔔</span> Notify
                            </button>`
-                        : `<button class="cart-action-btn add-cart" data-name="${currentItem.name || p.name}" data-price="${currentItem.price}">
+                        : `<button class="cart-action-btn add-cart" data-name="${currentItem.name \vert{}\vert{} p.name}" data-price="${currentItem.price}">
                              <span>🛒</span> Pick
                            </button>`
                       }
@@ -308,6 +322,7 @@
               const idx = parseInt(item.getAttribute("data-index"), 10);
               const variants = card._variantsData;
               const chosen = variants[idx];
+              const variantImg = resolveImg(chosen.image);
 
               wrap.querySelectorAll(".custom-variant-item").forEach(el => el.classList.remove("selected"));
               item.classList.add("selected");
@@ -315,16 +330,16 @@
               titleEl.textContent = chosen.name;
               wrap.classList.remove("active");
 
-              // Update Card State (including description)
+              // Update Card State
               card.setAttribute("data-name", chosen.name);
               card.setAttribute("data-price", chosen.price);
-              card.setAttribute("data-image", chosen.image || "images/logo.png");
+              card.setAttribute("data-image", variantImg);
               card.setAttribute("data-out-of-stock", chosen.outOfStock ? "true" : "false");
               card.setAttribute("data-desc", chosen.desc || card._defaultDesc || "High quality electronic component for DIY projects.");
 
               // Update Live Image & Price
               const imgEl = card.querySelector(".product-img-wrapper img");
-              if (imgEl) imgEl.src = chosen.image || "images/logo.png";
+              if (imgEl) imgEl.src = variantImg;
 
               const priceEl = card.querySelector(".price-amount");
               if (priceEl) priceEl.innerText = `₹${chosen.price}`;
@@ -352,7 +367,7 @@
                   const aBtn = btnBox.querySelector(".add-cart");
                   aBtn.onclick = (ev) => {
                     ev.stopPropagation();
-                    triggerAddToCart(chosen.name, parseFloat(chosen.price), chosen.image || "images/logo.png");
+                    triggerAddToCart(chosen.name, parseFloat(chosen.price), variantImg);
                   };
                 }
               }
@@ -377,7 +392,7 @@
             const card = btn.closest(".product-card");
             const title = card.getAttribute("data-name") || card.querySelector("h3")?.innerText || "";
             const price = card.getAttribute("data-price") || card.querySelector(".price-amount")?.innerText.replace("₹", "").trim() || "0";
-            const img = card.getAttribute("data-image") || card.querySelector("img")?.src || "images/logo.png";
+            const img = card.getAttribute("data-image") || card.querySelector("img")?.src || "../images/logo.png";
             const desc = card.getAttribute("data-desc") || "High quality electronic component for DIY projects.";
             const isOut = card.getAttribute("data-out-of-stock") === "true";
             const datasheet = card.getAttribute("data-datasheet") || "";
@@ -449,7 +464,7 @@
             const card = btn.closest(".product-card");
             const name = card.getAttribute("data-name") || btn.getAttribute("data-name");
             const price = parseFloat(card.getAttribute("data-price") || btn.getAttribute("data-price") || 0);
-            const image = card.getAttribute("data-image") || card.querySelector("img")?.src || "images/logo.png";
+            const image = card.getAttribute("data-image") || card.querySelector("img")?.src || "../images/logo.png";
             if (!name) return;
             triggerAddToCart(name, price, image);
           };
@@ -472,17 +487,14 @@
           else img.addEventListener("load", () => img.classList.add("loaded"));
         });
 
-initShopFilters();
+        initShopFilters();
 
-        // 👉 REAL NATIVE SCROLL TO PEEK 3RD CARD (No blank space)
+        // Native scroll preview 3rd card on mobile
         if (window.innerWidth <= 768) {
           setTimeout(() => {
             const firstStrip = container.querySelector(".category-row-strip");
             if (firstStrip && firstStrip.children.length > 2) {
-              // 1. Smoothly scroll forward taaki 3rd card adha andar aaye
               firstStrip.scrollTo({ left: 110, behavior: "smooth" });
-
-              // 2. 700ms baad wapas shuruat par scroll karein
               setTimeout(() => {
                 firstStrip.scrollTo({ left: 0, behavior: "smooth" });
               }, 700);
@@ -490,8 +502,6 @@ initShopFilters();
           }, 600);
         }
 
-
-        
       } catch (err) {
         console.error("Firestore Error:", err);
         container.innerHTML = `<p style="color:red; text-align:center; width:100%;">Error loading items: ${err.message}</p>`;
@@ -499,7 +509,7 @@ initShopFilters();
     }
 
     function triggerAddToCart(name, price, image) {
-      const finalImage = image || "images/logo.png";
+      const finalImage = image || "../images/logo.png";
       let cart = JSON.parse(localStorage.getItem("cart") || "[]");
       const existing = cart.find(item => item.name === name);
 
