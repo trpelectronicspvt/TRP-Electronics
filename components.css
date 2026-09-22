@@ -108,7 +108,7 @@ header {
   background-repeat: no-repeat;
   background-position: 12px center;
   cursor: pointer;
-  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  transition: width 0.35s cubic-bezier(0, 0, 0, 1.23), box-shadow 0.3s ease;
   white-space: nowrap;
   color: transparent; /* Default state me text nahi dikhega */
 }
