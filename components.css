@@ -41,7 +41,7 @@ header {
   flex-wrap: nowrap;
   align-items: center;
   gap: 15px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 12px 14px rgba(255, 255, 255);
 }
 /* LEFT / CENTER / RIGHT ALIGNMENT */
 .second-left {
@@ -68,19 +68,12 @@ header {
 /* Mobile adjustments */
 @media (max-width: 700px) {
   header {
-    height: 52px !important;
+    height: 46px !important;
     padding: 10px 14px !important;
     display: flex !important;
     align-items: center !important;
     position: sticky !important;
     top: 0 !important;
-  }
-
-  /* Gap zero karne ke liye exact mobile header height */
-  .second-nav {
-    top: 52px !important;
-    gap: 8px;
-    padding: 8px 10px;
   }
 
   /* 👉 Mobile Cart Icon Fix: Absolute coordinate ko header ke andar lock karein */
