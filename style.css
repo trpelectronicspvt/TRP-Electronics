@@ -1561,7 +1561,14 @@ body.projects-page .footer {
   width: 100%;
 }
 /* PROJECT.HTML */
-/* Projects page sticky fix (Safe for all other pages) */
+/* Projects page sticky fix (Safe: No horizontal scrollbar, 100% full-page stickiness) */
+html:has(.projects-page) {
+  overflow-x: clip !important;
+  overflow-y: auto !important;
+}
+
 body.projects-page {
   overflow-x: visible !important;
+  overflow-y: visible !important;
+  position: static !important;
 }
