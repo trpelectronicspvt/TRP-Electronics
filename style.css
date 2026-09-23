@@ -1567,8 +1567,13 @@ html:has(.projects-page) {
   overflow-y: auto !important;
 }
 
+/* Projects page sticky fix (Safe for all other pages) */
 body.projects-page {
-  overflow-x: visible !important;
+  overflow-x: auto !important;
   overflow-y: visible !important;
-  position: static !important;
+  scrollbar-width: none !important; /* Firefox me horizontal bar hide karega */
+}
+
+body.projects-page::-webkit-scrollbar {
+  display: none !important; /* Chrome / Safari / Edge me horizontal bar hide karega */
 }
